@@ -1,0 +1,69 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
+/*   Updated: 2025/04/18 01:07:48 by gada-sil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MINISHELL_H
+# define MINISHELL_H
+
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <dirent.h>
+# include <signal.h>
+# include <string.h>
+# include <termios.h>
+# include <curses.h>
+# include <stdarg.h>
+
+typedef enum e_type
+{
+	PIPE,
+	REDIRECT_APP,
+	REDIRECT,
+	AND,
+	OR,
+	HEREDOC,
+	COMMAND,
+	ARG
+}	t_type;
+
+typedef struct s_pipe
+{
+	int		pipefd[2];
+}	t_pipe;
+
+typedef struct s_command
+{
+	char		**command;
+	const char	*path;
+}	t_command;
+
+typedef struct s_commander
+{
+	t_type				type;
+	union
+	{
+		t_pipe			pipe;
+		t_command		command;
+	}					u_define;
+	struct s_commander	*left;
+	struct s_commander	*right;
+}	t_commander;
+
+void	logi(int nbr, ...);
+void	logs(int nbr, ...);
+
+#endif
