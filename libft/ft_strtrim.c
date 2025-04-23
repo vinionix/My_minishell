@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 15:38:12 by gada-sil          #+#    #+#             */
-/*   Updated: 2024/09/26 18:31:17 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/04/20 17:27:15 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,9 @@ char	*ft_strtrim(char const *s1, char const *set)
 {
 	size_t		end;
 	size_t		start;
-	size_t		i;
 	char		*ptr;
 
 	start = 0;
-	i = 0;
 	if (s1 == NULL || *s1 == '\0')
 		return (ft_strdup(""));
 	end = ft_strlen((char *)s1);

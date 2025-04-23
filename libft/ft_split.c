@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:23:00 by gada-sil          #+#    #+#             */
-/*   Updated: 2024/10/01 14:23:02 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/04/20 18:29:40 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,3 @@ char	**ft_split(char const *s, char c)
 	array[i] = NULL;
 	return (array);
 }
-/*#include <stdio.h>
-int    main()
-{
-	char    **ptr;
-
-	ptr = ft_split(0, ' ');
-}*/

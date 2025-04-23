@@ -16,15 +16,15 @@ NAME = minishell
 
 all: $(NAME)
 
-
-
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(FLAGS) main.c $(LIBFT) $(OBJS) -lreadline
+	$(CC) $(FLAGS) main.c $(OBJS) -Llibft -lft -lreadline -o minishell
 
 $(LIBFT):
 	make -C libft
 clean:
 	rm -f $(OBJS)
+	make clean -C libft
 fclean: clean
 	rm -f $(NAME) $(OBJS)
+	make fclean -C libft
 re: fclean all
