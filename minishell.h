@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/04/20 17:31:18 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/04/23 15:55:41 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,21 @@
 # include <string.h>
 # include <termios.h>
 # include <curses.h>
-# include <stdarg.h>
 # include "libft/libft.h"
+
+void logi(int x);
+void logfl(float x);
+void logd(double x);
+void logc(char x);
+void logs(const char *x);
+
+#define log_var(x) _Generic((x), \
+    int: log_int, \
+    float: log_float, \
+    double: log_double, \
+    char: log_char, \
+    char *: log_str, \
+    const char *: log_str)
 
 typedef enum e_type
 {
@@ -65,7 +78,7 @@ typedef struct s_commander
 }	t_commander;
 
 void    parsing(const char *input);
-void	logi(int nbr, ...);
-void	logs(int nbr, ...);
+void    bi_cd(const char *str);
+void    bi_pwd();
 
 #endif

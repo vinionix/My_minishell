@@ -5,7 +5,8 @@ FLAGS = -Wall -Wextra -Werror
 LIBFT = libft/libft.a
 
 FUNCTIONS = debug.c \
-			parsing.c
+			src/parsing.c \
+			src/builtins.c
 
 OBJS = $(FUNCTIONS:.c=.o)
 
