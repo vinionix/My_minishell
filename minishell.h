@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/04/23 15:55:41 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/04/24 20:37:42 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,27 @@ void logs(const char *x);
     char *: log_str, \
     const char *: log_str)
 
-typedef enum e_type
+typedef enum e_token_type
 {
-	PIPE,
-	REDIRECT_APP,
-	REDIRECT,
-	AND,
-	OR,
-	HEREDOC,
-	COMMAND,
-	ARG
-}	t_type;
+	TK_WORD,
+	TK_PIPE,
+	TK_AND,
+	TK_OR,
+	TK_REDIR_IN,
+	TK_REDIR_OUT,
+	TK_APPEND,
+	TK_HEREDOC,
+	TK_OPEN_PAREN,
+	TK_CLOSE_PAREN,
+	TK_EOF
+}	t_token_type;
+
+typedef struct s_token
+{
+	t_token_type	type;
+	char			*value;
+	struct s_token	*next;
+}	t_token;
 
 typedef struct s_pipe
 {
@@ -67,7 +77,8 @@ typedef struct s_command
 
 typedef struct s_commander
 {
-	t_type				type;
+	t_token_type		type;
+	int					n_builtin;
 	union
 	{
 		t_pipe			pipe;

@@ -1,6 +1,0 @@
-ls | exit - bug
-ls>arquivo - funciona
-ls|cat - funciona
-ls && - funciona (espera próximo comando) - tem que ser comando ou redirect > ou >>
-< ls - só se o arquivo existir
-"ls - aspas não fechadas
