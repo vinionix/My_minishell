@@ -1,31 +1,39 @@
 CC = cc
-
 FLAGS = -Wall -Wextra -Werror
 
 LIBFT = libft/libft.a
 
-FUNCTIONS = debug.c \
-			src/parsing.c \
-			src/builtins.c
+FUNCTIONS = Tester/debug.c \
+            src/parsing.c \
+            src/builtins.c \
+			Parsing/ft_utils.c
 
 OBJS = $(FUNCTIONS:.c=.o)
+
+NAME_LIB = minishell.a
 
 NAME = minishell
 
 .c.o:
-	$(CC) $(FLAGS) -c $< -o $(<:.c=.o)
+	$(CC) $(FLAGS) -c $< -o $@
 
-all: $(NAME)
+all: $(NAME_LIB) $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(FLAGS) main.c $(OBJS) -Llibft -lft -lreadline -o minishell
+$(NAME_LIB): $(OBJS) $(LIBFT)
+	ar rcs $@ $(OBJS)
+
+$(NAME): $(OBJS) $(LIBFT) $(NAME_LIB)
+	$(CC) $(FLAGS) Tester/main.c $(OBJS) -Llibft -lft -lreadline -o $(NAME)
 
 $(LIBFT):
 	make -C libft
+
 clean:
 	rm -f $(OBJS)
 	make clean -C libft
+
 fclean: clean
-	rm -f $(NAME) $(OBJS)
+	rm -f $(NAME) $(NAME_LIB)
 	make fclean -C libft
+
 re: fclean all

@@ -6,11 +6,11 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/04/24 23:18:29 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/04/27 05:03:01 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int		jump_char(char chr)
 {
@@ -21,12 +21,6 @@ int		jump_char(char chr)
 	if (chr == '\'')
 		return (3);
 	return (0);
-}
-int	skip_space(char *input, int i)
-{
-	while(jump_char(input[i]) == 1)
-		i++;
-	return (i);
 }
 
 int	chr_separator(char *input, int i)
@@ -54,49 +48,74 @@ char	*format_input(char *input)
 	int		j;
 	char	*temp;
 	int		receiver;
+	int		chr_jump;
 
 	i = 0;
-	i = skip_space(input, i);
+	chr_jump = 0;
 	j = 0;
-	temp = malloc(sizeof(char) * ft_strlen(input));
+	temp = malloc(sizeof(char) * (ft_strlen(input) * 2));
 	while(input[i])
 	{
+		chr_jump = jump_char(input[i]);
+		if (chr_jump == 2 || chr_jump == 3)
+		{
+			temp[j++] = input[i++];
+			while(input[i] && chr_jump != jump_char(input[i]))
+				temp[j++] = input[i++];
+		}
 		receiver = chr_separator(input, i);
 		if (receiver == 1 || receiver == 2 || receiver == 3 || receiver == 4)
 		{
-			if ((i > 0) && jump_char(input[i - 1]) != 1)
-			{
-				temp = ft_strjoin(temp, " ");;
-				j++;
-			}
-			temp[j] = input[i];
-			temp[j + 1] = input[i + 1];
-			j = j + 2;
-			i = i + 2;
+			if ((i > 0) && jump_char(input[i - 1]) != 1 && chr_separator(input, i - 1) == 0)
+				temp[j++] = ' ';
+			temp[j++] = input[i++];
+			temp[j++] = input[i++];
 			if (jump_char(input[i]) != 1)
-			{
-				temp = ft_strjoin(temp, " ");
-				j++;
-			}
-			if (jump_char(input[i]) == 1)
-			{
-				i = skip_space(input, i);
-				temp = ft_strjoin(temp, " ");
-				j++;
-			}
+				temp[j++] = ' ';
 		}
-		temp[j] = input[i];
-		i++;
-		j++;
+		else if (receiver == 5 || receiver == 6 || receiver == 7)
+		{
+			if ((i > 0) && jump_char(input[i - 1]) != 1 && chr_separator(input, i - 1) == 0)
+				temp[j++] = ' ';
+			temp[j++] = input[i++];
+			if (jump_char(input[i]) != 1)
+				temp[j++] = ' ';
+		}
+		if (receiver == 0)
+			temp[j++] = input[i++];
 	}
+	temp[j] = '\0';
 	return (temp);
 }
-/*char	**tokenizer(char *input)
-{
-	
-}*/
 
-/*int	main()
+t_token	*tokenizer(char **matrix)
 {
-	printf("%s", format_input(">> ls>> ls"));
-}*/
+	t_token	*tokens;
+	int		i;
+
+	i = 0;
+	tokens = malloc(sizeof(t_token) * (ft_len_matrix(matrix) + 1));
+	while(matrix[i])
+	{
+		tokens[i].value = matrix[i];
+		i++;
+	}
+	tokens[i].value = NULL;
+	return (tokens);
+}
+
+int	main(int argc, char **argv)
+{
+	(void)argc;
+	char *str;
+	char **matriz;
+	t_token	*tokens;
+
+	str = format_input(argv[1]);
+	printf("%s\n", str);
+	matriz = ft_split(str, ' ');
+	free(str);
+	tokens = tokenizer(matriz);
+	for (int i = 0; tokens[i].value != NULL; i++)
+		printf("Token Number %d: %s\n", i, tokens[i].value);
+}

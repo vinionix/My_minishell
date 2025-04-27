@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 void logi(int x)         { printf("int: %d\n", x); }
 void logfl(float x)     { printf("float: %.2f\n", x); }

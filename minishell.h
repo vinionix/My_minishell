@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/04/24 20:37:42 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/04/27 03:45:44 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ typedef enum e_token_type
 	TK_REDIR_OUT,
 	TK_APPEND,
 	TK_HEREDOC,
-	TK_OPEN_PAREN,
-	TK_CLOSE_PAREN,
 	TK_EOF
 }	t_token_type;
 
@@ -61,7 +59,6 @@ typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
-	struct s_token	*next;
 }	t_token;
 
 typedef struct s_pipe
@@ -91,5 +88,6 @@ typedef struct s_commander
 void    parsing(const char *input);
 void    bi_cd(const char *str);
 void    bi_pwd();
+int		ft_len_matrix(char  **matrix);
 
 #endif
