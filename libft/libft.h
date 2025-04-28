@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 15:34:05 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/04/25 03:54:39 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/04/27 16:46:10 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size);
 size_t	ft_strlen(const char *str);
 char	*ft_strnstr(const char *big, const char *little, size_t size);
 char	*ft_strjoin(char *s1, char *s2);
-char	**ft_split(char const *s, char c);
 char	*ft_strtrim(char const *s1, char const *set);
 void	*ft_memset(void *s, int c, size_t n);
 void	*ft_memcpy(void *dest, const void *src, size_t n);

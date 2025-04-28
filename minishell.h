@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/04/27 03:45:44 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/04/28 04:25:24 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,19 @@ typedef enum e_token_type
 	TK_EOF
 }	t_token_type;
 
+/*typedef enum e_bultin
+{
+	TK_WORD,
+	TK_PIPE,
+	TK_AND,
+	B_OR,
+	B_REDIR_IN,
+	B_REDIR_OUT,
+	B_APPEND,
+	B_HEREDOC,
+	B_EOF
+}	t_bultin;*/
+
 typedef struct s_token
 {
 	t_token_type	type;
@@ -89,5 +102,9 @@ void    parsing(const char *input);
 void    bi_cd(const char *str);
 void    bi_pwd();
 int		ft_len_matrix(char  **matrix);
+int		jump_char(char chr);
+int		chr_separator(char *input, int i);
+char	**ft_split(char const *s, char c);
+void	ft_lexer(t_token **tokens);
 
 #endif

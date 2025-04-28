@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.rio>         +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:23:00 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/04/20 18:29:40 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/04/28 01:48:04 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
 static size_t	count_words(char const *s, char c)
 {
 	int	i;
 	int	counter;
 	int	flag;
+	char	chr_jump;
 
 	i = 0;
 	counter = 0;
@@ -25,6 +26,13 @@ static size_t	count_words(char const *s, char c)
 	{
 		if (s[i] != c && flag == 0)
 		{
+			chr_jump = jump_char(s[i]);
+			if (chr_jump == 2 || chr_jump == 3)
+			{
+				i++;
+				while(jump_char(s[i]) != chr_jump && s[i])
+					i++;
+			}
 			counter++;
 			flag = 1;
 		}
@@ -39,6 +47,7 @@ static size_t	find_size(char const *str, char c, int *index)
 {
 	size_t	size;
 	size_t	flag;
+	char	chr_jump;
 
 	size = 0;
 	flag = 0;
@@ -46,6 +55,17 @@ static size_t	find_size(char const *str, char c, int *index)
 	{
 		if (str[*index] != c && str[*index])
 		{
+			chr_jump = jump_char(str[*index]);
+			if (chr_jump == 2 || chr_jump == 3)
+			{
+				(*index)++;
+				size++;
+				while(str[*index] && chr_jump != jump_char(str[*index]))
+				{
+					(*index)++;
+					size++;
+				}
+			}
 			size++;
 			flag = 1;
 		}
@@ -61,7 +81,8 @@ static void	transform(char **array, char const *s, char c)
 	size_t	i;
 	size_t	k;
 	size_t	pos;
-
+	char	chr_jump;
+	
 	i = 0;
 	k = 0;
 	pos = 0;
@@ -70,7 +91,16 @@ static void	transform(char **array, char const *s, char c)
 		while (s[pos] == c)
 			pos++;
 		while (s[pos] && s[pos] != c)
+		{
+			chr_jump = jump_char(s[pos]);
+			if (chr_jump == 2 || chr_jump == 3)
+			{
+				array[i][k++] = s[pos++];
+				while(s[pos] && chr_jump != jump_char(s[pos]))
+					array[i][k++] = s[pos++];
+			}
 			array[i][k++] = s[pos++];
+		}
 		k = 0;
 		i++;
 	}
@@ -104,6 +134,7 @@ char	**ft_split(char const *s, char c)
 	array = (char **)malloc((count_words(s, c) + 1) * sizeof(char *));
 	if (!array)
 		return (NULL);
+	printf("%zu\n", count_words(s, c));
 	while (i < count_words(s, c))
 	{
 		size = find_size(s, c, &index);

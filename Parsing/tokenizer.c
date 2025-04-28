@@ -6,41 +6,11 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/04/27 05:03:01 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/04/28 04:27:20 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int		jump_char(char chr)
-{
-	if (chr == ' ' || chr == '\t')
-		return (1);
-	if (chr == '"')
-		return (2);
-	if (chr == '\'')
-		return (3);
-	return (0);
-}
-
-int	chr_separator(char *input, int i)
-{
-	if (input[i] == '&' && input[i + 1] == '&')
-		return (1);
-	else if (input[i] == '|' && input[i + 1] == '|')
-		return (2);
-	else if (input[i] == '>' && input[i + 1] == '>')
-		return (3);
-	else if (input[i] == '<' && input[i + 1] == '<')
-		return (4);
-	else if (input[i] == '|')
-		return (5);
-	else if (input[i] == '>')
-		return (6);
-	else if (input[i] == '<')
-		return (7);
-	return (0);
-}
 
 char	*format_input(char *input)
 {
@@ -116,6 +86,7 @@ int	main(int argc, char **argv)
 	matriz = ft_split(str, ' ');
 	free(str);
 	tokens = tokenizer(matriz);
+	ft_lexer(&tokens);
 	for (int i = 0; tokens[i].value != NULL; i++)
-		printf("Token Number %d: %s\n", i, tokens[i].value);
+		printf("Token Number %d: %d\n", i, tokens[i].type);
 }
