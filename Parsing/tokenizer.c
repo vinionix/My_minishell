@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/04/28 04:27:20 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:48:21 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_token	*tokenizer(char **matrix)
 	while(matrix[i])
 	{
 		tokens[i].value = matrix[i];
+		tokens[i].id = i;
 		i++;
 	}
 	tokens[i].value = NULL;

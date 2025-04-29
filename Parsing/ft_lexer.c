@@ -6,13 +6,38 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:49:33 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/04/28 04:53:17 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:43:03 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	ft_
+static void	ft_file_redir(t_token **tokens)
+{
+	int	i;
+
+	i = 0;
+	while ((*tokens)[i].value != NULL)
+	{
+		if ((*tokens)[i + 1].value && (*tokens)[i].type == TK_REDIR_IN && 
+			(chr_separator((*tokens)[i + 1].value, 0) == 0 || 
+			ft_strlen((*tokens)[i + 1].value) > 2))
+			(*tokens)[i + 1].type = TK_FILE_IN;
+		else if ((*tokens)[i + 1].value && (*tokens)[i].type == TK_REDIR_OUT && 
+			(chr_separator((*tokens)[i + 1].value, 0) == 0 || 
+			ft_strlen((*tokens)[i + 1].value) > 2))
+			(*tokens)[i + 1].type = TK_FILE_OUT;
+		else if ((*tokens)[i + 1].value && (*tokens)[i].type == TK_APPEND && 
+			(chr_separator((*tokens)[i + 1].value, 0) == 0 || 
+			ft_strlen((*tokens)[i + 1].value) > 2))
+			(*tokens)[i + 1].type = TK_FILE_APP;
+		else if ((*tokens)[i + 1].value && (*tokens)[i].type == TK_HEREDOC && 
+			(chr_separator((*tokens)[i + 1].value, 0) == 0 || 
+			ft_strlen((*tokens)[i + 1].value) > 2))
+			(*tokens)[i + 1].type = TK_EOF;
+		i++;
+	}
+}
 
 static void	ft_operators(t_token **tokens)
 {
@@ -47,4 +72,5 @@ static void	ft_operators(t_token **tokens)
 void	ft_lexer(t_token **tokens)
 {
 	ft_operators(tokens);
+	ft_file_redir(tokens);
 }

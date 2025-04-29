@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 03:06:39 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/04/28 03:50:23 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:27:37 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,17 @@ int		jump_char(char chr)
 	if (chr == '\'')
 		return (3);
 	return (0);
+}
+
+void	free_split(char **input)
+{
+    int i;
+    
+    i = 0;
+	while (input[i])
+    {
+		free(input[i]);
+        i++;
+    }
+	free(input);
 }

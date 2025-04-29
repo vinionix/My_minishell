@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/04/28 04:25:24 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:22:39 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ typedef enum e_token_type
 	TK_REDIR_OUT,
 	TK_APPEND,
 	TK_HEREDOC,
+	TK_FILE_IN,
+	TK_FILE_OUT,
+	TK_FILE_APP,
 	TK_EOF
 }	t_token_type;
 
@@ -71,6 +74,7 @@ typedef enum e_token_type
 typedef struct s_token
 {
 	t_token_type	type;
+	int				id;
 	char			*value;
 }	t_token;
 
@@ -106,5 +110,6 @@ int		jump_char(char chr);
 int		chr_separator(char *input, int i);
 char	**ft_split(char const *s, char c);
 void	ft_lexer(t_token **tokens);
+void	free_split(char **input);
 
 #endif
