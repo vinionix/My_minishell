@@ -5,7 +5,9 @@ LIBFT = libft/libft.a
 
 FUNCTIONS = Tester/debug.c \
             Builtins/builtins.c \
-			Parsing/ft_utils.c
+			Parsing/ft_utils.c \
+			Parsing/ft_error.c \
+			Parsing/ft_lexer.c
 
 OBJS = $(FUNCTIONS:.c=.o)
 

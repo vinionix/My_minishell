@@ -6,11 +6,40 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:49:33 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/04/29 18:43:03 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/01 06:03:10 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static void	ft_word(t_token **tokens)
+{
+	int	i;
+
+	i = 0;
+	while ((*tokens)[i].value != NULL)
+	{
+		if ((*tokens)[i].type == 0)
+			(*tokens)[i].type = TK_WORD;
+		i++;
+			
+	}
+}
+
+static void	ft_eof(t_token **tokens)
+{
+	int	i;
+
+	i = 0;
+	while ((*tokens)[i].value != NULL)
+	{
+		if ((*tokens)[i].type == TK_HEREDOC && (*tokens)[i].type == 0)
+		{
+			if ((*tokens)[i + 1].value)
+				(*tokens)[i].type = TK_EOF;
+		}
+	}
+}
 
 static void	ft_file_redir(t_token **tokens)
 {
@@ -73,4 +102,6 @@ void	ft_lexer(t_token **tokens)
 {
 	ft_operators(tokens);
 	ft_file_redir(tokens);
+	ft_eof(tokens);
+	ft_word(tokens);
 }

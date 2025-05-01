@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/04/29 17:48:21 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/01 04:22:43 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int	main(int argc, char **argv)
 	free(str);
 	tokens = tokenizer(matriz);
 	ft_lexer(&tokens);
+	sintaxe_error(&tokens);
 	for (int i = 0; tokens[i].value != NULL; i++)
 		printf("Token Number %d: %d\n", i, tokens[i].type);
 }
