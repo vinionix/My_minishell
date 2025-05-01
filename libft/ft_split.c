@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:23:00 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/04/28 01:48:04 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/01 20:53:50 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,13 @@ static size_t	count_words(char const *s, char c)
 			if (chr_jump == 2 || chr_jump == 3)
 			{
 				i++;
-				while(jump_char(s[i]) != chr_jump && s[i])
+				while(s[i] && jump_char(s[i]) != chr_jump)
 					i++;
+				if (s[i] == '\0')
+				{
+					printf("Error");
+					exit(1);
+				}
 			}
 			counter++;
 			flag = 1;

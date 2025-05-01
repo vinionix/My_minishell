@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:49:33 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/01 06:03:10 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/01 19:09:19 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static void	ft_word(t_token **tokens)
 		if ((*tokens)[i].type == 0)
 			(*tokens)[i].type = TK_WORD;
 		i++;
-			
 	}
 }
 
@@ -38,6 +37,7 @@ static void	ft_eof(t_token **tokens)
 			if ((*tokens)[i + 1].value)
 				(*tokens)[i].type = TK_EOF;
 		}
+		i++;
 	}
 }
 

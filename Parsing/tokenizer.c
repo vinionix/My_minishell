@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/01 04:22:43 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/01 19:25:34 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ char	*format_input(char *input)
 			temp[j++] = input[i++];
 			while(input[i] && chr_jump != jump_char(input[i]))
 				temp[j++] = input[i++];
+			if (input[i] == '\0')
+			{
+				printf("Error");
+				exit(1);
+			}
 		}
 		receiver = chr_separator(input, i);
 		if (receiver == 1 || receiver == 2 || receiver == 3 || receiver == 4)
@@ -90,5 +95,5 @@ int	main(int argc, char **argv)
 	ft_lexer(&tokens);
 	sintaxe_error(&tokens);
 	for (int i = 0; tokens[i].value != NULL; i++)
-		printf("Token Number %d: %d\n", i, tokens[i].type);
+		printf("Command: %s <--------> Token Number %d: %d\n", tokens[i].value, i, tokens[i].type);
 }
