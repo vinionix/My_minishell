@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/01 05:50:52 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/01 22:52:38 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ typedef enum e_token_type
 	TK_FILE_OUT,
 	TK_FILE_APP,
 	TK_EOF,
-	TK_WORD
+	TK_WORD,
+	TK_COMMAND
 }	t_token_type;
 
 /*typedef enum e_bultin
@@ -75,6 +76,7 @@ typedef struct s_token
 {
 	t_token_type	type;
 	int				id;
+	int				is_env;
 	char			*value;
 }	t_token;
 
