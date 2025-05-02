@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/01 05:50:52 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/01 22:15:31 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ void logfl(float x);
 void logd(double x);
 void logc(char x);
 void logs(const char *x);
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}			t_env;
 
 #define log_var(x) _Generic((x), \
     int: log_int, \
@@ -104,12 +111,15 @@ typedef struct s_commander
 
 void    bi_cd(const char *str);
 void    bi_pwd();
-int		ft_len_matrix(char  **matrix);
+int		ft_len_matrix(const char  **matrix);
 int		jump_char(char chr);
 int		chr_separator(char *input, int i);
 char	**ft_split(char const *s, char c);
 void	ft_lexer(t_token **tokens);
 void	free_split(char **input);
 void    sintaxe_error(t_token **tokens);
+t_env	*env_new(void);
+int		env_lstsize(t_env *lst);
+void	envadd_back(t_env **lst, t_env *new);
 
 #endif
