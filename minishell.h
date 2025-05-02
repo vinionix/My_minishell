@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/01 22:15:31 by gada-sil         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -62,7 +51,8 @@ typedef enum e_token_type
 	TK_FILE_OUT,
 	TK_FILE_APP,
 	TK_EOF,
-	TK_WORD
+	TK_WORD,
+	TK_COMMAND
 }	t_token_type;
 
 /*typedef enum e_bultin
@@ -82,6 +72,7 @@ typedef struct s_token
 {
 	t_token_type	type;
 	int				id;
+	int				is_env;
 	char			*value;
 }	t_token;
 
