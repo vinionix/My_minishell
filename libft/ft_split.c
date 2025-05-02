@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:23:00 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/01 20:53:50 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/02 05:00:31 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,10 @@ static size_t	find_size(char const *str, char c, int *index)
 
 static void	transform(char **array, char const *s, char c)
 {
-	size_t	i;
 	size_t	k;
 	size_t	pos;
 	char	chr_jump;
 	
-	i = 0;
 	k = 0;
 	pos = 0;
 	while (s[pos])
@@ -100,14 +98,14 @@ static void	transform(char **array, char const *s, char c)
 			chr_jump = jump_char(s[pos]);
 			if (chr_jump == 2 || chr_jump == 3)
 			{
-				array[i][k++] = s[pos++];
+				(*array)[k++] = s[pos++];
 				while(s[pos] && chr_jump != jump_char(s[pos]))
-					array[i][k++] = s[pos++];
+					(*array)[k++] = s[pos++];
 			}
-			array[i][k++] = s[pos++];
+			(*array)[k++] = s[pos++];
 		}
 		k = 0;
-		i++;
+		array++;
 	}
 }
 

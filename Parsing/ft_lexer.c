@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:49:33 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/01 23:08:04 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/02 03:24:53 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ static void	ft_operators(t_token **tokens)
     int	i;
     int receiver;
 
-	i = 0;
-	while ((*tokens)[i].value != NULL)
+	i = -1;
+	while ((*tokens)[++i].value != NULL)
 	{
 		if (ft_strlen((*tokens)[i].value) <= 2)
 		{
@@ -102,12 +102,19 @@ static void	ft_operators(t_token **tokens)
 			else if (receiver == 7)
 				(*tokens)[i].type = TK_REDIR_IN;
 		}
-		i++;
 	}
 }
 
 void	ft_lexer(t_token **tokens)
 {
+	int	i;
+
+	i = 0;
+	while((*tokens)[i].value != NULL)
+	{
+		(*tokens)[i].type = 0;
+		i++;
+	}
 	ft_operators(tokens);
 	ft_file_redir(tokens);
 	ft_eof(tokens);

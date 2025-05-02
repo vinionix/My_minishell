@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/01 19:25:34 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/02 05:05:14 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*format_input(char *input)
 	return (temp);
 }
 
-t_token	*tokenizer(char **matrix)
+static t_token	*create_tokens(char **matrix)
 {
 	t_token	*tokens;
 	int		i;
@@ -80,20 +80,49 @@ t_token	*tokenizer(char **matrix)
 	return (tokens);
 }
 
-int	main(int argc, char **argv)
+int	tokenizer(t_arg_main *args)
 {
-	(void)argc;
-	char *str;
-	char **matriz;
-	t_token	*tokens;
+	int	i;
 
-	str = format_input(argv[1]);
-	printf("%s\n", str);
-	matriz = ft_split(str, ' ');
-	free(str);
-	tokens = tokenizer(matriz);
-	ft_lexer(&tokens);
-	sintaxe_error(&tokens);
-	for (int i = 0; tokens[i].value != NULL; i++)
-		printf("Command: %s <--------> Token Number %d: %d\n", tokens[i].value, i, tokens[i].type);
+	i = -1;
+	args->temp = format_input(args->rdline);
+	printf("%s\n", args->temp);
+	args->matrix = ft_split(args->temp, ' ');
+	args->tokens = create_tokens(args->matrix);
+	ft_lexer(&args->tokens);
+	while (args->tokens[++i].value != NULL)
+	{
+		if (args->tokens[i + 1].value == NULL && args->tokens[i].type >= TK_PIPE && args->tokens[i].type <= TK_OR)
+		{
+			free_split(args->matrix);
+			free(args->tokens);
+			args->rdline2 = readline("> ");
+			if (args->temp)
+				args->return_join = ft_strjoin(args->temp, args->rdline2);
+			else
+				args->return_join = join(args->return_join, args->rdline2);
+			args->temp2 = format_input(args->return_join);
+			args->matrix = ft_split(args->temp2, ' ');
+			args->tokens = create_tokens(args->matrix);
+			ft_lexer(&args->tokens);
+			sintaxe_error(&args->tokens);
+			if (args->temp != NULL)
+			{
+				free(args->temp);
+				args->temp = NULL;
+			}
+			args->rdline = args->return_join;
+			i = -1;
+		}
+	}
+	sintaxe_error(&args->tokens);
+	for (int i = 0; args->tokens[i].value != NULL; i++)
+		printf("Command: %s <--------> Token Number %d: %d\n", args->tokens[i].value, i, args->tokens[i].type);
+	// free_split(matriz);
+	// free(tokens);
+	// free(oo);
+	// free(argv[1]);
+	// free(str);
+	// free(temp);
+	return (0);
 }

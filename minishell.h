@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/01 22:52:38 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/02 04:12:17 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,19 @@ typedef struct s_token
 	char			*value;
 }	t_token;
 
+typedef struct s_arg_main
+{
+	char	*rdline;
+	char	*rdline2;
+	char	**matrix;
+	char	*temp;
+	char	*temp2;
+	char	*return_join;
+	t_token	*tokens;
+	int		i;
+}	t_arg_main;
+
+
 typedef struct s_pipe
 {
 	int		pipefd[2];
@@ -109,6 +122,7 @@ void    bi_pwd();
 int		ft_len_matrix(char  **matrix);
 int		jump_char(char chr);
 int		chr_separator(char *input, int i);
+int		tokenizer(t_arg_main *args);
 char	**ft_split(char const *s, char c);
 void	ft_lexer(t_token **tokens);
 void	free_split(char **input);
