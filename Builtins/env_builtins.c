@@ -1,36 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   env_builtins.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 01:43:41 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/02 01:43:42 by gada-sil         ###   ########.fr       */
+/*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
+/*   Updated: 2025/05/02 05:11:29 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void    bi_cd(const char *str)
+int	parse_env(t_token *env)
 {
-    if (chdir(str))
-        exit(1);
+	
 }
 
-void    bi_echo_n(const char *str)
+int	export_env(t_env *env, const char *new_env)
 {
-    printf("%s", str);
+
 }
 
-void    bi_echo(const char *str)
+int	unset_env(t_env *env, const char *target)
 {
-    printf("%s\n", str);
-}
 
-void    bi_pwd(void)
-{
-    char *pwd;
-    pwd = getenv("PWD");
-    printf("%s\n", pwd);
 }

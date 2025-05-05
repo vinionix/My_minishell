@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 03:06:39 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/04/29 17:27:37 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/01 22:01:17 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	chr_separator(char *input, int i)
 	return (0);
 }
 
-int	ft_len_matrix(char  **matrix)
+int	ft_len_matrix(const char  **matrix)
 {
     int	i;
 
