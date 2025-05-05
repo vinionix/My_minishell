@@ -7,7 +7,8 @@ FUNCTIONS = Tester/debug.c \
             Builtins/builtins.c \
 			Parsing/ft_utils.c \
 			Parsing/ft_error.c \
-			Parsing/ft_lexer.c
+			Parsing/ft_lexer.c \
+			Parsing/tokenizer.c
 
 OBJS = $(FUNCTIONS:.c=.o)
 

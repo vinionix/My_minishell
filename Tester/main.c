@@ -6,38 +6,48 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 21:06:12 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/04/27 03:35:40 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/02 04:18:15 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	main(int ac, char **av, char **env)
+static void	initialize_args_main(t_arg_main *args)
 {
-	char *input;
+	args->rdline = NULL;
+	args->rdline2 = NULL;
+	args->matrix = NULL;
+	args->temp = NULL;
+	args->temp2 = NULL;
+	args->return_join = NULL;
+	args->tokens = NULL;
+}
 
-	(void)ac;
-	(void)av;
+static void	aux_main(char **env)
+{
+	t_arg_main	args;
+
 	(void)env;
+	initialize_args_main(&args);
 	while ("!exit")
 	{
-		input = readline("minishell$ ");
-		if (!input)
+		args.rdline = readline("minishell$ ");
+		if (!args.rdline)
 		{
 			printf("exit\n");
 			break;
 		}
-		if (*input)
-			add_history(input);
-		if (!ft_strncmp("pwd", input, 3))
-			bi_pwd();
-		else if (!ft_strncmp("cd", input, 2))
-		{
-			char *i = readline("colocar o lugar pra dar cd otario-> ");
-			bi_cd(i);
-		}
-		//parsing(input);
-		//printf("Você digitou: %s\n", input);
-		free(input);
+		tokenizer(&args);
+		if (args.rdline)
+			add_history(args.rdline);
+		free(args.rdline);
 	}
+}
+
+int	main(int ac, char **av, char **env)
+{
+
+	(void)ac;
+	(void)av;
+	aux_main(env);
 }

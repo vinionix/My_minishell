@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.rio>         +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:53:01 by gada-sil          #+#    #+#             */
-/*   Updated: 2024/10/28 18:53:04 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/05/02 04:50:07 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char	*get_rest(char *buffer)
 	return (rest);
 }
 
-static char	*join(char *buffer, char *temp)
+char	*join(char *buffer, char *temp)
 {
 	char	*full;
 

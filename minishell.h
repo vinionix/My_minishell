@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/01 22:15:31 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/05/02 04:12:17 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ typedef enum e_token_type
 	TK_FILE_OUT,
 	TK_FILE_APP,
 	TK_EOF,
-	TK_WORD
+	TK_WORD,
+	TK_COMMAND
 }	t_token_type;
 
 /*typedef enum e_bultin
@@ -82,8 +83,22 @@ typedef struct s_token
 {
 	t_token_type	type;
 	int				id;
+	int				is_env;
 	char			*value;
 }	t_token;
+
+typedef struct s_arg_main
+{
+	char	*rdline;
+	char	*rdline2;
+	char	**matrix;
+	char	*temp;
+	char	*temp2;
+	char	*return_join;
+	t_token	*tokens;
+	int		i;
+}	t_arg_main;
+
 
 typedef struct s_pipe
 {
@@ -114,6 +129,7 @@ void    bi_pwd();
 int		ft_len_matrix(const char  **matrix);
 int		jump_char(char chr);
 int		chr_separator(char *input, int i);
+int		tokenizer(t_arg_main *args);
 char	**ft_split(char const *s, char c);
 void	ft_lexer(t_token **tokens);
 void	free_split(char **input);

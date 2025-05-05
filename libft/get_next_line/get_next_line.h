@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.rio>         +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:53:44 by gada-sil          #+#    #+#             */
-/*   Updated: 2024/10/28 18:55:35 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/05/02 04:50:18 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ size_t	ft_strlen_gnl(const char *str);
 char	*ft_strchr_gnl(const char *s1, int c);
 char	*ft_strjoin_gnl(char *s1, char *s2);
 void	*ft_calloc_gnl(size_t num, size_t size);
+char	*join(char *buffer, char *temp);
 
 #endif
