@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   default_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "../../minishell.h"
 
-static int		strchr_index(const char *str, char stop)
+int		strchr_index(const char *str, char stop)
 {
 	int	i;
 
@@ -65,6 +65,7 @@ t_env    *get_env_vars(const char **env)
 /*int main(int ac, char *av[], char *env[])
 {
     t_env	*env_lst;
+	t_env	*temp;
 
     (void)ac;
     (void)av;
