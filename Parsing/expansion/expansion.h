@@ -11,3 +11,5 @@
 /* ************************************************************************** */
 
 int		strchr_index(const char *str, char stop);
+t_env    *get_env_vars(const char **env);
+t_env	*export_new_env(char *key, char *value);

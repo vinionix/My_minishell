@@ -58,3 +58,16 @@ void	envadd_back(t_env **lst, t_env *new)
 		current = current->next;
 	current->next = new;
 }
+
+t_env	*export_new_env(char *key, char *value)
+{
+	t_env	*new_node;
+
+	new_node = (t_env *)malloc(sizeof(t_env));
+	if (!new_node)
+		return (NULL);
+	new_node->key = key;
+    new_node->value = value;
+	new_node->next = (NULL);
+	return (new_node);
+}
