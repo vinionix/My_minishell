@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -83,7 +84,7 @@ typedef struct s_token
 {
 	t_token_type	type;
 	int				id;
-	int				is_env;
+	bool			is_env;
 	char			*value;
 }	t_token;
 
@@ -126,7 +127,7 @@ typedef struct s_commander
 
 void    bi_cd(const char *str);
 void    bi_pwd();
-int		ft_len_matrix(const char  **matrix);
+int		ft_len_matrix(char  **matrix);
 int		jump_char(char chr);
 int		chr_separator(char *input, int i);
 int		tokenizer(t_arg_main *args);

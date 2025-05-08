@@ -15,10 +15,8 @@
 static void	ft_word_command_env(t_token **tokens)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	j = 0;
 	while ((*tokens)[i].value != NULL)
 	{
 		if ((*tokens)[i].type == 0)

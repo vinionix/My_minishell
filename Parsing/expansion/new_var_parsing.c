@@ -13,11 +13,55 @@
 #include "../../minishell.h"
 #include "expansion.h"
 
-int new_var_parsing(const char *env_var)
+int new_var_parsing(t_token *tokens)
 {
-    int i;
+    int     i;
+    int     j;
 
     i = 0;
-    i = strchr_index(env_var, '=');
+    j = 0;
+    tokens = malloc(sizeof(t_token) * 4);
+    for (int i = 0; i < 3; i++)
+    {
+	    tokens[i].value = "tch*au=adeus";
+	    tokens[i].is_env = true;
+    }
+    	tokens[3].value = NULL;
+    while (tokens[i].value != NULL)
+    {
+    	if (tokens[i].is_env == true)
+    	{
+        	if (!ft_isalpha((int)tokens[i].value[0]) && tokens[i].value[0] != '_')
+        	{
+        	    printf("minishell: export: `%s': not a valid identifier\n", tokens[i++].value);
+        	    continue ;
+        	}
+        	while (tokens[i].value[j] && tokens[i].value[j] != '=')
+        	{
+       			if (!ft_isalnum((int)tokens[i].value[j++]))
+            		{
+				printf("minishell: export: `%s': not a valid identifier\n", tokens[i++].value);
+				j = 0;
+				break ;
+            		}
+        	}
+        	if (tokens[i].value)
+		{
+			if (tokens[i].value[j] == '=')
+			{
+				char *str = ft_strdup(tokens[i].value + (j + 1));
+				i++;
+				logs(str);
+			}
+		}
+    	}
+    }
     return (0);
+}
+
+int main()
+{
+	t_token *tokens;
+	tokens = NULL;
+	new_var_parsing(tokens);
 }

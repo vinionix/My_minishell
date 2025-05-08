@@ -31,7 +31,7 @@ int	chr_separator(char *input, int i)
 	return (0);
 }
 
-int	ft_len_matrix(const char  **matrix)
+int	ft_len_matrix(char  **matrix)
 {
     int	i;
 

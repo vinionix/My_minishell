@@ -29,7 +29,7 @@ static t_env   *create_nodes(const char **env)
 
 	lst = NULL;
     env_len = 0;
-    env_len = ft_len_matrix(env);
+    env_len = ft_len_matrix((char **)env);
 	while (env_len--)
 		envadd_back(&lst, env_new());
 	return (lst);
