@@ -141,5 +141,6 @@ int    built_cd(const char *str);
 int    built_echo(const char *str);
 int    built_echo_n(const char *str);
 char  *built_pwd(void);
+int   built_env(t_env *env);
 
 #endif

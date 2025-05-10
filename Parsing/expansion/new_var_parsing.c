@@ -99,11 +99,21 @@ int new_var_parsing(t_token *tokens, t_env *envs)
   return (0);
 }
 
-int main(int ac, char **av, char **env)
+/*int main(int ac, char **av, char **env)
 {
   (void)ac;
   (void)av;
-  (void)env;
+  t_env *temp = get_env_vars((const char **)env);
+  built_env(temp);
+  t_env *tm = temp;
+  while (tm)
+  {
+    tm = tm->next;
+    free(temp->key);
+    free(temp->value);
+    free(temp);
+    temp = tm;
+  }
   char *oi = built_pwd();
   logs(oi);
   free(oi);
@@ -111,7 +121,7 @@ int main(int ac, char **av, char **env)
   oi = built_pwd();
   logs(oi);
   free(oi);
-  /*t_env *envs = get_env_vars((const char **)env);
+  t_env *envs = get_env_vars((const char **)env);
   t_token *tokens;
   tokens = NULL;
   new_var_parsing(tokens, envs);
@@ -128,5 +138,5 @@ int main(int ac, char **av, char **env)
     free(envs->value);
     free(envs);
     envs = temp;
-  }*/
-}
+  }
+}*/
