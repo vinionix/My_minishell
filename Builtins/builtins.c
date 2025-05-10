@@ -57,20 +57,3 @@ char  *built_pwd(void)
     size *= 2; 
   }
 }
-
-int built_env(t_env *env)
-{
-  t_env *temp;
-  
-  temp = env;
-  if (!env)
-    return (1);
-  while (temp)
-  {
-    printf("%s", temp->key);
-    printf("=");
-    printf("%s\n", temp->value);
-    temp = temp->next;
-  }
-  return (0);
-}

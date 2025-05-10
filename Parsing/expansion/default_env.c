@@ -49,7 +49,7 @@ t_env    *get_env_vars(const char **env)
     while (*env)
     {
         i = strchr_index(*env, '=');
-		temp->key = (char *)malloc(i + 1);
+		temp->key = (char *)malloc(i);
 		temp->key[i] = '\0';
 		while (--i >= 0)
 			temp->key[i] = (*env)[i];

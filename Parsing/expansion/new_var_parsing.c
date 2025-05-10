@@ -13,7 +13,35 @@
 #include "../../minishell.h"
 #include "expansion.h"
 
-static bool has_equals_sign(const char *str)
+t_env *find_env(const char *target_key, t_env *envs)
+{
+  size_t   equals_sign;
+
+  equals_sign = (size_t)strchr_index(target_key, '=');
+  while (envs)
+  {
+    if (!(ft_strncmp(target_key, (const char *)envs->key, equals_sign)))
+    {
+        return (envs);
+    }
+    envs = envs->next;
+  }
+  return (NULL);
+}
+
+static int  change_env(const char *target_key, t_env *envs)
+{
+  t_env *env_to_change;
+  int equals_sign;
+
+  equals_sign = strchr_index(target_key, '=') + 1;
+  env_to_change = find_env(target_key, envs);
+  free(env_to_change->value);
+  env_to_change->value = ft_strdup(target_key + equals_sign);
+  return (0);
+}
+
+bool has_equals_sign(const char *str)
 {
   while (*str)
   {
@@ -24,15 +52,19 @@ static bool has_equals_sign(const char *str)
   return (false);
 }
 
-static void  create_env(const char *str, t_env *envs)
+static void  create_env(const char *str, t_env **envs)
 {
-    int i;
-    char *key;
-    char *value;
+    int   i;
+    char  *key;
+    char  *value;
     t_env *new;
 
+    value = NULL;
+    new = NULL;
     i = strchr_index(str, '=');
 	  key = (char *)malloc(i + 1);
+    if (!key)
+      return ;
 		key[i] = '\0';
 		while (--i >= 0)
 			key[i] = str[i];
@@ -40,10 +72,20 @@ static void  create_env(const char *str, t_env *envs)
 		i++;
 		value = ft_strdup(str + i);
     new = export_new_env(key, value);
-    envadd_back(&envs, new);
+    envadd_back(envs, new);
 }
 
-int new_var_parsing(t_token *tokens, t_env *envs)
+// Fazer mais testes nessa função mas no geral
+// ela já consegue criar uma env, mostrar os 
+// erros se necessário e ela também já trata o
+// caso de dar export em uma variável existente,
+// o que faz com que apenas troque o valor da variável
+// (também funciona se for algo tipo "variavel=", ela só
+// substitui por um '\0', ficando com o mesmo comportamento do bash)
+//
+// REFATORAR PARA A NORMA
+// ------------------------------------------------------------------
+int new_var_parsing(t_token *tokens, t_env **envs)
 {
     int     i;
     int     j;
@@ -52,19 +94,22 @@ int new_var_parsing(t_token *tokens, t_env *envs)
     i = 0;
     j = 0;
     error = 0;
-    tokens = malloc(sizeof(t_token) * 7);
+    tokens = malloc(sizeof(t_token) * 8);
     for (int i = 0; i < 3; i++)
     {
 	    tokens[i].value = "tchau*==adeus";
 	    tokens[i].is_env = true;
     }
-    tokens[6].value = NULL;
-	  tokens[3].value = "=";
+    tokens[7].value = NULL;
+	  tokens[3].value = "oi=tudobem";
 	  tokens[3].is_env = true;
 	  tokens[4].is_env = true;
-	  tokens[4].value = "=";
+	  tokens[4].value = "oi=amem";
     tokens[5].value = "oi=10";
     tokens[5].is_env = true;
+    tokens[6].value = "oi=";
+    tokens[6].is_env = true;
+
     while (tokens[i].value != NULL)
     {
     	if (tokens[i].is_env == true)
@@ -91,7 +136,12 @@ int new_var_parsing(t_token *tokens, t_env *envs)
           continue ;
         }
         if (has_equals_sign((const char *)tokens[i].value))
-          create_env(tokens[i].value, envs);
+        {
+          if (!find_env((const char *)tokens[i].value, *envs))
+            create_env((const char *)tokens[i].value, envs);
+          else
+            change_env((const char *)tokens[i].value, *envs);
+        }
       }
       i++;
     }
@@ -103,6 +153,48 @@ int new_var_parsing(t_token *tokens, t_env *envs)
 {
   (void)ac;
   (void)av;
+  (void)env;
+  t_env *envs = NULL;
+  t_token *tokens = NULL;
+  new_var_parsing(tokens, &envs);
+  t_env *temp = envs;
+  built_env(envs);
+  exit(EXIT_FAILURE);
+  while (temp)
+  {
+    logs("KEYYYY");
+    logs(temp->key);
+    logs("VALUEEE");
+    logs(temp->value);
+    temp = temp->next;
+  }
+  exit(EXIT_FAILURE);
+  unset_env_if(&envs, "oi");
+  temp = envs;
+  if (temp)
+  {
+    logs(temp->key);
+  }
+  tokens = NULL;
+  new_var_parsing(tokens, &envs);
+  temp = envs;
+  while (temp)
+  {
+    logs("KEYYYY");
+    logs(temp->key);
+    logs("VALUEEE");
+    logs(temp->value);
+    temp = temp->next;
+  }
+
+  while (temp)
+  {
+    temp = temp->next;
+    free(envs->key);
+    free(envs->value);
+    free(envs);
+    envs = temp;
+  } 
   t_env *temp = get_env_vars((const char **)env);
   built_env(temp);
   t_env *tm = temp;
@@ -125,18 +217,4 @@ int new_var_parsing(t_token *tokens, t_env *envs)
   t_token *tokens;
   tokens = NULL;
   new_var_parsing(tokens, envs);
-  for (int i = 0; envs; i++)
-  {
-    printf("%s %s\n", envs->key, envs->value);
-    envs = envs->next;
-  }
-  envs = temp;
-  while (temp)
-  {
-    temp = temp->next;
-    free(envs->key);
-    free(envs->value);
-    free(envs);
-    envs = temp;
-  }
 }*/

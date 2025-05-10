@@ -142,5 +142,7 @@ int    built_echo(const char *str);
 int    built_echo_n(const char *str);
 char  *built_pwd(void);
 int   built_env(t_env *env);
+void  unset_env_if(t_env **env, const char *target_key);
+int		strchr_index(const char *str, char stop);
 
 #endif
