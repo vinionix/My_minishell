@@ -27,6 +27,7 @@
 # include <string.h>
 # include <termios.h>
 # include <curses.h>
+# include <errno.h>
 # include "libft/libft.h"
 
 void logi(int x);
@@ -125,8 +126,6 @@ typedef struct s_commander
 	struct s_commander	*right;
 }	t_commander;
 
-void    bi_cd(const char *str);
-void    bi_pwd();
 int		ft_len_matrix(char  **matrix);
 int		jump_char(char chr);
 int		chr_separator(char *input, int i);
@@ -138,5 +137,9 @@ void    sintaxe_error(t_token **tokens);
 t_env	*env_new(void);
 int		env_lstsize(t_env *lst);
 void	envadd_back(t_env **lst, t_env *new);
+int    built_cd(const char *str);
+int    built_echo(const char *str);
+int    built_echo_n(const char *str);
+char  *built_pwd(void);
 
 #endif

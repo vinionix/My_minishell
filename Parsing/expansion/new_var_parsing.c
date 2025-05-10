@@ -103,11 +103,19 @@ int main(int ac, char **av, char **env)
 {
   (void)ac;
   (void)av;
-  t_env *envs = get_env_vars((const char **)env);
+  (void)env;
+  char *oi = built_pwd();
+  logs(oi);
+  free(oi);
+  built_cd("../");
+  oi = built_pwd();
+  logs(oi);
+  free(oi);
+  /*t_env *envs = get_env_vars((const char **)env);
   t_token *tokens;
   tokens = NULL;
   new_var_parsing(tokens, envs);
-  /*for (int i = 0; envs; i++)
+  for (int i = 0; envs; i++)
   {
     printf("%s %s\n", envs->key, envs->value);
     envs = envs->next;
