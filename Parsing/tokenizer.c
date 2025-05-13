@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/02 05:05:14 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:30:56 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*format_input(char *input)
 	i = 0;
 	chr_jump = 0;
 	j = 0;
-	temp = malloc(sizeof(char) * (ft_strlen(input) * 2));
+	temp = malloc(sizeof(char) * (ft_strlen(input) * 4 + 1));
 	while(input[i])
 	{
 		chr_jump = jump_char(input[i]);
@@ -43,9 +43,12 @@ char	*format_input(char *input)
 		{
 			if ((i > 0) && jump_char(input[i - 1]) != 1 && chr_separator(input, i - 1) == 0)
 				temp[j++] = ' ';
-			temp[j++] = input[i++];
-			temp[j++] = input[i++];
-			if (jump_char(input[i]) != 1)
+			if (input[i + 1])
+			{
+				temp[j++] = input[i++];
+				temp[j++] = input[i++];
+			}
+			if (input[i] && jump_char(input[i]) != 1)
 				temp[j++] = ' ';
 		}
 		else if (receiver == 5 || receiver == 6 || receiver == 7)
@@ -86,43 +89,56 @@ int	tokenizer(t_arg_main *args)
 
 	i = -1;
 	args->temp = format_input(args->rdline);
-	printf("%s\n", args->temp);
+	if (args->temp[0] == '\0')
+	{
+		free(args->temp);
+		return (1);
+	}
+	//printf("%s\n", args->temp);
 	args->matrix = ft_split(args->temp, ' ');
 	args->tokens = create_tokens(args->matrix);
 	ft_lexer(&args->tokens);
+	if (sintaxe_error(&args->tokens) == 1)
+	{
+		free_tokens(args->matrix, args->tokens);
+		free(args->temp);
+		return (1);
+	}
 	while (args->tokens[++i].value != NULL)
 	{
 		if (args->tokens[i + 1].value == NULL && args->tokens[i].type >= TK_PIPE && args->tokens[i].type <= TK_OR)
 		{
-			free_split(args->matrix);
-			free(args->tokens);
+			free_tokens(args->matrix, args->tokens);
 			args->rdline2 = readline("> ");
 			if (args->temp)
-				args->return_join = ft_strjoin(args->temp, args->rdline2);
+			{
+				args->return_join = join(args->temp, args->rdline2);
+				args->temp = NULL;
+			}
 			else
 				args->return_join = join(args->return_join, args->rdline2);
+			free(args->rdline2);
+			args->rdline = args->return_join;
 			args->temp2 = format_input(args->return_join);
 			args->matrix = ft_split(args->temp2, ' ');
 			args->tokens = create_tokens(args->matrix);
 			ft_lexer(&args->tokens);
-			sintaxe_error(&args->tokens);
-			if (args->temp != NULL)
+			if (sintaxe_error(&args->tokens) == 1)
 			{
-				free(args->temp);
-				args->temp = NULL;
+				free(args->temp2);
+				break ;
 			}
-			args->rdline = args->return_join;
 			i = -1;
+			free(args->temp2);
 		}
+		if (sintaxe_error(&args->tokens) == 1)
+			break ;
 	}
-	sintaxe_error(&args->tokens);
+	if (args->temp != NULL)
+		free(args->temp);
+	if (args)
 	for (int i = 0; args->tokens[i].value != NULL; i++)
 		printf("Command: %s <--------> Token Number %d: %d\n", args->tokens[i].value, i, args->tokens[i].type);
-	// free_split(matriz);
-	// free(tokens);
-	// free(oo);
-	// free(argv[1]);
-	// free(str);
-	// free(temp);
+	free_tokens(args->matrix, args->tokens);
 	return (0);
 }

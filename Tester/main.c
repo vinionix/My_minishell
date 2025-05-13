@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 21:06:12 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/02 04:18:15 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/08 20:09:51 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,23 @@ static void	aux_main(char **env)
 	t_arg_main	args;
 
 	(void)env;
-	initialize_args_main(&args);
 	while ("!exit")
 	{
+		initialize_args_main(&args);
 		args.rdline = readline("minishell$ ");
 		if (!args.rdline)
 		{
 			printf("exit\n");
 			break;
 		}
-		tokenizer(&args);
 		if (args.rdline)
+		{
+			if (args.rdline[0] != '\0')
+				tokenizer(&args);
 			add_history(args.rdline);
-		free(args.rdline);
+		}
+		if (args.rdline)
+			free(args.rdline);
 	}
 }
 

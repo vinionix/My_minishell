@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.rio>         +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:53:17 by gada-sil          #+#    #+#             */
-/*   Updated: 2024/10/28 18:53:19 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/05/08 19:47:52 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,19 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 	size_t	s2_len;
 	char	*ptr;
 	size_t	i;
+	size_t	j;
 
 	s1_len = ft_strlen_gnl(s1);
 	s2_len = ft_strlen_gnl(s2);
 	i = 0;
-	ptr = (char *)malloc(s1_len + s2_len + 1);
+	j = 0;
+	ptr = (char *)malloc(s1_len + s2_len + 2);
 	if (!ptr)
 		return (NULL);
-	while (*s1)
-		ptr[i++] = *s1++;
+	while (s1[j])
+		ptr[i++] = s1[j++];
+	if (s1[j - 1] != ' ')
+		ptr[i++] = ' ';
 	while (*s2)
 		ptr[i++] = *s2++;
 	ptr[i] = '\0';
