@@ -94,7 +94,7 @@ int new_var_parsing(t_token *tokens, t_env **envs)
     i = 0;
     j = 0;
     error = 0;
-    tokens = malloc(sizeof(t_token) * 8);
+    tokens = malloc(sizeof(t_token) * 7);
     for (int i = 0; i < 3; i++)
     {
 	    tokens[i].value = "tchau*==adeus";
@@ -107,8 +107,6 @@ int new_var_parsing(t_token *tokens, t_env **envs)
 	  tokens[4].value = "oi=amem";
     tokens[5].value = "oi=10";
     tokens[5].is_env = true;
-    tokens[6].value = "oi=";
-    tokens[6].is_env = true;
 
     while (tokens[i].value != NULL)
     {
@@ -149,7 +147,7 @@ int new_var_parsing(t_token *tokens, t_env **envs)
   return (0);
 }
 
-/*int main(int ac, char **av, char **env)
+int main(int ac, char **av, char **env)
 {
   (void)ac;
   (void)av;
@@ -157,64 +155,10 @@ int new_var_parsing(t_token *tokens, t_env **envs)
   t_env *envs = NULL;
   t_token *tokens = NULL;
   new_var_parsing(tokens, &envs);
-  t_env *temp = envs;
-  built_env(envs);
-  exit(EXIT_FAILURE);
-  while (temp)
+  for (int i = 0; envs; i++)
   {
-    logs("KEYYYY");
-    logs(temp->key);
-    logs("VALUEEE");
-    logs(temp->value);
-    temp = temp->next;
+    logs(envs->key);
+    logs(envs->value);
+    envs = envs->next;
   }
-  exit(EXIT_FAILURE);
-  unset_env_if(&envs, "oi");
-  temp = envs;
-  if (temp)
-  {
-    logs(temp->key);
-  }
-  tokens = NULL;
-  new_var_parsing(tokens, &envs);
-  temp = envs;
-  while (temp)
-  {
-    logs("KEYYYY");
-    logs(temp->key);
-    logs("VALUEEE");
-    logs(temp->value);
-    temp = temp->next;
-  }
-
-  while (temp)
-  {
-    temp = temp->next;
-    free(envs->key);
-    free(envs->value);
-    free(envs);
-    envs = temp;
-  } 
-  t_env *temp = get_env_vars((const char **)env);
-  built_env(temp);
-  t_env *tm = temp;
-  while (tm)
-  {
-    tm = tm->next;
-    free(temp->key);
-    free(temp->value);
-    free(temp);
-    temp = tm;
-  }
-  char *oi = built_pwd();
-  logs(oi);
-  free(oi);
-  built_cd("../");
-  oi = built_pwd();
-  logs(oi);
-  free(oi);
-  t_env *envs = get_env_vars((const char **)env);
-  t_token *tokens;
-  tokens = NULL;
-  new_var_parsing(tokens, envs);
-}*/
+}
