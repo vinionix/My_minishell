@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:53:01 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/02 04:50:07 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/08 19:56:28 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ char	*join(char *buffer, char *temp)
 	char	*full;
 
 	full = ft_strjoin_gnl(buffer, temp);
-	free(buffer);
+	if (buffer)
+		free(buffer);
 	return (full);
 }
 

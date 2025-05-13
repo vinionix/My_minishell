@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/02 04:12:17 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/08 18:42:12 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,18 +124,19 @@ typedef struct s_commander
 	struct s_commander	*right;
 }	t_commander;
 
+char	**ft_split(char const *s, char c);
 void    bi_cd(const char *str);
 void    bi_pwd();
-int		ft_len_matrix(const char  **matrix);
+void	ft_lexer(t_token **tokens);
+void	free_split(char **input);
+void	envadd_back(t_env **lst, t_env *new);
+void	free_tokens(char **matrix, t_token *tokens);
+int		sintaxe_error(t_token **tokens);
+int		ft_len_matrix(char  **matrix);
 int		jump_char(char chr);
 int		chr_separator(char *input, int i);
 int		tokenizer(t_arg_main *args);
-char	**ft_split(char const *s, char c);
-void	ft_lexer(t_token **tokens);
-void	free_split(char **input);
-void    sintaxe_error(t_token **tokens);
-t_env	*env_new(void);
 int		env_lstsize(t_env *lst);
-void	envadd_back(t_env **lst, t_env *new);
+t_env	*env_new(void);
 
 #endif
