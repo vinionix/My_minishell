@@ -10,4 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int		strchr_index(const char *str, char stop);
+#ifndef EXPANSION_H
+# define EXPANSION_H
+
+t_env    *get_env_vars(const char **env);
+t_env	*export_new_env(char *key, char *value);
+bool has_equals_sign(const char *str);
+t_env *find_env(const char *target_key, t_env *envs);
+
+#endif

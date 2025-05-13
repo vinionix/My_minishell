@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -26,6 +27,7 @@
 # include <string.h>
 # include <termios.h>
 # include <curses.h>
+# include <errno.h>
 # include "libft/libft.h"
 
 void logi(int x);
@@ -83,7 +85,7 @@ typedef struct s_token
 {
 	t_token_type	type;
 	int				id;
-	int				is_env;
+	bool			is_env;
 	char			*value;
 }	t_token;
 
@@ -125,11 +127,8 @@ typedef struct s_commander
 }	t_commander;
 
 char	**ft_split(char const *s, char c);
-void    bi_cd(const char *str);
-void    bi_pwd();
 void	ft_lexer(t_token **tokens);
 void	free_split(char **input);
-void	envadd_back(t_env **lst, t_env *new);
 void	free_tokens(char **matrix, t_token *tokens);
 int		sintaxe_error(t_token **tokens);
 int		ft_len_matrix(char  **matrix);
@@ -137,6 +136,14 @@ int		jump_char(char chr);
 int		chr_separator(char *input, int i);
 int		tokenizer(t_arg_main *args);
 int		env_lstsize(t_env *lst);
+void	envadd_back(t_env **lst, t_env *new);
+int    built_cd(const char *str);
+int    built_echo(const char *str);
+int    built_echo_n(const char *str);
+char  *built_pwd(void);
+int   built_env(t_env *env);
+void  unset_env_if(t_env **env, const char *target_key);
+int		strchr_index(const char *str, char stop);
 t_env	*env_new(void);
 
 #endif

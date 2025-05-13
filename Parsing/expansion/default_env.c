@@ -29,7 +29,7 @@ static t_env   *create_nodes(const char **env)
 
 	lst = NULL;
     env_len = 0;
-    env_len = ft_len_matrix(env);
+    env_len = ft_len_matrix((char **)env);
 	while (env_len--)
 		envadd_back(&lst, env_new());
 	return (lst);
@@ -49,7 +49,7 @@ t_env    *get_env_vars(const char **env)
     while (*env)
     {
         i = strchr_index(*env, '=');
-		temp->key = (char *)malloc(i + 1);
+		temp->key = (char *)malloc(i);
 		temp->key[i] = '\0';
 		while (--i >= 0)
 			temp->key[i] = (*env)[i];
