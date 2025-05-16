@@ -91,27 +91,12 @@ int new_var_parsing(t_token *tokens, t_env **envs)
     int     j;
     int     error;
 
-    i = 0;
+    i = 1;
     j = 0;
     error = 0;
-    tokens = malloc(sizeof(t_token) * 7);
-    for (int i = 0; i < 3; i++)
+	printf("oioi\n");
+    while (tokens[i].value && tokens[i].type == TK_WORD)
     {
-	    tokens[i].value = "tchau*==adeus";
-	    tokens[i].is_env = true;
-    }
-    tokens[7].value = NULL;
-	  tokens[3].value = "oi=tudobem";
-	  tokens[3].is_env = true;
-	  tokens[4].is_env = true;
-	  tokens[4].value = "oi=amem";
-    tokens[5].value = "oi=10";
-    tokens[5].is_env = true;
-
-    while (tokens[i].value != NULL)
-    {
-    	if (tokens[i].is_env == true)
-    	{
         if (!ft_isalpha((int)tokens[i].value[0]) && tokens[i].value[0] != '_')
         {
         	  printf("minishell: export: `%s': not a valid identifier\n", tokens[i++].value);
@@ -140,25 +125,8 @@ int new_var_parsing(t_token *tokens, t_env **envs)
           else
             change_env((const char *)tokens[i].value, *envs);
         }
-      }
       i++;
     }
-  free(tokens);
   return (0);
 }
 
-int main(int ac, char **av, char **env)
-{
-  (void)ac;
-  (void)av;
-  (void)env;
-  t_env *envs = NULL;
-  t_token *tokens = NULL;
-  new_var_parsing(tokens, &envs);
-  for (int i = 0; envs; i++)
-  {
-    logs(envs->key);
-    logs(envs->value);
-    envs = envs->next;
-  }
-}

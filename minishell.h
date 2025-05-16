@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/08 18:42:12 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/13 19:14:02 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ typedef struct s_token
 {
 	t_token_type	type;
 	int				id;
-	bool			is_env;
 	char			*value;
 }	t_token;
 
@@ -130,20 +129,22 @@ char	**ft_split(char const *s, char c);
 void	ft_lexer(t_token **tokens);
 void	free_split(char **input);
 void	free_tokens(char **matrix, t_token *tokens);
+void	envadd_back(t_env **lst, t_env *new);
 int		sintaxe_error(t_token **tokens);
 int		ft_len_matrix(char  **matrix);
 int		jump_char(char chr);
 int		chr_separator(char *input, int i);
 int		tokenizer(t_arg_main *args);
 int		env_lstsize(t_env *lst);
-void	envadd_back(t_env **lst, t_env *new);
 int    built_cd(const char *str);
 int    built_echo(const char *str);
 int    built_echo_n(const char *str);
+int new_var_parsing(t_token *tokens, t_env **envs);
 char  *built_pwd(void);
 int   built_env(t_env *env);
 void  unset_env_if(t_env **env, const char *target_key);
 int		strchr_index(const char *str, char stop);
 t_env	*env_new(void);
+t_env    *get_env_vars(const char **env);
 
 #endif

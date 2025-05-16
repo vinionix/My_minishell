@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 21:06:12 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/08 20:09:51 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/13 19:19:34 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,14 @@ static void	initialize_args_main(t_arg_main *args)
 	args->tokens = NULL;
 }
 
-static void	aux_main(char **env)
+static void	aux_main(const char **env)
 {
 	t_arg_main	args;
 
 	(void)env;
+	t_env *lala; 
+	
+	lala = get_env_vars(env);
 	while ("!exit")
 	{
 		initialize_args_main(&args);
@@ -40,7 +43,11 @@ static void	aux_main(char **env)
 		if (args.rdline)
 		{
 			if (args.rdline[0] != '\0')
+			{
 				tokenizer(&args);
+				new_var_parsing(args.tokens, &lala);
+				free_tokens(args.matrix, args.tokens);
+			}
 			add_history(args.rdline);
 		}
 		if (args.rdline)
@@ -48,7 +55,7 @@ static void	aux_main(char **env)
 	}
 }
 
-int	main(int ac, char **av, char **env)
+int	main(int ac, char **av, const char **env)
 {
 
 	(void)ac;

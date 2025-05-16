@@ -8,6 +8,7 @@ FUNCTIONS = Tester/debug.c \
 						Builtins/env_builtins.c \
 						Parsing/expansion/default_env.c \
 						Parsing/expansion/env_utils.c \
+						Parsing/expansion/new_var_parsing.c \
 			Parsing/ft_utils.c \
 			Parsing/ft_error.c \
 			Parsing/ft_lexer.c \

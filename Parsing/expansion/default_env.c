@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   default_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:58:08 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/01 22:49:09 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/05/13 19:30:16 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_env    *get_env_vars(const char **env)
     while (*env)
     {
         i = strchr_index(*env, '=');
-		temp->key = (char *)malloc(i);
+		temp->key = (char *)malloc(sizeof(char) * (i + 1));
 		temp->key[i] = '\0';
 		while (--i >= 0)
 			temp->key[i] = (*env)[i];

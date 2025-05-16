@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/13 18:30:56 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/13 19:16:23 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,5 @@ int	tokenizer(t_arg_main *args)
 	if (args)
 	for (int i = 0; args->tokens[i].value != NULL; i++)
 		printf("Command: %s <--------> Token Number %d: %d\n", args->tokens[i].value, i, args->tokens[i].type);
-	free_tokens(args->matrix, args->tokens);
 	return (0);
 }
