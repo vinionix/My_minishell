@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:07:31 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/01 22:15:45 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:05:10 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_env	*env_new(void)
 	if (!new_node)
 		return (NULL);
 	new_node->key = (NULL);
-    new_node->value = (NULL);
+	new_node->value = (NULL);
 	new_node->next = (NULL);
 	return (new_node);
 }
@@ -67,7 +67,7 @@ t_env	*export_new_env(char *key, char *value)
 	if (!new_node)
 		return (NULL);
 	new_node->key = key;
-    new_node->value = value;
+	new_node->value = value;
 	new_node->next = (NULL);
 	return (new_node);
 }

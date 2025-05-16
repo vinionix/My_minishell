@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 03:06:39 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/08 17:29:35 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/16 04:36:10 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	chr_separator(char *input, int i)
 	return (0);
 }
 
-int	ft_len_matrix(char  **matrix)
+int	ft_len_matrix(char **matrix)
 {
-    int	i;
+	int	i;
 
 	i = 0;
 	while (matrix[i])
@@ -41,7 +41,7 @@ int	ft_len_matrix(char  **matrix)
 	return (i);
 }
 
-int		jump_char(char chr)
+int	jump_char(char chr)
 {
 	if (chr == ' ' || chr == '\t')
 		return (1);
@@ -54,19 +54,19 @@ int		jump_char(char chr)
 
 void	free_split(char **input)
 {
-    int i;
-    
-    i = 0;
+	int	i;
+
+	i = 0;
 	while (input[i])
-    {
+	{
 		free(input[i]);
-        i++;
-    }
+		i++;
+	}
 	free(input);
 }
 
-void free_tokens(char **matrix, t_token *tokens)
+void	free_tokens(char **matrix, t_token *tokens)
 {
-	free_split(matrix);
 	free(tokens);
+	free_split(matrix);
 }

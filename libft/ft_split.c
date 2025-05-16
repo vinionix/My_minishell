@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:23:00 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/02 05:00:31 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:16:51 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static size_t	count_words(char const *s, char c)
 {
-	int	i;
-	int	counter;
-	int	flag;
+	int		i;
+	int		counter;
+	int		flag;
 	char	chr_jump;
 
 	i = 0;
@@ -30,7 +30,7 @@ static size_t	count_words(char const *s, char c)
 			if (chr_jump == 2 || chr_jump == 3)
 			{
 				i++;
-				while(s[i] && jump_char(s[i]) != chr_jump)
+				while (s[i] && jump_char(s[i]) != chr_jump)
 					i++;
 				if (s[i] == '\0')
 				{
@@ -65,7 +65,7 @@ static size_t	find_size(char const *str, char c, int *index)
 			{
 				(*index)++;
 				size++;
-				while(str[*index] && chr_jump != jump_char(str[*index]))
+				while (str[*index] && chr_jump != jump_char(str[*index]))
 				{
 					(*index)++;
 					size++;
@@ -86,7 +86,7 @@ static void	transform(char **array, char const *s, char c)
 	size_t	k;
 	size_t	pos;
 	char	chr_jump;
-	
+
 	k = 0;
 	pos = 0;
 	while (s[pos])
@@ -99,7 +99,7 @@ static void	transform(char **array, char const *s, char c)
 			if (chr_jump == 2 || chr_jump == 3)
 			{
 				(*array)[k++] = s[pos++];
-				while(s[pos] && chr_jump != jump_char(s[pos]))
+				while (s[pos] && chr_jump != jump_char(s[pos]))
 					(*array)[k++] = s[pos++];
 			}
 			(*array)[k++] = s[pos++];

@@ -6,13 +6,13 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:58:08 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/13 19:30:16 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:05:44 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int		strchr_index(const char *str, char stop)
+int	strchr_index(const char *str, char stop)
 {
 	int	i;
 
@@ -22,33 +22,33 @@ int		strchr_index(const char *str, char stop)
 	return (i);
 }
 
-static t_env   *create_nodes(const char **env)
+static t_env	*create_nodes(const char **env)
 {
-    t_env	*lst;
-    int		env_len;
+	t_env	*lst;
+	int		env_len;
 
 	lst = NULL;
-    env_len = 0;
-    env_len = ft_len_matrix((char **)env);
+	env_len = 0;
+	env_len = ft_len_matrix((char **)env);
 	while (env_len--)
 		envadd_back(&lst, env_new());
 	return (lst);
 }
 
-t_env    *get_env_vars(const char **env)
+t_env	*get_env_vars(const char **env)
 {
-    t_env	*head;
+	t_env	*head;
 	t_env	*temp;
-    int		i;
+	int		i;
 
-    head = NULL;
+	head = NULL;
 	temp = NULL;
-    i = 0;
-    head = create_nodes(env);
+	i = 0;
+	head = create_nodes(env);
 	temp = head;
-    while (*env)
-    {
-        i = strchr_index(*env, '=');
+	while (*env)
+	{
+		i = strchr_index(*env, '=');
 		temp->key = (char *)malloc(sizeof(char) * (i + 1));
 		temp->key[i] = '\0';
 		while (--i >= 0)
@@ -58,8 +58,8 @@ t_env    *get_env_vars(const char **env)
 		temp->value = ft_strdup(*env + i);
 		temp = temp->next;
 		env++;
-    }
-    return (head);
+	}
+	return (head);
 }
 
 /*int main(int ac, char *av[], char *env[])

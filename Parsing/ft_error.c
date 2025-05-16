@@ -6,22 +6,24 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 03:51:03 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/08 18:41:52 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:06:46 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int    sintaxe_error(t_token **tokens)
+int	sintaxe_error(t_token **tokens)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while ((*tokens)[i].value != NULL)
-    {
-		if ((*tokens)[i].id == 0 && (*tokens)[i].type >= TK_PIPE && (*tokens)[i].type <= TK_OR)
+	i = 0;
+	while ((*tokens)[i].value != NULL)
+	{
+		if ((*tokens)[i].id == 0 && (*tokens)[i].type >= TK_PIPE
+			&& (*tokens)[i].type <= TK_OR)
 		{
-			printf("1 minishell: syntax error near unexpected token `%s'\n", (*tokens)[i].value);
+			printf("1 minishell: syntax error near unexpected token `%s'\n",
+				(*tokens)[i].value);
 			return (1);
 		}
 		if ((*tokens)[i + 1].value == NULL && (*tokens)[i].type <= TK_HEREDOC)
@@ -29,12 +31,14 @@ int    sintaxe_error(t_token **tokens)
 			printf("3 minishell: syntax error near unexpected token `newline'\n");
 			return (1);
 		}
-		if (i > 0 && (*tokens)[i].type <= TK_OR && (*tokens)[i - 1].type <= TK_OR)
+		if (i > 0 && (*tokens)[i].type <= TK_OR && (*tokens)[i
+			- 1].type <= TK_OR)
 		{
-			printf("2 minishell: syntax error near unexpected token `%s'\n", (*tokens)[i].value);
+			printf("2 minishell: syntax error near unexpected token `%s'\n",
+				(*tokens)[i].value);
 			return (1);
 		}
 		i++;
-    }
+	}
 	return (0);
 }
