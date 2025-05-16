@@ -102,7 +102,7 @@ int	tokenizer(t_arg_main *args)
 	ft_lexer(&args->tokens);
 	if (sintaxe_error(&args->tokens) == 1)
 	{
-		free_tokens(args->matrix, args->tokens);
+    logs("AAAAAAA");
 		args->tokens = NULL;
 		free(args->temp);
 		return (1);

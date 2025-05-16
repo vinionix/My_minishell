@@ -26,10 +26,8 @@ static void	initialize_args_main(t_arg_main *args)
 static void	aux_main(const char **env)
 {
 	t_arg_main	args;
-	t_env		*lala;
 
 	(void)env;
-	lala = get_env_vars(env);
 	while ("!exit")
 	{
 		initialize_args_main(&args);
