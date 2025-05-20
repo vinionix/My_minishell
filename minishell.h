@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "libft/libft.h"
+# include "Wildcard/wildcard.h"
 # include <curses.h>
 # include <dirent.h>
 # include <errno.h>
