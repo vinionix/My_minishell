@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wildcard.h                                         :+:      :+:    :+:   */
+/*   read_cd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,31 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WILDCARD_H
-# define WILDCARD_H
+#include "../minishell.h"
 
-typedef struct s_wildcard
+int	read_current_dir(t_wildcard **list)
 {
-  const char		*fileOrDir;
-  bool				match;
-  unsigned int		index;
-  struct s_wildcard	*next;
-}					t_wildcard;
+	DIR				*dir;
+	struct dirent	*entry;
+	char			*temp;
 
-typedef struct s_var
-{
-	unsigned int	start;
-	size_t			size;
-	char *			current_card;
-	unsigned int	ast;
-}					t_var;
-
-
-t_wildcard	*wild_lstnew(const char *content);
-void		wild_addback(t_wildcard **lst, t_wildcard *new);
-int			strchr_index_next(const char *str, char stop, unsigned int start);
-int			str_revcmp(const char *s1, const char *s2);
-void		init_vars(t_var *vars);
-int	read_current_dir(t_wildcard **list);
-
-#endif
+	dir = opendir(".");
+	temp = NULL;
+	if (dir == NULL)
+	{
+		perror("opendir");
+		return (1);
+	}
+	entry = readdir(dir);
+	while (entry != NULL)
+	{
+		temp = ft_strdup((const char *)entry->d_name);
+		wild_addback(list, wild_lstnew(temp));
+		temp = NULL;
+		entry = readdir(dir);
+	}
+	closedir(dir);
+	return (0);
+}

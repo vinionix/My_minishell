@@ -12,6 +12,14 @@
 
 #include "../minishell.h"
 
+void	init_vars(t_var *vars)
+{
+	vars->start = 0;
+	vars->size = 0;
+	vars->current_card = NULL;
+	vars->ast = 0;
+}
+
 int	str_revcmp(const char *s1, const char *s2)
 {
 	int	l1;
