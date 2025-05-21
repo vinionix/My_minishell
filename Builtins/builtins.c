@@ -14,12 +14,15 @@
 
 int	built_cd(const char *str)
 {
-	(void)str;
-	//if (!ft_strncmp(str, "~") || !ft_strncmp(str, "~/"))
+	if (!ft_strcmp(str, "~") || !ft_strcmp(str, "~/")
+		|| str == NULL)
 	{
 		if (chdir("/home"))
 			return (1);
+		return (0);
 	}
+	if (chdir(str))
+		return (1);
 	return (0);
 }
 

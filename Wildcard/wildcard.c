@@ -22,8 +22,6 @@ static char	*update_vars(t_wildcard *list, const char *wildcard, t_var *var)
 	if (var->start - 1 < (unsigned int)ft_strlen(wildcard))
 		var->size = strchr_index_next(wildcard, '*', var->start);
 	str = ft_substr(wildcard, var->start, var->size - var->start);
-	if (!str)
-		return (NULL);
 	return (str);
 }
 
