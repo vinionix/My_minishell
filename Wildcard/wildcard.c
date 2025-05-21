@@ -27,7 +27,7 @@ static char	*update_vars(t_wildcard *list, const char *wildcard, t_var *var)
 	return (str);
 }
 
-void	later_matches(t_wildcard *list, const char *wildcard, t_var *var)
+static void	later_matches(t_wildcard *list, const char *wildcard, t_var *var)
 {
 	while (1337)
 	{
