@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 03:06:39 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/16 04:36:10 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/22 22:44:47 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ int	chr_separator(char *input, int i)
 		return (6);
 	else if (input[i] == '<')
 		return (7);
+	else if (input[i] == '(')
+		return (8);
+	else if (input[i] == ')')
+		return (9);
 	return (0);
 }
 

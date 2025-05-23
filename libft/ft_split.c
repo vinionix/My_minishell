@@ -6,11 +6,54 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:23:00 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/15 22:16:51 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/22 21:52:59 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+// static size_t	count_words(char const *s, char c)
+// {
+// 	int		i;
+// 	int		counter;
+// 	int		flag;
+// 	char	chr_jump;
+
+// 	i = 0;
+// 	counter = 0;
+// 	flag = 0;
+// 	while (s[i])
+// 	{
+// 		if (s[i] != c && flag == 0)
+// 		{
+// 			chr_jump = jump_char(s[i]);
+// 			if (chr_jump == 2 || chr_jump == 3)
+// 			{
+// 				i++;
+// 				while (s[i] && jump_char(s[i]) != chr_jump)
+// 					i++;
+// 				if (s[i] == '\0')
+// 				{
+// 					printf("Error");
+// 					exit(1);
+// 				}
+// 			}
+// 			counter++;
+// 			flag = 1;
+// 		}
+// 		else if (s[i] == c)
+// 			flag = 0;
+// 		i++;
+// 	}
+// 	return (counter);
+// }
+
+static void	handle_jump(const char *s, int *i, char chr_jump)
+{
+	(*i)++;
+	while (s[*i] && jump_char(s[*i]) != chr_jump)
+		(*i)++;
+}
 
 static size_t	count_words(char const *s, char c)
 {
@@ -28,16 +71,7 @@ static size_t	count_words(char const *s, char c)
 		{
 			chr_jump = jump_char(s[i]);
 			if (chr_jump == 2 || chr_jump == 3)
-			{
-				i++;
-				while (s[i] && jump_char(s[i]) != chr_jump)
-					i++;
-				if (s[i] == '\0')
-				{
-					printf("Error");
-					exit(1);
-				}
-			}
+				handle_jump(s, &i, chr_jump);
 			counter++;
 			flag = 1;
 		}
@@ -47,6 +81,7 @@ static size_t	count_words(char const *s, char c)
 	}
 	return (counter);
 }
+
 
 static size_t	find_size(char const *str, char c, int *index)
 {

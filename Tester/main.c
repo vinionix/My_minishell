@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 21:06:12 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/16 04:29:39 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/22 21:48:07 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,8 @@
 static void	initialize_args_main(t_arg_main *args)
 {
 	args->rdline = NULL;
-	args->rdline2 = NULL;
 	args->matrix = NULL;
 	args->temp = NULL;
-	args->temp2 = NULL;
-	args->return_join = NULL;
 	args->tokens = NULL;
 }
 
@@ -41,8 +38,8 @@ static void	aux_main(const char **env)
 		{
 			if (args.rdline[0] != '\0')
 			{
-				tokenizer(&args);
-				free_tokens(args.matrix, args.tokens);
+				if (tokenizer(&args) == 0)
+					free_tokens(args.matrix, args.tokens);
 			}
 			add_history(args.rdline);
 		}

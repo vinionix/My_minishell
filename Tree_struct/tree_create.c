@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/16 04:06:53 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:25:29 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_tree	*tree_new(int type)
 	return (new_node);
 }
 
-static void tree_add_left(t_tree **tree, t_tree *new)
+static void	tree_add_left(t_tree **tree, t_tree *new)
 {
 	t_tree	*current;
 
@@ -48,14 +48,14 @@ static int	final_pos_tokens(t_token *tokens)
 	int	i;
 
 	i = 0;
-	while(tokens[i + 1].value != NULL)
+	while (tokens[i + 1].value != NULL)
 		i++;
 	return (i);
 }
-static void tree_init_left(t_token *tokens, t_tree **tree)
+static void	tree_init_left(t_token *tokens, t_tree **tree)
 {
-	int     i;
-	int		id_token;
+	int	i;
+	int	id_token;
 
 	id_token = TK_OR;
 	i = final_pos_tokens(tokens);
@@ -72,6 +72,6 @@ static void tree_init_left(t_token *tokens, t_tree **tree)
 	}
 }
 
-void    tree_creat(t_token *tokens)
+void	tree_creat(t_token *tokens)
 {
 }

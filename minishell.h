@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/16 04:18:21 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/23 13:29:06 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ typedef enum e_token_type
 	TK_PIPE,
 	TK_AND,
 	TK_OR,
+	TK_FINAL_PAREN,
+	TK_INIT_PAREN,
 	TK_FILE_IN,
 	TK_FILE_OUT,
 	TK_FILE_APP,
@@ -71,11 +73,8 @@ typedef struct s_token
 typedef struct s_arg_main
 {
 	char				*rdline;
-	char				*rdline2;
 	char				**matrix;
 	char				*temp;
-	char				*temp2;
-	char				*return_join;
 	t_token				*tokens;
 	int					i;
 }						t_arg_main;
