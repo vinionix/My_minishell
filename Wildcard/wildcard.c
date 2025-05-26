@@ -86,33 +86,17 @@ static int	parse_wildcard(t_wildcard *list,
 	return (0);
 }
 
-int main(int ac, char **av)
+const char	**wildcard(const char *wildcard)
 {
-	(void)ac;
 	t_wildcard	*list;
-	t_wildcard	*temp;
 	t_var		var;
-	const char *word;
+	const char		**matches;
 
 	list = NULL;
 	init_vars(&var);
 	read_current_dir(&list);
-	word = (const char *)ft_strdup(av[1]);
-	parse_wildcard(list, word, &var);
-	free((char *)word);
-	temp = list;
-	while (temp)
-	{
-		if (temp->match)
-			logs(temp->fileOrDir);
-		temp = temp->next;
-	}
-	temp = list;
-	while (temp)
-	{
-		list = temp->next;
-		free((void *)temp->fileOrDir);
-		free(temp);
-		temp = list;
-	}
+	parse_wildcard(list, wildcard, &var);
+	matches = list_to_matrix(list);
+	free_wildlist(&list);
+	return (matches);
 }
