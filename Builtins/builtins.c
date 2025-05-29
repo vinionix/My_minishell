@@ -100,7 +100,7 @@ int	built_pwd(const char **matrix)
 	flag = check_flag(matrix);
 	if (flag)
 	{
-		printf("minishell: pwd: %c: invalid option\n", *matrix[0]);
+		printf("minishell: pwd: %c%c: invalid option\n", (*matrix)[0], (*matrix)[1]);
 		free_matrix((char **)matrix);
 		return (2);
 	}

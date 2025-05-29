@@ -18,7 +18,7 @@ int	check_flag(const char **matrix)
 	{
 		if (*matrix)
 		{
-			if (*matrix[0] == '-')
+			if ((*matrix)[0] == '-' && (*matrix)[1] != '\0')
 				return (1);
 		}
 	}
