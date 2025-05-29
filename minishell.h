@@ -117,14 +117,16 @@ int						chr_separator(char *input, int i);
 int						tokenizer(t_arg_main *args);
 int						env_lstsize(t_env *lst);
 int						built_cd(const char **matrix);
-int						built_echo(const char *str);
-int						built_echo_n(const char *str);
+int						built_echo(const char **matrix);
+int						built_echo_n(const char **matrix);
 int						new_var_parsing(t_token *tokens, t_env **envs);
-char					*built_pwd(void);
+int						built_pwd(const char **matrix);
 int						built_env(t_env *env);
 void					unset_env_if(t_env **env, const char *target_key);
 int						strchr_index(const char *str, char stop);
 t_env					*env_new(void);
 t_env					*get_env_vars(const char **env);
+void					free_matrix(char **matrix);
+int						check_flag(const char **matrix);
 
 #endif

@@ -34,22 +34,40 @@ int	built_cd(const char **matrix)
 	return (return_value);
 }
 
-int	built_echo_n(const char *str)
+int	built_echo_n(const char **matrix)
 {
-	printf("%s", str);
+	int	i;
+
+	i = 0;
+	while (matrix[i])
+	{
+		if (matrix[i + 1] != NULL)
+			printf("%s ", matrix[i++]);
+		else
+			printf("%s", matrix[i++]);
+	}
+	free_matrix((char **)matrix);
 	return (0);
 }
 
-int	built_echo(const char *str)
+int	built_echo(const char **matrix)
 {
-	printf("%s\n", str);
+	int	i;
+
+	i = -1;
+	while (matrix[i + 2] != NULL)
+	{
+		printf("%s ", matrix[++i]);
+	}
+	printf("%s\n", matrix[i]);
+	free_matrix((char **)matrix);
 	return (0);
 }
 
-char	*built_pwd(void)
+static	const char *get_pwd(void)
 {
-	char	*pwd;
-	size_t	size;
+	const char	*pwd;
+	size_t		size;
 
 	pwd = NULL;
 	size = 128;
@@ -61,9 +79,9 @@ char	*built_pwd(void)
 			perror("malloc");
 			return (NULL);
 		}
-		if (getcwd(pwd, size) != NULL)
+		if (getcwd((char *)pwd, size) != NULL)
 			return (pwd);
-		free(pwd);
+		free((char *)pwd);
 		if (errno != ERANGE)
 		{
 			perror("getcwd");
@@ -71,4 +89,31 @@ char	*built_pwd(void)
 		}
 		size *= 2;
 	}
+	return (pwd);
+}
+
+int	built_pwd(const char **matrix)
+{
+	const char	*pwd;
+	int		flag;
+
+	flag = check_flag(matrix);
+	if (flag)
+	{
+		printf("minishell: pwd: %c: invalid option\n", *matrix[0]);
+		free_matrix((char **)matrix);
+		return (2);
+	}
+	pwd = get_pwd();
+	if (!pwd)
+	{
+		if (matrix)
+			free_matrix((char **)matrix);
+		return (1);
+	}
+	printf("%s\n", pwd);
+	free((char *)pwd);
+	if (matrix)
+		free_matrix((char **)matrix);
+	return (0);
 }
