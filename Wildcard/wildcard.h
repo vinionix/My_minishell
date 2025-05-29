@@ -25,7 +25,7 @@ typedef struct s_var
 {
 	unsigned int	start;
 	size_t			size;
-	char *			current_card;
+	char			*current_card;
 	unsigned int	ast;
 }					t_var;
 

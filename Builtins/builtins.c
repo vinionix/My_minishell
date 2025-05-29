@@ -12,18 +12,26 @@
 
 #include "../minishell.h"
 
-int	built_cd(const char *str)
+int	built_cd(const char **matrix)
 {
-	if (!ft_strcmp(str, "~") || !ft_strcmp(str, "~/")
-		|| str == NULL)
+	int	return_value;
+
+	return_value = 0;
+	if (ft_len_matrix((char **)matrix) > 1)
+	{
+		printf("Too many args for cd command\n");
+		return_value = 1;
+	}
+	else if (!ft_strcmp(*matrix, "~") || !ft_strcmp(*matrix, "~/")
+		|| *matrix == NULL)
 	{
 		if (chdir("/home"))
-			return (1);
-		return (0);
+			return_value = 1;
 	}
-	if (chdir(str))
-		return (1);
-	return (0);
+	else if (chdir(*matrix))
+		return_value = 1;
+	free_matrix((char **)matrix);
+	return (return_value);
 }
 
 int	built_echo_n(const char *str)

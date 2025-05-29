@@ -116,7 +116,7 @@ int						jump_char(char chr);
 int						chr_separator(char *input, int i);
 int						tokenizer(t_arg_main *args);
 int						env_lstsize(t_env *lst);
-int						built_cd(const char *str);
+int						built_cd(const char **matrix);
 int						built_echo(const char *str);
 int						built_echo_n(const char *str);
 int						new_var_parsing(t_token *tokens, t_env **envs);
