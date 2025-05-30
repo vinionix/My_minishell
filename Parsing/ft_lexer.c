@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:49:33 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/15 22:10:52 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/22 22:49:10 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,10 @@ static void	ft_operators(t_token **tokens)
 				(*tokens)[i].type = TK_REDIR_OUT;
 			else if (receiver == 7)
 				(*tokens)[i].type = TK_REDIR_IN;
+			else if (receiver == 8)
+				(*tokens)[i].type = TK_INIT_PAREN;
+			else if (receiver == 9)
+			(*tokens)[i].type = TK_FINAL_PAREN;
 		}
 	}
 }
@@ -108,6 +112,8 @@ void	ft_lexer(t_token **tokens)
 	int	i;
 
 	i = 0;
+	if (*tokens == NULL)
+		return ;
 	while ((*tokens)[i].value != NULL)
 	{
 		(*tokens)[i].type = 0;
