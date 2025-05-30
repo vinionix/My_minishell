@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/23 13:29:06 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/29 23:32:27 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 
 # include "libft/libft.h"
-# include "Wildcard/wildcard.h"
 # include <curses.h>
 # include <dirent.h>
 # include <errno.h>
@@ -30,6 +29,8 @@
 # include <sys/types.h>
 # include <termios.h>
 # include <unistd.h>
+
+typedef struct s_tree t_tree;
 
 void					logi(int x);
 void					logfl(float x);
@@ -91,18 +92,37 @@ typedef struct s_command
 	const char			*path;
 }						t_command;
 
-typedef struct s_tree
+typedef struct s_and
+{
+	int					ret;
+	struct s_tree		*subshell;
+}	t_and;
+
+typedef struct s_or
+{
+	int					ret;
+	struct s_tree		*subshell;
+}	t_or;
+
+struct t_tree
 {
 	t_token_type		type;
 	int					n_builtin;
 	union
 	{
-		t_pipe			pipe;
-		t_command		command;
+		t_pipe			*pipe;
+		t_command		*command;
+		t_and			*and;
+		
 	} u_define;
-	struct s_tree		*left;
-	struct s_tree		*right;
-}						t_tree;
+	t_tree		*left;
+	t_tree		*right;
+};
+
+typedef struct	s_head
+{
+	t_tree	*tree;
+}	t_head;
 
 char					**ft_split(char const *s, char c);
 void					ft_lexer(t_token **tokens);
