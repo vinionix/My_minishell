@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/29 23:32:27 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/05/30 02:48:01 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef enum e_token_type
 typedef struct s_token
 {
 	t_token_type		type;
+	int					passou _aqui;
 	int					id_tree;
 	int					id;
 	char				*value;
@@ -101,19 +102,33 @@ typedef struct s_and
 typedef struct s_or
 {
 	int					ret;
-	t_tree		*subshell;
+	t_tree				*subshell;
 }	t_or;
 
-struct t_tree
+typedef struct	s_redir
+{
+	t_token_type	type;
+	int				file_fd;
+}	t_redir;
+
+typedef struct	s_heredoc
+{
+	const char	*eof;
+	int			fd_here[2];
+}	t_heredoc;
+
+struct s_tree
 {
 	t_token_type		type;
-	int					n_builtin;
+	int					id;
 	union
 	{
-		t_pipe			*pipe;
-		t_command		*command;
-		t_and			*and;
-		
+		t_pipe			pipe;
+		t_command		command;
+		t_redir			redir;
+		t_and			and;
+		t_or			or;
+		t_heredoc		heredoc;
 	} u_define;
 	t_tree		*left;
 	t_tree		*right;

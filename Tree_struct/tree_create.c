@@ -3,47 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   tree_create.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/22 19:25:29 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/30 02:36:51 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_tree	*tree_new(int type)
+static void	ft_redirs(t_token_type type, t_token *token, t_tree *new_node)
+{
+	if (TK_REDIR_IN == type)
+	{
+		
+	}
+}
+
+void	set_type(t_token *tokens, t_tree *new_node, int type)
+{
+	if (type >= TK_REDIR_IN && type <= TK_HEREDOC)
+		ft_redirs(type, token, new_node);
+	else if (type == TK_OR)
+		ft_memset(&new_node->u_define.or, 0, sizeof(new_node->u_define.or));
+	else if (type == TK_COMMAND)
+		ft_memset(&new_node->u_define.command, 0,
+			sizeof(new_node->u_define.command));
+	else if (type == TK_PIPE)
+		ft_memset(&new_node->u_define.pipe, 0, sizeof(new_node->u_define.pipe));
+}
+
+t_tree	*tree_new(t_token *token, int type)
 {
 	t_tree	*new_node;
 
 	new_node = (t_tree *)malloc(sizeof(t_tree));
 	if (!new_node)
 		return (NULL);
-	new_node->type = type;
-	new_node->n_builtin = -1;
+	set_type(new_node, type);
+	
 	new_node->right = NULL;
 	new_node->left = NULL;
 	return (new_node);
 }
 
-static void	tree_add_left(t_tree **tree, t_tree *new)
-{
-	t_tree	*current;
-
-	if (tree == NULL || new == NULL)
-		return ;
-	if (*tree == NULL)
-	{
-		*tree = new;
-		return ;
-	}
-	current = *tree;
-	while (current->left != NULL)
-		current = current->left;
-	current->left = new;
-}
-
-static int	final_pos_tokens(t_token *tokens)
+int	final_pos_tokens(t_token *tokens)
 {
 	int	i;
 
@@ -51,27 +55,4 @@ static int	final_pos_tokens(t_token *tokens)
 	while (tokens[i + 1].value != NULL)
 		i++;
 	return (i);
-}
-static void	tree_init_left(t_token *tokens, t_tree **tree)
-{
-	int	i;
-	int	id_token;
-
-	id_token = TK_OR;
-	i = final_pos_tokens(tokens);
-	while (i >= 0)
-	{
-		if (tokens[i].type == id_token)
-			tree_add_left(tree, tree_new(id_token));
-		if (i == 0)
-		{
-			id_token--;
-			i = final_pos_tokens(tokens);
-		}
-		i--;
-	}
-}
-
-void	tree_creat(t_token *tokens)
-{
 }
