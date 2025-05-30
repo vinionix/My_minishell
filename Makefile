@@ -6,6 +6,7 @@ LIBFT = libft/libft.a
 FUNCTIONS = Tester/debug.c \
             Builtins/builtins.c \
 						Builtins/env_builtins.c \
+						Builtins/builtins_utils.c \
 						Parsing/expansion/default_env.c \
 						Parsing/expansion/env_utils.c \
 						Parsing/expansion/new_var_parsing.c \
