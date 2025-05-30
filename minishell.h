@@ -101,7 +101,7 @@ typedef struct s_and
 typedef struct s_or
 {
 	int					ret;
-	struct s_tree		*subshell;
+	t_tree		*subshell;
 }	t_or;
 
 struct t_tree
