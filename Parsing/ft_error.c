@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 03:51:03 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/23 15:10:41 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/05/26 13:13:32 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	sintaxe_error(t_token **tokens)
 		if ((*tokens)[i].type == TK_INIT_PAREN)
 		{
 			count_init_paren++;
-			if ((i > 0 && (*tokens)[i - 1].type >= TK_FILE_IN)|| 
+			if ((i > 0 && (*tokens)[i + 1].value != NULL && (*tokens)[i - 1].type >= TK_FILE_IN)|| 
 				((*tokens)[i - 1].type >= TK_REDIR_IN && 
 					(*tokens)[i - 1].type <= TK_HEREDOC) || ((*tokens)[i + 1].type == TK_FINAL_PAREN))
 			{

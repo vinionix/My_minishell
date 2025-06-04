@@ -6,72 +6,53 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/22 19:25:29 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:49:07 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_tree	*tree_new(int type)
+char	**creat_command(int id_command, t_token *tokens)
 {
-	t_tree	*new_node;
+	int	count_words;
+	int i;
+	int	j;
+	char	**command;
 
-	new_node = (t_tree *)malloc(sizeof(t_tree));
-	if (!new_node)
-		return (NULL);
-	new_node->type = type;
-	new_node->n_builtin = -1;
-	new_node->right = NULL;
-	new_node->left = NULL;
-	return (new_node);
-}
-
-static void	tree_add_left(t_tree **tree, t_tree *new)
-{
-	t_tree	*current;
-
-	if (tree == NULL || new == NULL)
-		return ;
-	if (*tree == NULL)
-	{
-		*tree = new;
-		return ;
-	}
-	current = *tree;
-	while (current->left != NULL)
-		current = current->left;
-	current->left = new;
-}
-
-static int	final_pos_tokens(t_token *tokens)
-{
-	int	i;
-
+	count_words = 1;
 	i = 0;
-	while (tokens[i + 1].value != NULL)
+	while ((tokens)[i].id != id_command)
 		i++;
-	return (i);
-}
-static void	tree_init_left(t_token *tokens, t_tree **tree)
-{
-	int	i;
-	int	id_token;
-
-	id_token = TK_OR;
-	i = final_pos_tokens(tokens);
-	while (i >= 0)
+	j = i;
+	i++;
+	while ((tokens)[i].value && (((tokens)[i].type != TK_COMMAND) 
+		&& (!((tokens)[i].type >= TK_PIPE && (tokens)[i].type <= TK_OR))))
 	{
-		if (tokens[i].type == id_token)
-			tree_add_left(tree, tree_new(id_token));
-		if (i == 0)
-		{
-			id_token--;
-			i = final_pos_tokens(tokens);
-		}
-		i--;
+		if ((tokens)[i].type == TK_WORD)
+			count_words++;
+		i++;
 	}
-}
+	command = malloc(sizeof(char *) * (count_words + 1));
+	command[count_words] = NULL;
+	command[0] = (tokens)[j].value;
+	if (count_words > 1)
+	{
 
-void	tree_creat(t_token *tokens)
-{
+		i = 1;
+		j++;
+		while ((tokens)[j].value && (((tokens)[j].type != TK_COMMAND) 
+			&& (!((tokens)[j].type >= TK_PIPE && (tokens)[j].type <= TK_OR))))
+		{
+			if ((tokens)[j].type == TK_WORD)
+			{
+				command[i] = (tokens)[j].value;
+				i++;
+			}
+			j++;
+		}
+	}
+	for (int i = 0; command[i]; i++)
+		printf("string %d: %s\n", i, command[i]);
+	exit (1);
+	return (command);
 }

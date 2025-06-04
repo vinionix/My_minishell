@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/23 13:29:06 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:48:43 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,16 +79,21 @@ typedef struct s_arg_main
 	int					i;
 }						t_arg_main;
 
-typedef struct s_pipe
-{
-	int					pipefd[2];
-}						t_pipe;
-
 typedef struct s_command
 {
 	char				**command;
 	const char			*path;
 }						t_command;
+
+typedef struct s_pipe
+{
+	int					pipefd[2];
+}						t_pipe;
+
+typedef struct s_operators
+{
+	int result;
+}						t_operators;
 
 typedef struct s_tree
 {
@@ -97,13 +102,16 @@ typedef struct s_tree
 	union
 	{
 		t_pipe			pipe;
+		t_operators		operators;
 		t_command		command;
 	} u_define;
 	struct s_tree		*left;
 	struct s_tree		*right;
+	struct s_tree		*subtree;
 }						t_tree;
 
 char					**ft_split(char const *s, char c);
+char					**creat_command(int id_command, t_token *tokens);
 void					ft_lexer(t_token **tokens);
 void					free_split(char **input);
 void					free_tokens(char **matrix, t_token *tokens);
