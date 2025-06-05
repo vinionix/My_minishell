@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/04 16:49:07 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/04 21:08:22 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	**creat_command(int id_command, t_token *tokens)
 	while ((tokens)[i].value && (((tokens)[i].type != TK_COMMAND) 
 		&& (!((tokens)[i].type >= TK_PIPE && (tokens)[i].type <= TK_OR))))
 	{
-		if ((tokens)[i].type == TK_WORD)
+		if ((tokens)[i].type == TK_CMD_ARG)
 			count_words++;
 		i++;
 	}
@@ -43,7 +43,7 @@ char	**creat_command(int id_command, t_token *tokens)
 		while ((tokens)[j].value && (((tokens)[j].type != TK_COMMAND) 
 			&& (!((tokens)[j].type >= TK_PIPE && (tokens)[j].type <= TK_OR))))
 		{
-			if ((tokens)[j].type == TK_WORD)
+			if ((tokens)[j].type == TK_CMD_ARG)
 			{
 				command[i] = (tokens)[j].value;
 				i++;

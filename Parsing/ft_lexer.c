@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:49:33 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/04 17:59:01 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/04 21:53:44 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,32 @@
 static void	ft_word_command_env(t_token **tokens)
 {
 	int	i;
-
+	
 	i = 0;
 	while ((*tokens)[i].value != NULL)
 	{
 		if ((*tokens)[i].type == 0)
 		{
-			if ((*tokens)[i].id == 0 || ((*tokens)[i - 1].type >= TK_PIPE
-					&& (*tokens)[i - 1].type <= TK_OR))
-				{
-					(*tokens)[i].type = TK_COMMAND;
-					(*tokens)[i].id = (*tokens)[i].id * 10;
-				}
-			else
-				(*tokens)[i].type = TK_WORD;
+			if ((*tokens)[i].id == 0 || ((*tokens)[i - 1].type >= TK_PIPE && (*tokens)[i - 1].type <= TK_OR) 
+				|| ((*tokens)[i - 1].type >= TK_FILE_IN && (*tokens)[i - 1].type <= TK_FILE_APP))
+			{
+				(*tokens)[i].type = TK_COMMAND;
+				(*tokens)[i].id = (*tokens)[i].id * 10;
+			}
+		}
+		if ((*tokens)[i].type == TK_COMMAND)
+		{
+			while ((*tokens)[i].value && (!((*tokens)[i].type >= TK_PIPE
+				&& (*tokens)[i].type <= TK_OR)))
+			{
+				if ((*tokens)[i].type == 0)
+					(*tokens)[i].type = TK_CMD_ARG;
+				i++;
+			}
 		}
 		i++; 
-	} 
-}
+		}
+} 
 
 static void	ft_eof(t_token **tokens)
 {

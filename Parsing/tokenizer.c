@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/04 17:47:08 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/04 21:33:28 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,6 @@ int	tokenizer(t_arg_main *args)
 		printf("Command: %s <--------> Token Number %d: %d\n",
 			args->tokens[i].value, i, args->tokens[i].type);
 	}
-	creat_command(0, args->tokens);
+	creat_command(20, args->tokens);
 	return (0);
 }

@@ -1,0 +1,10 @@
+Builtins
+libft
+ls
+Makefile
+minishell
+minishell.a
+minishell.h
+Parsing
+Tester
+Tree_struct

@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/06/02 17:48:43 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:58:03 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ typedef enum e_token_type
 	TK_FILE_OUT,
 	TK_FILE_APP,
 	TK_EOF,
-	TK_WORD,
-	TK_COMMAND
+	TK_CMD_ARG,
+	TK_COMMAND 
 }						t_token_type;
 
 typedef struct s_token
