@@ -94,7 +94,6 @@ int	new_var_parsing(t_token *tokens, t_env **envs)
 	i = 1;
 	j = 0;
 	error = 0;
-	printf("oioi\n");
 	while (tokens[i].value && tokens[i].type == TK_CMD_ARG)
 	{
 		if (!ft_isalpha((int)tokens[i].value[0]) && tokens[i].value[0] != '_')

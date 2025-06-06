@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:49:33 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/04 21:53:44 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/05 20:57:27 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ static void	ft_word_command_env(t_token **tokens)
 		{
 			if ((*tokens)[i].id == 0 || ((*tokens)[i - 1].type >= TK_PIPE && (*tokens)[i - 1].type <= TK_OR) 
 				|| ((*tokens)[i - 1].type >= TK_FILE_IN && (*tokens)[i - 1].type <= TK_FILE_APP))
-			{
 				(*tokens)[i].type = TK_COMMAND;
-				(*tokens)[i].id = (*tokens)[i].id * 10;
-			}
 		}
 		if ((*tokens)[i].type == TK_COMMAND)
 		{
@@ -97,40 +94,19 @@ static void	ft_operators(t_token **tokens)
 		{
 			receiver = chr_separator((*tokens)[i].value, 0);
 			if (receiver == 1)
-			{
 				(*tokens)[i].type = TK_AND;
-				(*tokens)[i].id = (*tokens)[i].id * 1000;
-			}
 			else if (receiver == 2)
-			{
 				(*tokens)[i].type = TK_OR;
-				(*tokens)[i].id = (*tokens)[i].id * 1000;
-			}
 			else if (receiver == 3)
-			{
 				(*tokens)[i].type = TK_APPEND;
-				(*tokens)[i].id = (*tokens)[i].id * 100;
-			}
 			else if (receiver == 4)
-			{
 				(*tokens)[i].type = TK_HEREDOC;
-				(*tokens)[i].id = (*tokens)[i].id * 100;
-			}
 			else if (receiver == 5)
-			{
 				(*tokens)[i].type = TK_PIPE;
-				(*tokens)[i].id = (*tokens)[i].id * 100;
-			}
 			else if (receiver == 6)
-			{
 				(*tokens)[i].type = TK_REDIR_OUT;
-				(*tokens)[i].id = (*tokens)[i].id * 100;				
-			} 
 			else if (receiver == 7)
-			{
 				(*tokens)[i].type = TK_REDIR_IN;
-				(*tokens)[i].id = (*tokens)[i].id * 100;
-			}
 			else if (receiver == 8)
 				(*tokens)[i].type = TK_INIT_PAREN;
 			else if (receiver == 9)

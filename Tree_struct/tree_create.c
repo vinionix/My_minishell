@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/04 21:08:22 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/05 21:14:57 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,5 @@ char	**creat_command(int id_command, t_token *tokens)
 			j++;
 		}
 	}
-	for (int i = 0; command[i]; i++)
-		printf("string %d: %s\n", i, command[i]);
-	exit (1);
 	return (command);
 }
