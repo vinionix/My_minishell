@@ -29,6 +29,7 @@
 # include <sys/types.h>
 # include <termios.h>
 # include <unistd.h>
+# include "Wildcard/wildcard.h"
 
 typedef struct s_tree t_tree;
 
@@ -37,13 +38,6 @@ void					logfl(float x);
 void					logd(double x);
 void					logc(char x);
 void					logs(const char *x);
-
-typedef struct s_env
-{
-	char				*key;
-	char				*value;
-	struct s_env		*next;
-}						t_env;
 
 typedef enum e_token_type
 {
@@ -67,7 +61,7 @@ typedef enum e_token_type
 typedef struct s_token
 {
 	t_token_type		type;
-	int					passou _aqui;
+	//int					passou _aqui;
 	int					id_tree;
 	int					id;
 	char				*value;
@@ -139,6 +133,13 @@ typedef struct	s_head
 	t_tree	*tree;
 }	t_head;
 
+typedef struct s_env
+{
+	char				*key;
+	char				*value;
+	struct s_env		*next;
+}						t_env;
+
 char					**ft_split(char const *s, char c);
 void					ft_lexer(t_token **tokens);
 void					free_split(char **input);
@@ -162,5 +163,6 @@ t_env					*env_new(void);
 t_env					*get_env_vars(const char **env);
 void					free_matrix(char **matrix);
 int						check_flag(const char **matrix);
+const char	**expand_variable(char **matrix, t_env *env_lst);
 
 #endif

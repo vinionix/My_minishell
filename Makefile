@@ -10,10 +10,15 @@ FUNCTIONS = Tester/debug.c \
 						Parsing/expansion/default_env.c \
 						Parsing/expansion/env_utils.c \
 						Parsing/expansion/new_var_parsing.c \
+						Parsing/expansion/expansion.c \
+						Parsing/expansion/expansion_utils.c \
 			Parsing/ft_utils.c \
 			Parsing/ft_error.c \
 			Parsing/ft_lexer.c \
 			Parsing/tokenizer.c \
+			Wildcard/list_to_matrix.c \
+			Wildcard/read_cd.c \
+			Wildcard/wildcard_utils.c \
 			Tree_struct/tree_create.c
 
 OBJS = $(FUNCTIONS:.c=.o)

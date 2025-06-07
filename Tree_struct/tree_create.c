@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-static void	ft_redirs(t_token_type type, t_token *token, t_tree *new_node)
+/*static void	ft_redirs(t_token_type type, t_token *token, t_tree *new_node)
 {
 	if (TK_REDIR_IN == type)
 	{
@@ -55,4 +55,4 @@ int	final_pos_tokens(t_token *tokens)
 	while (tokens[i + 1].value != NULL)
 		i++;
 	return (i);
-}
+}*/
