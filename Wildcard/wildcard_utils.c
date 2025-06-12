@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wildcard.c                                         :+:      :+:    :+:   */
+/*   wildcard_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/16 04:06:53 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:12:33 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_wildcard	*wild_lstnew(const char *content)
 	new_node = (t_wildcard *)malloc(sizeof(t_wildcard));
 	if (!new_node)
 		return (NULL);
-	new_node->fileOrDir = content;
+	new_node->file_dir = content;
 	new_node->match = true;
 	new_node->index = 0;
 	new_node->next = (NULL);

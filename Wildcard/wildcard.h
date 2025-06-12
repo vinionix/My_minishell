@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/29 22:44:52 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:14:36 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 
 typedef struct s_wildcard
 {
-  const char		*fileOrDir;
-  bool				match;
-  unsigned int		index;
-  struct s_wildcard	*next;
-}					t_wildcard;
+	const char			*file_dir;
+	bool				match;
+	unsigned int		index;
+	struct s_wildcard	*next;
+}				t_wildcard;
 
 typedef struct s_var
 {
@@ -29,12 +29,12 @@ typedef struct s_var
 	size_t			size;
 	char			*current_card;
 	unsigned int	ast;
-}					t_var;
-
+}			t_var;
 
 t_wildcard		*wild_lstnew(const char *content);
 void			wild_addback(t_wildcard **lst, t_wildcard *new);
-int				strchr_index_next(const char *str, char stop, unsigned int start);
+int				strchr_index_next(const char *str, char stop,
+					unsigned int start);
 int				str_revcmp(const char *s1, const char *s2);
 void			init_vars(t_var *vars);
 int				read_current_dir(t_wildcard **list);

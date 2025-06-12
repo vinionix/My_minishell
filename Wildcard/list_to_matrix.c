@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_cd.c                                          :+:      :+:    :+:   */
+/*   list_to_matrix.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/16 04:06:53 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:12:32 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_wildlist(t_wildcard **list)
 {
-	t_wildcard *temp;
+	t_wildcard	*temp;
 
 	temp = *list;
 	while (*list)
@@ -22,7 +22,7 @@ void	free_wildlist(t_wildcard **list)
 		temp = (*list)->next;
 		if (!(*list)->match)
 		{
-			free((char *)(*list)->fileOrDir);
+			free((char *)(*list)->file_dir);
 			free(*list);
 		}
 		else
@@ -47,7 +47,7 @@ static int	wild_matches_size(t_wildcard *list)
 
 const char	**list_to_matrix(t_wildcard *list)
 {
-	const char		**matrix;
+	const char	**matrix;
 	int			size;
 	t_wildcard	*temp;
 
@@ -63,7 +63,7 @@ const char	**list_to_matrix(t_wildcard *list)
 	while (temp)
 	{
 		if (temp->match)
-			matrix[--size] = temp->fileOrDir;
+			matrix[--size] = temp->file_dir;
 		temp = temp->next;
 	}
 	return (matrix);

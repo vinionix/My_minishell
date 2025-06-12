@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/16 04:06:53 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:12:34 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char	*update_vars(t_wildcard *list, const char *wildcard, t_var *var)
 {
-	char *str;
+	char	*str;
 
 	str = NULL;
 	list->index += var->size - var->start;
@@ -32,15 +32,16 @@ static void	later_matches(t_wildcard *list, const char *wildcard, t_var *var)
 		var->current_card = update_vars(list, wildcard, var);
 		if (wildcard[var->start - 1] == '\0')
 			return ;
-		if (!ft_strstr(list->fileOrDir + list->index, var->current_card))
+		if (!ft_strstr(list->file_dir + list->index, var->current_card))
 		{
 			list->match = false;
 			return ;
 		}
-		if (wildcard[list->index + (var->size - var->start) + 1 + var->ast] == '\0')
+		if (wildcard[list->index + (var->size - var->start) + 1 + var->ast]
+			== '\0')
 		{
-			if (str_revcmp(list->fileOrDir + list->index,
-				  (const char *)var->current_card))
+			if (str_revcmp(list->file_dir + list->index,
+					(const char *)var->current_card))
 			{
 				list->match = false;
 				return ;
@@ -56,9 +57,9 @@ static void	later_matches(t_wildcard *list, const char *wildcard, t_var *var)
 static void	is_match(t_wildcard *list, const char *wildcard, t_var *var)
 {
 	var->current_card = ft_substr(wildcard, var->start, var->size - var->start);
-	if (var->start == 0 && ft_strncmp(list->fileOrDir,
+	if (var->start == 0 && ft_strncmp(list->file_dir,
 			(const char *)var->current_card, ft_strlen(var->current_card))
-				&& wildcard[0] != '*')
+		&& wildcard[0] != '*')
 	{
 		list->match = false;
 		return ;
@@ -90,7 +91,7 @@ const char	**wildcard(const char *wildcard)
 {
 	t_wildcard	*list;
 	t_var		var;
-	const char		**matches;
+	const char	**matches;
 
 	list = NULL;
 	init_vars(&var);
