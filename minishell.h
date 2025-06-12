@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/30 02:48:01 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:39:51 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,6 @@ t_env					*env_new(void);
 t_env					*get_env_vars(const char **env);
 void					free_matrix(char **matrix);
 int						check_flag(const char **matrix);
-const char	**expand_variable(char **matrix, t_env *env_lst);
+void					expand_variable(char **matrix, t_env *env_lst);
 
 #endif

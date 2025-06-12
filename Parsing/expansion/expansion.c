@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:07:31 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/06/12 16:23:08 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:39:41 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static void	set_dollar(char **matrix, bool *bools)
 	}
 }
 
-void	**expand_variable(char **matrix, t_env *env_lst)
+void	expand_variable(char **matrix, t_env *env_lst)
 {
 	bool	*bools;
 	int		i;
@@ -90,7 +90,7 @@ void	**expand_variable(char **matrix, t_env *env_lst)
 	i = 0;
 	bools = (bool *)malloc(sizeof(bool) * ft_len_matrix(matrix));
 	if (!bools)
-		return (NULL);
+		return ;
 	while (i < ft_len_matrix(matrix))
 		bools[i++] = false;
 	set_dollar(matrix, bools);
