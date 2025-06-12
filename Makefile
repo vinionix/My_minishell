@@ -13,6 +13,7 @@ FUNCTIONS = Tester/debug.c \
 			Parsing/ft_error.c \
 			Parsing/ft_lexer.c \
 			Parsing/tokenizer.c \
+			Tree_struct/tree_utils.c \
 			Tree_struct/tree_create.c
 
 OBJS = $(FUNCTIONS:.c=.o)

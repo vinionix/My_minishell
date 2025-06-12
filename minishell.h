@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/06/04 20:58:03 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:21:43 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ typedef enum e_token_type
 typedef struct s_token
 {
 	t_token_type		type;
-	int					id_tree;
 	int					id;
+	int					passed;
 	char				*value;
 }						t_token;
 
@@ -81,7 +81,7 @@ typedef struct s_arg_main
 
 typedef struct s_command
 {
-	char				**command;
+	char				**cmd;
 	const char			*path;
 }						t_command;
 
@@ -92,16 +92,30 @@ typedef struct s_pipe
 
 typedef struct s_operators
 {
-	int result;
+	int	result1;
+	int	result2;
 }						t_operators;
+
+typedef struct s_redir
+{
+	int	fd;
+}						t_redir;
+
+typedef struct s_here
+{
+	char *eof;
+}						t_here;
 
 typedef struct s_tree
 {
 	t_token_type		type;
 	int					n_builtin;
+	int					id_tree;
 	union
 	{
 		t_pipe			pipe;
+		t_redir			redir;
+		t_here			here;
 		t_operators		operators;
 		t_command		command;
 	} u_define;
@@ -112,6 +126,7 @@ typedef struct s_tree
 
 char					**ft_split(char const *s, char c);
 char					**creat_command(int id_command, t_token *tokens);
+void					tree_creator(t_token **tokens, t_tree **tree, int id);
 void					ft_lexer(t_token **tokens);
 void					free_split(char **input);
 void					free_tokens(char **matrix, t_token *tokens);
