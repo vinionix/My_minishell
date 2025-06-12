@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:07:31 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/15 22:05:10 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:23:08 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
 
-static	bool find_env_match(t_vars *var, char *old, int i, t_env *env_lst)
+static bool	find_env_match(t_vars *var, char *old, int i, t_env *env_lst)
 {
 	while (env_lst)
 	{
@@ -29,7 +29,8 @@ static	bool find_env_match(t_vars *var, char *old, int i, t_env *env_lst)
 				var->first_time = false;
 			}
 			else
-				var->temp_str = ft_substr(var->result, 0, ft_strlen(var->result));
+				var->temp_str = ft_substr(var->result, 0,
+						ft_strlen(var->result));
 			free(var->result);
 			var->result = join_strings(var->temp_str, env_lst->value);
 			break ;
@@ -44,7 +45,7 @@ static char	*expand(char *old, t_env *env_lst)
 	size_t	i;
 	t_vars	var;
 	char	*not_found;
-	
+
 	var.result = ft_substr(old, 0, ft_strlen_until_char(old, '$'));
 	i = strchr_index_next(var.result, '$', 0);
 	var.temp_str = NULL;
@@ -56,7 +57,8 @@ static char	*expand(char *old, t_env *env_lst)
 			return (var.result);
 		else
 		{
-			not_found = ft_substr(var.result, 0, ft_strlen_until_char(var.result, '$'));
+			not_found = ft_substr(var.result, 0,
+					ft_strlen_until_char(var.result, '$'));
 			free(var.result);
 			var.result = not_found;
 			not_found = NULL;
@@ -84,7 +86,7 @@ void	**expand_variable(char **matrix, t_env *env_lst)
 {
 	bool	*bools;
 	int		i;
-	
+
 	i = 0;
 	bools = (bool *)malloc(sizeof(bool) * ft_len_matrix(matrix));
 	if (!bools)
@@ -101,8 +103,7 @@ void	**expand_variable(char **matrix, t_env *env_lst)
 	}
 	free(bools);
 }
-
-int	main(int ac, char **av, const char **env)
+/*int	main(int ac, char **av, const char **env)
 {
 	(void)ac;
 	(void)av;
@@ -115,4 +116,4 @@ int	main(int ac, char **av, const char **env)
 	logs(matrix[0]);
 	free(matrix[0]);
 	free(matrix);
-}
+}*/

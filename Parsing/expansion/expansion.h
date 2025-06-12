@@ -16,7 +16,7 @@
 # include "../../minishell.h"
 # include "../../Wildcard/wildcard.h"
 
-typedef struct	envUtils
+typedef struct envUtils
 {
 	char	*result;
 	char	*temp_str;
