@@ -69,39 +69,17 @@ static char	*expand(char *old, t_env *env_lst)
 	return (NULL);
 }
 
-static void	set_dollar(char **matrix, bool *bools)
+void	expand_variable(char **matrix, t_env *env_lst)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (matrix[i])
 	{
 		if (have_char(matrix[i], '$'))
-			bools[i] = true;
-		i++;
-	}
-}
-
-void	expand_variable(char **matrix, t_env *env_lst)
-{
-	bool	*bools;
-	int		i;
-
-	i = 0;
-	bools = (bool *)malloc(sizeof(bool) * ft_len_matrix(matrix));
-	if (!bools)
-		return ;
-	while (i < ft_len_matrix(matrix))
-		bools[i++] = false;
-	set_dollar(matrix, bools);
-	i = 0;
-	while (matrix[i])
-	{
-		if (bools[i] == true)
 			matrix[i] = expand(matrix[i], env_lst);
 		i++;
 	}
-	free(bools);
 }
 /*int	main(int ac, char **av, const char **env)
 {
