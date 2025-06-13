@@ -41,6 +41,7 @@ t_tree	*node_creator(t_token *tokens, int id)
 	node->left = NULL;
 	node->right = NULL;
 	node->subtree = NULL;
+	node->prev = NULL;
 	if ((tokens)[i].type == TK_COMMAND)
 	{
 		node->n_builtin = 0; //is_bultin(tokens);
@@ -199,12 +200,14 @@ void	tree_creator(t_token **tokens, t_tree **tree, int id)
 	{
 		(*tree)->left = node_creator((*tokens), id_left_creat);
 		printf("left: %d\n", (*tree)->left->id_tree);
+		(*tree)->left->prev = *tree;
 		tree_creator(&(*tokens), &(*tree)->left, id_left_creat);
 	}
 	if (id_right_creat != -1)
 	{
 		(*tree)->right = node_creator((*tokens), id_right_creat);
 		printf("rigth: %d\n", (*tree)->right->id_tree);
+		(*tree)->right->prev = *tree;
 		tree_creator(&(*tokens), &(*tree)->right, id_right_creat);
 	}
 }

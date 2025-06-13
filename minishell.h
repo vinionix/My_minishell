@@ -121,6 +121,7 @@ typedef struct s_tree
 	} u_define;
 	struct s_tree		*left;
 	struct s_tree		*right;
+	struct s_tree		*prev;
 	struct s_tree		*subtree;
 }						t_tree;
 

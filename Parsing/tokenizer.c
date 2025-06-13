@@ -111,7 +111,10 @@ void	print_tree(t_tree *node, int level)
 		printf("    ");
 	printf("[ID: %d] %s", node->id_tree, get_token_type_str(node->type));
 	if (node->type == TK_COMMAND && node->u_define.command.cmd)
+	{
 		printf(" CMD: \"%s\"", node->u_define.command.cmd[0]); // ou mais argumentos se quiser
+		printf(" PREV: \"%d\"", node->prev->type); // ou mais argumentos se quiser
+	}
 	if (node->type == TK_HEREDOC)
 		printf(" EOF: \"%s\"", node->u_define.here.eof);
 	printf("\n");
