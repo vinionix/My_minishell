@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/23 13:50:52 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/12 01:17:47 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,47 @@ static t_token	*create_tokens(char **matrix)
 	{
 		tokens[i].value = matrix[i];
 		tokens[i].id = i;
+		tokens[i].passed = -1;
 		i++;
 	}
 	tokens[i].value = NULL;
 	return (tokens);
+}
+#include <stdio.h>
+
+char	*get_token_type_str(int type)
+{
+	if (type == TK_COMMAND) return ("COMMAND");
+	if (type == TK_PIPE) return ("PIPE");
+	if (type == TK_AND) return ("AND");
+	if (type == TK_OR) return ("OR");
+	if (type == TK_REDIR_IN) return ("REDIR_IN");
+	if (type == TK_REDIR_OUT) return ("REDIR_OUT");
+	if (type == TK_APPEND) return ("APPEND");
+	if (type == TK_HEREDOC) return ("HEREDOC");
+	return ("UNKNOWN");
+}
+
+void	print_tree(t_tree *node, int level)
+{
+	if (!node)
+		return;
+	for (int i = 0; i < level; i++)
+		printf("    ");
+	printf("[ID: %d] %s", node->id_tree, get_token_type_str(node->type));
+	if (node->type == TK_COMMAND && node->u_define.command.cmd)
+	{
+		printf(" CMD: \"%s\"", node->u_define.command.cmd[0]); // ou mais argumentos se quiser
+		printf(" PREV: \"%d\"", node->prev->type); // ou mais argumentos se quiser
+	}
+	if (node->type == TK_HEREDOC)
+		printf(" EOF: \"%s\"", node->u_define.here.eof);
+	printf("\n");
+	if (node->left || node->right)
+	{
+		print_tree(node->left, level + 2);
+		print_tree(node->right, level + 1);
+	}
 }
 
 int	tokenizer(t_arg_main *args)
@@ -114,11 +151,20 @@ int	tokenizer(t_arg_main *args)
 			return (1);
 		}
 	}
+	t_tree	*tree;
+
+	tree = NULL;
+	tree_creator(&args->tokens, &tree, -1);
+	print_tree(tree, 0);
+	free_tree(tree);
+	exit(0);
 	if (args)
 	{
 		for (int i = 0; args->tokens[i].value != NULL; i++)
 		printf("Command: %s <--------> Token Number %d: %d\n",
-			args->tokens[i].value, i, args->tokens[i].type);
+			args->tokens[i].value, args->tokens[i].id, args->tokens[i].type);
 	}
 	return (0);
 }
+
+
