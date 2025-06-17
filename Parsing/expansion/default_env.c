@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "expansion.h"
 
 int	strchr_index(const char *str, char stop)
 {

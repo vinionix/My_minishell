@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
 #include "expansion.h"
 
 t_env	*find_env(const char *target_key, t_env *envs)
@@ -21,9 +20,7 @@ t_env	*find_env(const char *target_key, t_env *envs)
 	while (envs)
 	{
 		if (!(ft_strncmp(target_key, (const char *)envs->key, equals_sign)))
-		{
 			return (envs);
-		}
 		envs = envs->next;
 	}
 	return (NULL);

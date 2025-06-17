@@ -10,7 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "expansion.h"
+
+bool	have_char(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i++] == c)
+			return (true);
+	}
+	return (false);
+}
 
 t_env	*env_new(void)
 {

@@ -8,12 +8,14 @@ DIR_GNL = get_next_line
 
 FUNCTIONS = 	ft_strdup.c \
 		ft_strlen.c \
+		ft_strcmp.c \
 		ft_strncmp.c \
 		ft_isprint.c \
 		ft_tolower.c \
 		ft_isalpha.c \
 		ft_isdigit.c \
 		ft_strnstr.c \
+		ft_strstr.c \
 		ft_substr.c \
 		ft_strtrim.c \
 		ft_itoa.c \
