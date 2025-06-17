@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "wildcard.h"
 
 void	free_wildlist(t_wildcard **list)
 {

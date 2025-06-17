@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "wildcard.h"
 
 int	read_current_dir(t_wildcard **list)
 {

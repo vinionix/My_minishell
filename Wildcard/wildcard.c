@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "wildcard.h"
 
 static char	*update_vars(t_wildcard *list, const char *wildcard, t_var *var)
 {
