@@ -6,6 +6,7 @@ LIBFT = libft/libft.a
 FUNCTIONS = Tester/debug.c \
             Builtins/builtins.c \
 						Builtins/env_builtins.c \
+						Builtins/builtins_utils.c \
 						Parsing/expansion/default_env.c \
 						Parsing/expansion/env_utils.c \
 						Parsing/expansion/new_var_parsing.c \
@@ -14,7 +15,8 @@ FUNCTIONS = Tester/debug.c \
 			Parsing/ft_lexer.c \
 			Parsing/tokenizer.c \
 			Tree_struct/tree_utils.c \
-			Tree_struct/tree_create.c
+			Tree_struct/tree_create.c \
+			Tree_struct/free_tree.c
 
 OBJS = $(FUNCTIONS:.c=.o)
 

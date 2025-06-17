@@ -34,7 +34,7 @@ t_tree	*node_creator(t_token *tokens, int id)
 		i++; 
 	if ((tokens)[i].value == NULL)
 		return (NULL);
-	node = malloc(sizeof(t_tree));
+	node = (t_tree *)calloc(1, sizeof(t_tree));
 	node->n_builtin = -1;
 	node->type = (tokens)[i].type;
 	node->id_tree = id;

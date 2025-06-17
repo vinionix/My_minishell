@@ -156,6 +156,7 @@ int	tokenizer(t_arg_main *args)
 	tree = NULL;
 	tree_creator(&args->tokens, &tree, -1);
 	print_tree(tree, 0);
+	free_tree(tree);
 	exit(0);
 	if (args)
 	{

@@ -148,5 +148,8 @@ void					unset_env_if(t_env **env, const char *target_key);
 int						strchr_index(const char *str, char stop);
 t_env					*env_new(void);
 t_env					*get_env_vars(const char **env);
+void					free_tree(t_tree *tree);
+void					free_matrix(char **matrix);
+int						check_flag(const char **matrix);
 
 #endif
