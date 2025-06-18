@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:19:27 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/12 01:05:25 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/15 15:26:51 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_tree	*node_creator(t_token *tokens, int id)
 	node->right = NULL;
 	node->subtree = NULL;
 	node->prev = NULL;
+	node->main = 0;
 	if ((tokens)[i].type == TK_COMMAND)
 	{
 		node->n_builtin = 0; //is_bultin(tokens);
@@ -192,6 +193,7 @@ void	tree_creator(t_token **tokens, t_tree **tree, int id)
 	{
 		(*tree) = search_for_bigger(tokens);
 		printf("main: %d\n", (*tree)->id_tree);
+		(*tree)->main = 1;
 		id = (*tree)->id_tree;
 	}
 	id_left_creat = search_left(tokens, id);

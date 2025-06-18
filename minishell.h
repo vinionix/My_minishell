@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/06/11 18:21:43 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:17:41 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_token
 	char				*value;
 }						t_token;
 
+
 typedef struct s_arg_main
 {
 	char				*rdline;
@@ -111,6 +112,7 @@ typedef struct s_tree
 	t_token_type		type;
 	int					n_builtin;
 	int					id_tree;
+	int					main;
 	union
 	{
 		t_pipe			pipe;
@@ -124,6 +126,15 @@ typedef struct s_tree
 	struct s_tree		*prev;
 	struct s_tree		*subtree;
 }						t_tree;
+
+typedef	struct s_procces
+{
+	pid_t				pid;
+	t_tree				*dad;
+	int					id_tree;
+	struct s_process	*prev;
+	struct s_process	*next;
+}						t_process;
 
 char					**ft_split(char const *s, char c);
 char					**creat_command(int id_command, t_token *tokens);
