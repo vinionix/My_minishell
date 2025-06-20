@@ -138,7 +138,7 @@ int						jump_char(char chr);
 int						chr_separator(char *input, int i);
 int						tokenizer(t_arg_main *args);
 int						env_lstsize(t_env *lst);
-int						built_cd(const char **matrix);
+int						built_cd(char **matrix, t_env *env_list);
 int						built_echo(const char **matrix);
 int						built_echo_n(const char **matrix);
 int						new_var_parsing(t_token *tokens, t_env **envs);
@@ -151,5 +151,8 @@ t_env					*get_env_vars(const char **env);
 void					free_tree(t_tree *tree);
 void					free_matrix(char **matrix);
 int						check_flag(const char **matrix);
+t_env					*find_env(const char *target_key, t_env *envs);
+void					change_cwd(t_env *env_list);
+char					*get_pwd(void);
 
 #endif

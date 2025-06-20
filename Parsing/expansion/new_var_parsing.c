@@ -19,7 +19,8 @@ t_env	*find_env(const char *target_key, t_env *envs)
 	equals_sign = (size_t)strchr_index(target_key, '=');
 	while (envs)
 	{
-		if (!(ft_strncmp(target_key, (const char *)envs->key, equals_sign)))
+		if (!(ft_strncmp(target_key, (const char *)envs->key, equals_sign))
+				&& ft_strlen((const char *)envs->key) == equals_sign)
 			return (envs);
 		envs = envs->next;
 	}

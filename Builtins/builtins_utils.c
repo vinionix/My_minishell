@@ -12,6 +12,15 @@
 
 #include "../minishell.h"
 
+void	change_cwd(t_env *env_list)
+{
+	t_env	*env_to_change;
+
+	env_to_change = find_env("PWD=", env_list);
+	free(env_to_change->value);
+	env_to_change->value = get_pwd();
+}
+
 int	check_flag(const char **matrix)
 {
 	if (matrix)
