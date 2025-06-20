@@ -14,7 +14,8 @@ FUNCTIONS = Tester/debug.c \
 			Parsing/ft_lexer.c \
 			Parsing/tokenizer.c \
 			Tree_struct/tree_utils.c \
-			Tree_struct/tree_create.c
+			Tree_struct/tree_create.c \
+			Exorcise/execution.c
 
 OBJS = $(FUNCTIONS:.c=.o)
 
