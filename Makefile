@@ -14,9 +14,13 @@ FUNCTIONS = Tester/debug.c \
 			Parsing/ft_error.c \
 			Parsing/ft_lexer.c \
 			Parsing/tokenizer.c \
+			Parsing/expansion/export_utils.c \
+			Parsing/expansion/expansion_utils.c \
+			Parsing/expansion/expansion.c \
 			Wildcard/wildcard.c \
 			Wildcard/wildcard_utils.c \
 			Wildcard/list_to_matrix.c \
+			Wildcard/join_matrices.c \
 			Wildcard/read_cd.c \
 			Tree_struct/tree_utils.c \
 			Tree_struct/tree_create.c \

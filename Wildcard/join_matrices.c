@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_to_matrix.c                                   :+:      :+:    :+:   */
+/*   join_matrices.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,54 +12,27 @@
 
 #include "wildcard.h"
 
-void	free_wildlist(t_wildcard **list)
+char **join_matrices(char **matrix1, char **matrix2, int copy_until)
 {
-	t_wildcard	*temp;
+	int		new_size;
+	char	**new_matrix;
+	int		i;
+	int		pos;
 
-	temp = *list;
-	while (*list)
-	{
-		temp = (*list)->next;
-		free((char *)(*list)->file_dir);
-		free(*list);
-		*list = temp;
-	}
-}
-
-static int	wild_matches_size(t_wildcard *list)
-{
-	int	i;
-
+	new_size = ft_len_matrix(matrix1) + ft_len_matrix(matrix2);
+	new_matrix = (char **)malloc(new_size * sizeof(char *));
 	i = 0;
-	while (list)
-	{
-		if (list->match)
-			i++;
-		list = list->next;
-	}
-	return (i);
-}
-
-char	**list_to_matrix(t_wildcard *list)
-{
-	char	**matrix;
-	int			size;
-	t_wildcard	*temp;
-
-	matrix = NULL;
-	size = wild_matches_size(list);
-	if (size == 0)
-		return (NULL);
-	matrix = (char **)malloc((size + 1) * sizeof(char *));
-	if (!matrix)
-		return (NULL);
-	temp = list;
-	matrix[size] = NULL;
-	while (temp)
-	{
-		if (temp->match)
-			matrix[--size] = ft_strdup(temp->file_dir);
-		temp = temp->next;
-	}
-	return (matrix);
+	pos = 0;
+	while (matrix1[i] && i != copy_until)
+		new_matrix[pos++] = ft_strdup(matrix1[i++]);
+	i = 0;
+	while (matrix2[i])
+		new_matrix[pos++] = ft_strdup(matrix2[i++]);
+	copy_until++;
+	while (matrix1[copy_until])
+		new_matrix[pos++] = ft_strdup(matrix1[copy_until++]);
+	new_matrix[pos] = NULL;
+	free_matrix(matrix1);
+	free_matrix(matrix2);
+	return (new_matrix);
 }

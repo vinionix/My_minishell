@@ -27,7 +27,7 @@ t_env	*find_env(const char *target_key, t_env *envs)
 	return (NULL);
 }
 
-static int	change_env(const char *target_key, t_env *envs)
+int	change_env(const char *target_key, t_env *envs)
 {
 	t_env	*env_to_change;
 	int		equals_sign;
@@ -39,18 +39,7 @@ static int	change_env(const char *target_key, t_env *envs)
 	return (0);
 }
 
-bool	has_equals_sign(const char *str)
-{
-	while (*str)
-	{
-		if (*str == '=')
-			return (true);
-		str++;
-	}
-	return (false);
-}
-
-static void	create_env(const char *str, t_env **envs)
+void	create_env(const char *str, t_env **envs)
 {
 	int		i;
 	char	*key;
@@ -73,58 +62,40 @@ static void	create_env(const char *str, t_env **envs)
 	envadd_back(envs, new);
 }
 
-// Fazer mais testes nessa função mas no geral
-// ela já consegue criar uma env, mostrar os
-// erros se necessário e ela também já trata o
-// caso de dar export em uma variável existente,
-// o que faz com que apenas troque o valor da variável
-// (também funciona se for algo tipo "variavel=", ela só
-// substitui por um '\0', ficando com o mesmo comportamento do bash)
-//
-// REFATORAR PARA A NORMA
-// ------------------------------------------------------------------
-int	new_var_parsing(t_token *tokens, t_env **envs)
+static void	parse(char *variable, t_env **envs, int *return_value)
+{
+	int	flag;
+	int	i;
+
+	flag = 0;
+	i = 0;
+	if (check_first_char(variable))
+	{
+		*return_value = 1;
+		return ;
+	}
+	while (variable[i] && variable[i] != '=')
+	{
+		if (check_following_chars(variable, variable[i++]))
+		{
+			flag = 1;
+			*return_value = 1;
+			break ;
+		}
+	}
+	create_variable_if(variable, envs, &flag, return_value);
+}
+
+int	new_var_parsing(char **matrix, t_env **envs)
 {
 	int		i;
-	int		j;
-	int		error;
+	int		return_value;
 
 	i = 1;
-	j = 0;
-	error = 0;
-	while (tokens[i].value && tokens[i].type == TK_CMD_ARG)
+	return_value = 0;
+	while (matrix[i])
 	{
-		if (!ft_isalpha((int)tokens[i].value[0]) && tokens[i].value[0] != '_')
-		{
-			printf("minishell: export: `%s': not a valid identifier\n",
-				tokens[i++].value);
-			j = 0;
-			continue ;
-		}
-		while (tokens[i].value[j] && tokens[i].value[j] != '=')
-		{
-			if (!ft_isalnum((int)tokens[i].value[j++]))
-			{
-				printf("minishell: export: `%s': not a valid identifier\n",
-					tokens[i++].value);
-				j = 0;
-				error = 1;
-				break ;
-			}
-		}
-		if (error)
-		{
-			error = 0;
-			continue ;
-		}
-		if (has_equals_sign((const char *)tokens[i].value))
-		{
-			if (!find_env((const char *)tokens[i].value, *envs))
-				create_env((const char *)tokens[i].value, envs);
-			else
-				change_env((const char *)tokens[i].value, *envs);
-		}
-		i++;
+		parse(matrix[i++], envs, &return_value);
 	}
-	return (0);
+	return (return_value);
 }

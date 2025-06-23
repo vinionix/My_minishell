@@ -17,7 +17,7 @@
 
 typedef struct s_wildcard
 {
-	const char			*file_dir;
+	char			*file_dir;
 	bool				match;
 	unsigned int		index;
 	struct s_wildcard	*next;
@@ -31,14 +31,16 @@ typedef struct s_var
 	unsigned int	ast;
 }			t_var;
 
-t_wildcard		*wild_lstnew(const char *content);
+t_wildcard		*wild_lstnew(char *content);
 void			wild_addback(t_wildcard **lst, t_wildcard *new);
 int				strchr_index_next(const char *str, char stop,
 					unsigned int start);
 int				str_revcmp(const char *s1, const char *s2);
 void			init_vars(t_var *vars);
 int				read_current_dir(t_wildcard **list);
-const char		**list_to_matrix(t_wildcard *list);
+char			**list_to_matrix(t_wildcard *list);
 void			free_wildlist(t_wildcard **list);
+char			**join_matrices(char **matrix1, char **matrix2, int copy_until);
+
 
 #endif

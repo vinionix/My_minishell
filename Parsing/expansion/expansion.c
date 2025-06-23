@@ -69,7 +69,7 @@ static char	*expand(char *old, t_env *env_lst)
 	return (NULL);
 }
 
-void	expand_variable(char **matrix, t_env *env_lst)
+void	expand_variables(char **matrix, t_env *env_lst)
 {
 	int		i;
 

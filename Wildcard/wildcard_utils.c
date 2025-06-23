@@ -44,7 +44,7 @@ int	strchr_index_next(const char *str, char stop, unsigned int start)
 	return (start);
 }
 
-t_wildcard	*wild_lstnew(const char *content)
+t_wildcard	*wild_lstnew(char *content)
 {
 	t_wildcard	*new_node;
 

@@ -43,3 +43,31 @@ void	free_matrix(char **matrix)
 		free(matrix[i++]);
 	free(matrix);
 }
+
+char	*get_pwd(void)
+{
+	char	*pwd;
+	size_t		size;
+
+	pwd = NULL;
+	size = 128;
+	while (42)
+	{
+		pwd = (char *)malloc(size);
+		if (!pwd)
+		{
+			perror("malloc");
+			return (NULL);
+		}
+		if (getcwd((char *)pwd, size) != NULL)
+			return (pwd);
+		free((char *)pwd);
+		if (errno != ERANGE)
+		{
+			perror("getcwd");
+			return (NULL);
+		}
+		size *= 2;
+	}
+	return (pwd);
+}

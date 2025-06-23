@@ -87,17 +87,41 @@ static int	parse_wildcard(t_wildcard *list,
 	return (0);
 }
 
-const char	**wildcard(const char *wildcard)
+void	reset_matches(t_wildcard *list)
+{
+	while (list)
+	{
+		list->match = true;
+		list->index = 0;
+		list = list->next;
+	}
+}
+
+char	**wildcard(char **matrix)
 {
 	t_wildcard	*list;
 	t_var		var;
-	const char	**matches;
+	char	**matches;
+	int		i;
 
 	list = NULL;
+	matches = NULL;
+	i = -1;
 	init_vars(&var);
 	read_current_dir(&list);
-	parse_wildcard(list, wildcard, &var);
-	matches = list_to_matrix(list);
+	while (matrix[++i])
+	{
+		if (have_char(matrix[i], '*'))
+		{
+			parse_wildcard(list, matrix[i], &var);
+			matches = list_to_matrix(list);
+			if (!matches)
+				continue ;
+			matrix = join_matrices(matrix, matches, i);
+			reset_matches(list);
+			continue ;
+		}
+	}
 	free_wildlist(&list);
-	return (matches);
+	return (matrix);
 }
