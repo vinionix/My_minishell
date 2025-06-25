@@ -20,7 +20,7 @@ static void	initialize_args_main(t_arg_main *args)
 	args->tokens = NULL;
 }
 
-static void	aux_main(const char **env)
+void	aux_main(const char **env)
 {
 	t_arg_main	args;
 
@@ -52,5 +52,20 @@ int	main(int ac, char **av, const char **env)
 {
 	(void)ac;
 	(void)av;
-	aux_main(env);
+	(void)env;
+
+	char **matrix = malloc(6 * 8);
+	matrix[0] = ft_strdup("*.h");
+	matrix[1] = ft_strdup("-a");
+	matrix[2] = ft_strdup("*");
+	matrix[3] = ft_strdup("");
+	matrix[4] = ft_strdup("\"\"\"*\"\"\"");
+	matrix[5] = NULL;
+
+
+	matrix = wildcard(matrix);
+	for (int i = 0; matrix[i]; i++)
+		logs(matrix[i]);
+
+	free_matrix(matrix);
 }

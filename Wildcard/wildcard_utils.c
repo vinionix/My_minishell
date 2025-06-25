@@ -53,6 +53,10 @@ t_wildcard	*wild_lstnew(char *content)
 		return (NULL);
 	new_node->file_dir = content;
 	new_node->match = true;
+	if (is_hidden_file(content))
+		new_node->is_hidden = true;
+	else
+		new_node->is_hidden = false;
 	new_node->index = 0;
 	new_node->next = (NULL);
 	return (new_node);

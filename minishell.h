@@ -139,12 +139,12 @@ int						jump_char(char chr);
 int						chr_separator(char *input, int i);
 int						tokenizer(t_arg_main *args);
 int						env_lstsize(t_env *lst);
-int						built_cd(char **matrix, t_env *env_list);
-int						built_echo(const char **matrix);
-int						built_echo_n(const char **matrix);
+int						ft_cd(char **matrix, t_env *env_list);
+int						ft_echo(const char **matrix);
+int						ft_echo_n(const char **matrix);
 int						new_var_parsing(char **matrix, t_env **envs);
-int						built_pwd(const char **matrix);
-int						built_env(t_env *env);
+int						ft_pwd(const char **matrix);
+int						ft_env(t_env *env);
 char					*get_pwd(void);
 void					unset_env_if(t_env **env, const char *target_key);
 int						strchr_index(const char *str, char stop);
@@ -160,5 +160,6 @@ void					expand_variables(char **matrix, t_env *env_lst);
 int						ft_export(char **matrix, t_env **envs);
 char					**wildcard(char **matrix);
 bool					have_char(char *str, char c);
+bool					verify_ls_flag(char **matrix);
 
 #endif

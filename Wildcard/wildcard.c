@@ -12,19 +12,6 @@
 
 #include "wildcard.h"
 
-static char	*update_vars(t_wildcard *list, const char *wildcard, t_var *var)
-{
-	char	*str;
-
-	str = NULL;
-	list->index += var->size - var->start;
-	var->start = var->size + 1;
-	if (var->start - 1 < (unsigned int)ft_strlen(wildcard))
-		var->size = strchr_index_next(wildcard, '*', var->start);
-	str = ft_substr(wildcard, var->start, var->size - var->start);
-	return (str);
-}
-
 static void	later_matches(t_wildcard *list, const char *wildcard, t_var *var)
 {
 	while (1337)
@@ -69,7 +56,7 @@ static void	is_match(t_wildcard *list, const char *wildcard, t_var *var)
 	later_matches(list, wildcard, var);
 }
 
-static int	parse_wildcard(t_wildcard *list,
+static int	expand_wildcard(t_wildcard *list,
 				const char *wildcard, t_var *var)
 {
 	t_wildcard		*temp;
@@ -87,34 +74,20 @@ static int	parse_wildcard(t_wildcard *list,
 	return (0);
 }
 
-void	reset_matches(t_wildcard *list)
+static char	**wildcard_aux(char **matrix, t_wildcard *list,
+			t_var *var, bool show_hidden)
 {
-	while (list)
-	{
-		list->match = true;
-		list->index = 0;
-		list = list->next;
-	}
-}
-
-char	**wildcard(char **matrix)
-{
-	t_wildcard	*list;
-	t_var		var;
-	char	**matches;
 	int		i;
+	char	**matches;
 
-	list = NULL;
-	matches = NULL;
 	i = -1;
-	init_vars(&var);
-	read_current_dir(&list);
+	matches = NULL;
 	while (matrix[++i])
 	{
 		if (have_char(matrix[i], '*'))
 		{
-			parse_wildcard(list, matrix[i], &var);
-			matches = list_to_matrix(list);
+			expand_wildcard(list, matrix[i], var);
+			matches = list_to_matrix(list, show_hidden);
 			if (!matches)
 				continue ;
 			matrix = join_matrices(matrix, matches, i);
@@ -122,6 +95,23 @@ char	**wildcard(char **matrix)
 			continue ;
 		}
 	}
+	return (matrix);
+}
+
+char	**wildcard(char **matrix)
+{
+	t_wildcard	*list;
+	t_var		var;
+
+	list = NULL;
+	init_vars(&var);
+	read_current_dir(&list);
+	parse_quotes(matrix, '\'');
+	parse_quotes(matrix, '\"');
+	remove_quotes(matrix);
+	matrix = command_with_asterisk(matrix);
+	matrix = wildcard_aux(matrix, list, &var, verify_ls_flag(matrix));
+	reset_asterisks(matrix);
 	free_wildlist(&list);
 	return (matrix);
 }

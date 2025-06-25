@@ -15,10 +15,13 @@
 
 # include "../minishell.h"
 
+# define WILDCARD_MARKER '\x1D'
+
 typedef struct s_wildcard
 {
-	char			*file_dir;
+	char				*file_dir;
 	bool				match;
+	bool				is_hidden;
 	unsigned int		index;
 	struct s_wildcard	*next;
 }				t_wildcard;
@@ -38,9 +41,16 @@ int				strchr_index_next(const char *str, char stop,
 int				str_revcmp(const char *s1, const char *s2);
 void			init_vars(t_var *vars);
 int				read_current_dir(t_wildcard **list);
-char			**list_to_matrix(t_wildcard *list);
+char			**list_to_matrix(t_wildcard *list, bool show_hidden);
 void			free_wildlist(t_wildcard **list);
 char			**join_matrices(char **matrix1, char **matrix2, int copy_until);
-
+char			*update_vars(t_wildcard *list, const char *wildcard, t_var *var);
+void			reset_matches(t_wildcard *list);
+void			remove_quotes(char **matrix);
+void			parse_quotes(char **matrix, char c);
+int				count_chars(char *str);
+void			reset_asterisks(char **matrix);
+char			**command_with_asterisk(char **matrix);
+bool			is_hidden_file(char *str);
 
 #endif

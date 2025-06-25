@@ -1,7 +1,10 @@
 06/21/2025
 
 Tratar variáveis entre aspas simples na expansão ('$PWD' não deve expandir).
-difficulty: Medium
+difficulty: PRONTO
+
+Tratar * para comando no matrix[0] (Wildcard)
+difficulty: Easy
 
 Tratar cd ~/ (expandir a variável $HOME e fazer join como o resto).
 difficulty: Easy
@@ -16,4 +19,4 @@ exit built in.
 difficulty: Medium
 
 Possibilitar ls -a para exibir arquivos ocultos
-difficulty: Easy/Medium
+difficulty: PRONTO

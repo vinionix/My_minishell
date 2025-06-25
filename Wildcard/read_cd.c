@@ -12,6 +12,23 @@
 
 #include "wildcard.h"
 
+static void	replace_asterisk(t_wildcard *list)
+{
+	int i;
+
+	i = -1;
+	while (list)
+	{
+		while (list->file_dir[++i])
+		{
+			if (list->file_dir[i] == '*')
+				list->file_dir[i] = WILDCARD_MARKER;
+		}
+		i = -1;
+		list = list->next;
+	}
+}
+
 int	read_current_dir(t_wildcard **list)
 {
 	DIR				*dir;
@@ -33,6 +50,7 @@ int	read_current_dir(t_wildcard **list)
 		temp = NULL;
 		entry = readdir(dir);
 	}
+	replace_asterisk(*list);
 	closedir(dir);
 	return (0);
 }
