@@ -94,8 +94,6 @@ int	new_var_parsing(char **matrix, t_env **envs)
 	i = 1;
 	return_value = 0;
 	while (matrix[i])
-	{
 		parse(matrix[i++], envs, &return_value);
-	}
 	return (return_value);
 }

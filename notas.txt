@@ -3,14 +3,16 @@
 Tratar variáveis entre aspas simples na expansão ('$PWD' não deve expandir).
 difficulty: PRONTO
 
+Separar expansões por espaço
+difficulty: Easy/Medium
+
 Tratar * para comando no matrix[0] (Wildcard)
 difficulty: Easy
 
+Tratar aspas simples dentro de aspas duplas
+
 Tratar cd ~/ (expandir a variável $HOME e fazer join como o resto).
 difficulty: Easy
-
-Tratar $$ na expansão
-difficulty: Easy/Medium
 
 Tratar $? na expansão
 difficulty: Easy

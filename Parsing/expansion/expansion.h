@@ -35,5 +35,6 @@ void	create_variable_if(char *variable, t_env **envs, int *flag, int *ret);
 int		change_env(const char *target_key, t_env *envs);
 void	create_env(const char *str, t_env **envs);
 void	expand_variables(char **matrix, t_env *env_lst);
+void	reset_modified_chars(char **matrix, char c);
 
 #endif

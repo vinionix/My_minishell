@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:07:31 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/06/12 16:24:37 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/06/25 21:23:17 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_strcmp_limited(char *s1, char *s2, char c)
 
 	i = 0;
 	s = (unsigned char *)s1;
-	while (s[i] != '\0' && s2[i] != '\0' && s[i] != c)
+	while (s[i] != '\0' && s2[i] != '\0' && s[i] != c )
 	{
 		if (s[i] != s2[i])
 			return (s[i] - s2[i]);

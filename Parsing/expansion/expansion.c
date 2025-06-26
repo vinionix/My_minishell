@@ -6,66 +6,49 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:07:31 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/06/12 16:39:41 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/06/26 06:10:55 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
 
-static bool	find_env_match(t_vars *var, char *old, int i, t_env *env_lst)
+/*static bool	find_env_match(t_vars *var, char *old, int i, t_env *env_lst)
 {
-	while (env_lst)
-	{
-		if (old[i] == '\0')
-		{
-			free(old);
-			return (true);
-		}
-		if (!ft_strcmp_limited(old + (i + 1), env_lst->key, '$'))
-		{
-			if (var->first_time)
-			{
-				var->temp_str = ft_substr(var->result, 0, i);
-				var->first_time = false;
-			}
-			else
-				var->temp_str = ft_substr(var->result, 0,
-						ft_strlen(var->result));
-			free(var->result);
-			var->result = join_strings(var->temp_str, env_lst->value);
-			break ;
-		}
-		env_lst = env_lst->next;
-	}
 	return (false);
+}*/
+static char	**create_possible_envs(char *str, char *copy)
+{
+	
 }
 
-static char	*expand(char *old, t_env *env_lst)
+static char	*mark_expansions(char *str)
 {
-	size_t	i;
-	t_vars	var;
-	char	*not_found;
+	int		i;
+	char	*copy;
 
-	var.result = ft_substr(old, 0, ft_strlen_until_char(old, '$'));
-	i = strchr_index_next(var.result, '$', 0);
-	var.temp_str = NULL;
-	var.first_time = true;
-	not_found = NULL;
-	while (1337)
+	i = strchr_index_next(str, '$', 0) + 1;
+	copy = ft_strdup((const char *)str);
+	while (copy[i])
 	{
-		if (find_env_match(&var, old, i, env_lst))
-			return (var.result);
-		else
-		{
-			not_found = ft_substr(var.result, 0,
-					ft_strlen_until_char(var.result, '$'));
-			free(var.result);
-			var.result = not_found;
-			not_found = NULL;
-		}
-		if (i < ft_strlen(old))
-			i = strchr_index_next(old, '$', i + 1);
+		while (copy[i] && copy[i] != ' ' && copy[i] != '$')
+			copy[i++] = EXPANSION_MARKER;
+		if (copy[i])
+			i++;
+		i = strchr_index_next(copy, '$', i) + 1;
 	}
+	return (copy);
+}
+
+static char	*expand(char *str, t_env *env_lst)
+{
+	char	**matrix;
+	char	*copy;
+	(void)env_lst;
+
+	copy = mark_expansions(str);
+	matrix = create_possible_envs(str, copy);
+	
+	
 	return (NULL);
 }
 
@@ -74,12 +57,20 @@ void	expand_variables(char **matrix, t_env *env_lst)
 	int		i;
 
 	i = 0;
+	//parse_quotes(matrix, '\'', '\"', SINGLE_QUOTE_MARKER);
+	//parse_quotes(matrix, '$', '\'', EXPANSION_MARKER);
+	//remove_quotes(matrix);
 	while (matrix[i])
 	{
 		if (have_char(matrix[i], '$'))
+		{
 			matrix[i] = expand(matrix[i], env_lst);
+		}
 		i++;
 	}
+	logs(matrix[0]);
+	exit(1);
+	reset_modified_chars(matrix, '$');
 }
 /*int	main(int ac, char **av, const char **env)
 {

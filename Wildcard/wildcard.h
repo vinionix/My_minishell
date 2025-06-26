@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/12 16:14:36 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/06/26 05:33:38 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 # include "../minishell.h"
 
-# define WILDCARD_MARKER '\x1D'
+# define EXPANSION_MARKER '\x1D'
+# define SINGLE_QUOTE_MARKER '\x1F'
 
 typedef struct s_wildcard
 {
@@ -47,9 +48,9 @@ char			**join_matrices(char **matrix1, char **matrix2, int copy_until);
 char			*update_vars(t_wildcard *list, const char *wildcard, t_var *var);
 void			reset_matches(t_wildcard *list);
 void			remove_quotes(char **matrix);
-void			parse_quotes(char **matrix, char c);
+void			parse_quotes(char **matrix, char c, char quote_type, char marker);
 int				count_chars(char *str);
-void			reset_asterisks(char **matrix);
+void			reset_modified_chars(char **matrix, char c);
 char			**command_with_asterisk(char **matrix);
 bool			is_hidden_file(char *str);
 

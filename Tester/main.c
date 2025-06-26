@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 21:06:12 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/22 21:48:07 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/26 06:00:17 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,24 +48,38 @@ void	aux_main(const char **env)
 	}
 }
 
+void free_env_list(t_env *list)
+{
+	t_env *temp;
+
+	temp = list;
+	while (temp)
+	{
+		temp = list->next;
+		free(list->value);
+		free(list->key);
+		free(list);
+		list = temp;	
+	}
+}
+
 int	main(int ac, char **av, const char **env)
 {
 	(void)ac;
 	(void)av;
 	(void)env;
 
-	char **matrix = malloc(6 * 8);
-	matrix[0] = ft_strdup("*.h");
-	matrix[1] = ft_strdup("-a");
-	matrix[2] = ft_strdup("*");
-	matrix[3] = ft_strdup("");
-	matrix[4] = ft_strdup("\"\"\"*\"\"\"");
-	matrix[5] = NULL;
+	char **matrix = malloc(2 * 8);
+	matrix[0] = ft_strdup("alou$USER $a $USER");
+	matrix[1] = NULL;
 
-
-	matrix = wildcard(matrix);
+	t_env *env_lst = get_env_vars(env);
+	expand_variables(matrix, env_lst);
+	exit(1);
 	for (int i = 0; matrix[i]; i++)
 		logs(matrix[i]);
-
+	exit(1);
+	matrix = wildcard(matrix);
 	free_matrix(matrix);
+	free_env_list(env_lst);
 }

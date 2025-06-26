@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/12 16:12:33 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/06/25 20:37:54 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*update_vars(t_wildcard *list, const char *wildcard, t_var *var)
 	return (str);
 }
 
-void	reset_asterisks(char **matrix)
+void	reset_modified_chars(char **matrix, char c)
 {
 	int	i;
 	int	j;
@@ -46,8 +46,10 @@ void	reset_asterisks(char **matrix)
 	{
 		while (matrix[i][++j])
 		{
-			if (matrix[i][j] == WILDCARD_MARKER)
-				matrix[i][j] = '*';
+			if (matrix[i][j] == EXPANSION_MARKER)
+				matrix[i][j] = c;
+			else if (matrix[i][j] == SINGLE_QUOTE_MARKER)
+				matrix[i][j] = '\'';
 		}
 		j = -1;
 	}

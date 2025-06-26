@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/12 16:12:34 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/06/25 20:36:29 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,12 @@ char	**wildcard(char **matrix)
 	list = NULL;
 	init_vars(&var);
 	read_current_dir(&list);
-	parse_quotes(matrix, '\'');
-	parse_quotes(matrix, '\"');
+	parse_quotes(matrix, '*', '\'', EXPANSION_MARKER);
+	parse_quotes(matrix, '*', '\"', EXPANSION_MARKER);
 	remove_quotes(matrix);
 	matrix = command_with_asterisk(matrix);
 	matrix = wildcard_aux(matrix, list, &var, verify_ls_flag(matrix));
-	reset_asterisks(matrix);
+	reset_modified_chars(matrix, '*');
 	free_wildlist(&list);
 	return (matrix);
 }

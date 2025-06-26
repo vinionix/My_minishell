@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_cd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/16 04:06:53 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/25 20:36:42 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	replace_asterisk(t_wildcard *list)
 		while (list->file_dir[++i])
 		{
 			if (list->file_dir[i] == '*')
-				list->file_dir[i] = WILDCARD_MARKER;
+				list->file_dir[i] = EXPANSION_MARKER;
 		}
 		i = -1;
 		list = list->next;

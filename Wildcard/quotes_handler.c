@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   by: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   updated: 2025/06/12 16:12:33 by gada-sil         ###   ########.fr       */
+/*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
+/*   Updated: 2025/06/25 20:34:08 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ static int	count_quotes_left(char *str, int i, char c)
 	return (size);
 }
 
-void parse_quotes(char **matrix, char c)
+void parse_quotes(char **matrix, char c, char quote_type, char marker)
 {
 	int		i;
 	int		index;
 	int		start;
 
-	i = 0;
+	i = -1;
 	start = 0;
 	while (matrix[++i])
 	{
@@ -55,16 +55,18 @@ void parse_quotes(char **matrix, char c)
 			continue ;
 		while (matrix[i][start])
 		{
-			index = strchr_index_next(matrix[i], '*', start);
+			index = strchr_index_next(matrix[i], c, start);
 			if (matrix[i][index] == '\0') /* talvez de merda kk tem que testar mais*/
 			{
 				start = 0;
 				index = 0;
 				break ;
 			}
-			if (count_quotes_right(matrix[i] + index, c) % 2 != 0
-					&& count_quotes_left(matrix[i] + index, index, c) % 2 != 0)
-				matrix[i][index] = WILDCARD_MARKER;
+			if (count_quotes_right(matrix[i] + index, quote_type) % 2 != 0
+					&& count_quotes_left(matrix[i], index, quote_type) % 2 != 0)
+					{	
+						matrix[i][index] = marker;
+					}
 			start = index + 1;
 		}
 	}
