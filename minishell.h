@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/06/19 21:59:21 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/26 03:02:34 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <sys/types.h>
 # include <termios.h>
 # include <unistd.h>
+# include <sys/wait.h>
 
 void					logi(int x);
 void					logfl(float x);
@@ -104,6 +105,7 @@ typedef struct s_operators
 {
 	int	result1;
 	int	result2;
+	int	valid;
 }						t_operators;
 
 typedef struct s_tree
@@ -124,7 +126,7 @@ typedef struct s_tree
 	struct s_tree		*subtree;
 }						t_tree;
 
-typedef	struct s_procces
+typedef	struct s_process
 {
 	pid_t				pid;
 	t_tree				*dad;
@@ -142,6 +144,7 @@ void					free_split(char **input);
 void					free_tokens(char **matrix, t_token *tokens);
 void					envadd_back(t_env **lst, t_env *new);
 void					unset_env_if(t_env **env, const char *target_key);
+void					process_creator(t_tree **tree, t_process **process);
 int						sintaxe_error(t_token **tokens);
 int						ft_len_matrix(char **matrix);
 int						jump_char(char chr);

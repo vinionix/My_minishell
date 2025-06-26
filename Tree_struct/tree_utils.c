@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:19:27 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/20 00:21:34 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/25 17:03:30 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ t_tree	*node_creator(t_token *tokens, int id)
 	{
 		node->u_define.operators.result1 = -1;
 		node->u_define.operators.result2 = -1;
+		node->u_define.operators.valid = 1;
 	}
 	return(node);
 }

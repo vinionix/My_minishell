@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/19 23:17:18 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/26 03:03:37 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,9 +150,12 @@ int	tokenizer(t_arg_main *args)
 		}
 	}
 	t_tree	*tree;
+	t_process	*process;
 
 	tree = NULL;
+	process = NULL;
 	tree_creator(&args->tokens, &tree, -1);
+	process_creator(&tree, &process);
 	print_tree(tree, 0);
 	exit(0);
 	if (args)
