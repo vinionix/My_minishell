@@ -56,18 +56,15 @@ void parse_quotes(char **matrix, char c, char quote_type, char marker)
 		while (matrix[i][start])
 		{
 			index = strchr_index_next(matrix[i], c, start);
-			if (matrix[i][index] == '\0') /* talvez de merda kk tem que testar mais*/
-			{
-				start = 0;
-				index = 0;
-				break ;
-			}
 			if (count_quotes_right(matrix[i] + index, quote_type) % 2 != 0
 					&& count_quotes_left(matrix[i], index, quote_type) % 2 != 0)
-					{	
-						matrix[i][index] = marker;
-					}
-			start = index + 1;
+				matrix[i][index] = marker;
+			if (matrix[i][index])
+				start = index + 1;
+			else
+				break ;
 		}
+		start = 0;
+		index = 0;
 	}
 }

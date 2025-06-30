@@ -18,9 +18,10 @@
 
 typedef struct envUtils
 {
-	char	*result;
-	char	*temp_str;
-	bool	first_time;
+	int		i;
+	int		final_len;
+	char	*copy;
+	char	*new_str;
 }	t_vars;
 
 t_env	*export_new_env(char *key, char *value);

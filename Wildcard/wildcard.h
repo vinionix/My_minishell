@@ -16,7 +16,9 @@
 # include "../minishell.h"
 
 # define EXPANSION_MARKER '\x1D'
+# define POSSIBLE_ENV_MARKER '\x1E'
 # define SINGLE_QUOTE_MARKER '\x1F'
+# define DOUBLE_QUOTE_MARKER '\x1C'
 
 typedef struct s_wildcard
 {

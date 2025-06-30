@@ -69,13 +69,13 @@ int	main(int ac, char **av, const char **env)
 	(void)av;
 	(void)env;
 
-	char **matrix = malloc(2 * 8);
-	matrix[0] = ft_strdup("alou$USER $a $USER");
-	matrix[1] = NULL;
+	char **matrix = malloc(3 * 8);
+	matrix[0] = ft_strdup("'b $USER  aa $a  $USER aaaaa dddddd $$U$  $  '");
+	matrix[1] = ft_strdup("'\"\"$USER\"\"'");
+	matrix[2] = NULL;
 
 	t_env *env_lst = get_env_vars(env);
 	expand_variables(matrix, env_lst);
-	exit(1);
 	for (int i = 0; matrix[i]; i++)
 		logs(matrix[i]);
 	exit(1);
