@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:19:27 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/25 17:03:30 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:21:14 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,6 @@ t_tree	*node_creator(t_token *tokens, int id)
 	}
 	else if ((tokens)[i].type == TK_PIPE)
 		pipe(node->u_define.pipe.pipefd);
-	else if ((tokens)[i].type == TK_AND || (tokens)[i].type == TK_OR)
-	{
-		node->u_define.operators.result1 = -1;
-		node->u_define.operators.result2 = -1;
-		node->u_define.operators.valid = 1;
-	}
 	return(node);
 }
 

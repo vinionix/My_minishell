@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/06/26 03:02:34 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/02 05:40:33 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,12 @@ typedef struct s_pipe
 	int					pipefd[2];
 }						t_pipe;
 
-typedef struct s_operators
+typedef struct s_data
 {
-	int	result1;
-	int	result2;
-	int	valid;
-}						t_operators;
+	int					exit_code;
+	char				**env;
+}						t_data;
+
 
 typedef struct s_tree
 {
@@ -117,7 +117,6 @@ typedef struct s_tree
 	union
 	{
 		t_pipe			pipe;
-		t_operators		operators;
 		t_command		command;
 	} u_define;
 	struct s_tree		*left;
@@ -141,10 +140,14 @@ char					*built_pwd(void);
 void					tree_creator(t_token **tokens, t_tree **tree, int id);
 void					ft_lexer(t_token **tokens);
 void					free_split(char **input);
+void					process_add_back(t_process **main, t_process *node);
 void					free_tokens(char **matrix, t_token *tokens);
 void					envadd_back(t_env **lst, t_env *new);
 void					unset_env_if(t_env **env, const char *target_key);
-void					process_creator(t_tree **tree, t_process **process);
+void					tk_pipe_right(t_tree *current_node);
+void					tk_pipe_left(t_tree **current_node);
+void					exorcise_manager(t_tree **tree);
+void					exorcise(t_tree *current_node, int flag);
 int						sintaxe_error(t_token **tokens);
 int						ft_len_matrix(char **matrix);
 int						jump_char(char chr);
@@ -157,8 +160,10 @@ int						built_echo_n(const char *str);
 int						new_var_parsing(t_token *tokens, t_env **envs);
 int						built_env(t_env *env);
 int						strchr_index(const char *str, char stop); 
+t_process				*node_process_creator(t_tree *node);
 t_tree					*last_left(t_tree *tree);
 t_env					*env_new(void);
 t_env					*get_env_vars(const char **env);
+t_data					*get_data(void);
 
 #endif
