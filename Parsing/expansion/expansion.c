@@ -151,7 +151,8 @@ static char	*mark_expansions(char *str)
 		copy[i++] = POSSIBLE_ENV_MARKER;
 		while (copy[i] && copy[i] != ' ' && copy[i] != '$'
 			&& copy[i] != SINGLE_QUOTE_MARKER && copy[i] != DOUBLE_QUOTE_MARKER
-				&& copy[i] != '\'' && copy[i] != '\"' && copy[i] != '*')
+				&& copy[i] != '\'' && copy[i] != '\"' && copy[i] != '*'
+					&& copy[i] != '/' && copy[i] != ',')
 			copy[i++] = POSSIBLE_ENV_MARKER;
 		i = jump_to(copy, '$', i);
 	}
@@ -195,7 +196,8 @@ void	parse_edge_case(char **matrix)
 		while (matrix[i][++j])
 		{
 			if (matrix[i][j] && matrix[i][j] == '$' && (matrix[i][j + 1] == ' '
-				|| matrix[i][j + 1] == '\0'))
+				|| matrix[i][j + 1] == SINGLE_QUOTE_MARKER
+					|| matrix[i][j + 1] == '\0'))
 				matrix[i][j] = EXPANSION_MARKER;
 		}
 		j = -1;
@@ -207,9 +209,6 @@ void	expand_variables(char **matrix, t_env *env_lst)
 	int	i;
 
 	i = 0;
-	parse_quotes(matrix, '\'', '\"', SINGLE_QUOTE_MARKER);
-	parse_quotes(matrix, '\"', '\'', DOUBLE_QUOTE_MARKER);
-	parse_quotes(matrix, '$', '\'', EXPANSION_MARKER);
 	parse_edge_case(matrix);
 	while (matrix[i])
 	{
@@ -217,8 +216,4 @@ void	expand_variables(char **matrix, t_env *env_lst)
 			matrix[i] = expand(matrix[i], env_lst);
 		i++;
 	}
-	reset_modified_chars(matrix, '$');
-	remove_quotes(matrix);
-	reset_modified_chars(matrix, '\'');
-	reset_modified_chars(matrix, '\"');
 }

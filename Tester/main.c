@@ -69,17 +69,22 @@ int	main(int ac, char **av, const char **env)
 	(void)av;
 	(void)env;
 
-	char **matrix = malloc(3 * 8);
-	matrix[0] = ft_strdup("'b $USER  aa $a  $USER aaaaa dddddd $$U$  $  '");
-	matrix[1] = ft_strdup("'\"\"$USER\"\"'");
-	matrix[2] = NULL;
+	char **matrix = malloc(11 * 8);
+	matrix[0] = ft_strdup("ls");
+	matrix[1] = ft_strdup("$USER tem arquivos: ");
+	matrix[2] = ft_strdup("'Arquivo *.txt está no diretório $HOME'");
+	matrix[3] = ft_strdup("\"Arquivo atual é '$PWD/file.txt'\"");
+	matrix[4] = ft_strdup("*\".txt\"$USER a $PWD");
+	matrix[5] = ft_strdup("$USER\"\"");
+	matrix[6] = ft_strdup("\"*\".txt\"\"");
+	matrix[7] = ft_strdup("\"Usuario: $USER\"");
+	matrix[8] = ft_strdup("'Path:'");
+	matrix[9] = ft_strdup("$PATH");
+	matrix[10] = NULL;
 
 	t_env *env_lst = get_env_vars(env);
-	expand_variables(matrix, env_lst);
-	for (int i = 0; matrix[i]; i++)
-		logs(matrix[i]);
-	exit(1);
-	matrix = wildcard(matrix);
+	matrix = expand_and_wildcard(matrix, env_lst);
+	ft_echo(matrix);
 	free_matrix(matrix);
 	free_env_list(env_lst);
 }

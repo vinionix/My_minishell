@@ -53,7 +53,8 @@ void			remove_quotes(char **matrix);
 void			parse_quotes(char **matrix, char c, char quote_type, char marker);
 int				count_chars(char *str);
 void			reset_modified_chars(char **matrix, char c);
-char			**command_with_asterisk(char **matrix);
+char			**command_with_asterisk(char **matrix, bool *is_solo);
 bool			is_hidden_file(char *str);
+char			**take_first_pointer_only(char **matrix);
 
 #endif

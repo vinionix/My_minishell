@@ -36,3 +36,16 @@ char **join_matrices(char **matrix1, char **matrix2, int copy_until)
 	free_matrix(matrix2);
 	return (new_matrix);
 }
+
+char	**take_first_pointer_only(char **matrix)
+{
+	char	**new_m;
+
+	new_m = (char **)malloc(2 * sizeof(char *));
+	if (!new_m)
+		return (NULL);
+	new_m[0] = ft_strdup(matrix[0]);
+	new_m[1] = NULL;
+	free_matrix(matrix);
+	return (new_m);
+}

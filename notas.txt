@@ -1,16 +1,5 @@
 06/21/2025
 
-Tratar variáveis entre aspas simples na expansão ('$PWD' não deve expandir).
-difficulty: PRONTO
-
-Separar expansões por espaço
-difficulty: Easy/Medium
-
-Tratar * para comando no matrix[0] (Wildcard)
-difficulty: Easy
-
-Tratar aspas simples dentro de aspas duplas
-
 Tratar cd ~/ (expandir a variável $HOME e fazer join como o resto).
 difficulty: Easy
 
@@ -20,5 +9,5 @@ difficulty: Easy
 exit built in.
 difficulty: Medium
 
-Possibilitar ls -a para exibir arquivos ocultos
-difficulty: PRONTO
+separar strings por apenas um espaço
+difficulty: ???

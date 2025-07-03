@@ -21,7 +21,7 @@ void	change_cwd(t_env *env_list)
 	env_to_change->value = get_pwd();
 }
 
-int	check_flag(const char **matrix)
+int	check_flag(char **matrix)
 {
 	if (matrix)
 	{

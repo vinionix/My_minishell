@@ -15,6 +15,7 @@
 bool	verify_ls_flag(char **matrix)
 {
 	if (matrix[0] && matrix[1])
-		return (ft_strcmp(matrix[0], "ls") == 0 && ft_strcmp(matrix[1], "-a") == 0);
+		return (ft_strcmp(matrix[0], "ls") == 0 && matrix[1][0] == '-'
+					&& ft_strchr(matrix[1], 'a'));
 	return (false);
 }

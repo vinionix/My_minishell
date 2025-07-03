@@ -59,7 +59,7 @@ void	reset_modified_chars(char **matrix, char c)
 	}
 }
 
-char	**command_with_asterisk(char **matrix)
+char	**command_with_asterisk(char **matrix, bool *is_solo)
 {
 	char	**solo_matrix;
 
@@ -70,8 +70,10 @@ char	**command_with_asterisk(char **matrix)
 		solo_matrix[0] = ft_strdup(matrix[0]);
 		solo_matrix[1] = NULL;
 		free_matrix(matrix);
+		*is_solo = true;
 		return (solo_matrix);
 	}
+	*is_solo = false;
 	return (matrix);
 }
 

@@ -36,7 +36,7 @@ int	ft_cd(char **matrix, t_env *env_list)
 	return (return_value);
 }
 
-int	ft_echo_n(const char **matrix)
+int	ft_echo_n(char **matrix)
 {
 	int	i;
 
@@ -51,7 +51,7 @@ int	ft_echo_n(const char **matrix)
 	return (0);
 }
 
-int	ft_echo(const char **matrix)
+int	ft_echo(char **matrix)
 {
 	int	i;
 
@@ -64,23 +64,23 @@ int	ft_echo(const char **matrix)
 	return (0);
 }
 
-int	ft_pwd(const char **matrix)
+int	ft_pwd(char **matrix)
 {
-	const char	*pwd;
+	char	*pwd;
 	int		flag;
 
 	flag = check_flag(matrix);
 	if (flag)
 	{
 		printf("minishell: pwd: %c%c: invalid option\n", (*matrix)[0], (*matrix)[1]);
-		free_matrix((char **)matrix);
+		free_matrix(matrix);
 		return (2);
 	}
 	pwd = get_pwd();
 	if (!pwd)
 		return (1);
 	printf("%s\n", pwd);
-	free((char *)pwd);
+	free(pwd);
 	return (0);
 }
 
