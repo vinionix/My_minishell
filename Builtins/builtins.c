@@ -19,7 +19,7 @@ int	ft_cd(char **matrix, t_env *env_list)
 	return_value = 0;
 	if (!matrix)
 		return (1);
-	if (ft_len_matrix((char **)matrix) > 1)
+	if (ft_len_matrix(matrix) > 1)
 	{
 		printf("Too many args for cd command\n");
 		return_value = 1;

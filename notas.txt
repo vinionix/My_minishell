@@ -11,3 +11,6 @@ difficulty: Medium
 
 separar strings por apenas um espaço
 difficulty: ???
+
+consertar final do echo (normal)
+difficulty: easy

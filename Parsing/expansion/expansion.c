@@ -77,7 +77,7 @@ static bool	*find_matches(char **matrix, t_env *env_lst, t_vars *var)
 	bool	*matches;
 
 	temp = env_lst;
-	matches = (bool *)malloc(ft_len_matrix(matrix));
+	matches = (bool *)ft_calloc(ft_len_matrix(matrix), 1);
 	while (matrix[++var->i])
 	{
 		while (temp)
@@ -122,7 +122,7 @@ char	**create_possible_envs(char **matrix, char *str, char *copy)
 	i = 0;
 	j = 0;
 	size = find_size(copy);
-	matrix = (char **)malloc((size + 1) * sizeof(char *));
+	matrix = (char **)ft_calloc((size + 1) * sizeof(char *), 1);
 	size = 0;
 	while (copy[i])
 	{

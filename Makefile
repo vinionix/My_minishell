@@ -7,6 +7,8 @@ FUNCTIONS = Tester/debug.c \
             Builtins/builtins.c \
 						Builtins/env_builtins.c \
 						Builtins/builtins_utils.c \
+						Builtins/builtins2.c \
+						Builtins/clean.c \
 						Parsing/expansion/default_env.c \
 						Parsing/expansion/env_utils.c \
 						Parsing/expansion/new_var_parsing.c \

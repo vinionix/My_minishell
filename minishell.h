@@ -144,6 +144,7 @@ int						ft_echo_n(char **matrix);
 int						new_var_parsing(char **matrix, t_env **envs);
 int						ft_pwd(char **matrix);
 int						ft_env(t_env *env);
+unsigned char			ft_exit(char **matrix, t_tree *tree, t_env *env);
 char					*get_pwd(void);
 void					unset_env_if(t_env **env, const char *target_key);
 int						strchr_index(const char *str, char stop);
@@ -161,5 +162,6 @@ char					**wildcard(char **matrix);
 bool					have_char(char *str, char c);
 bool					verify_ls_flag(char **matrix);
 char					**expand_and_wildcard(char **matrix, t_env *env_lst);
+void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
 
 #endif
