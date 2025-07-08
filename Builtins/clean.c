@@ -31,5 +31,6 @@ void	ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code)
 {
 	free_env_list(env);
 	free_tree(tree);
+	printf("\nEXITING WITH CODE: %d\n", exit_code);
 	exit(exit_code);
 }

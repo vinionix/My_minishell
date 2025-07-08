@@ -69,11 +69,10 @@ int	main(int ac, char **av, const char **env)
 	(void)av;
 	(void)env;
 
-	char **matrix = malloc(4 * 8);
+	char **matrix = malloc(3 * 8);
 	matrix[0] = ft_strdup("exit");
-	matrix[1] = ft_strdup("123a");
-	matrix[2] = ft_strdup("awdawd");
-	matrix[3] = NULL;
+	matrix[1] = ft_strdup("-9223372036854775809");
+	matrix[2] = NULL;
 
 	t_tree *null = NULL;
 	t_env *envs = get_env_vars(env);

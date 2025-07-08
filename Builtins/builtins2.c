@@ -14,6 +14,8 @@
 
 static bool	only_numbers(char *str)
 {
+	if (str[0] && (str[0] == '-' || str[0] == '+'))
+		str++;
 	while (*str)
 	{
 		if (!ft_isdigit((int)*str))
@@ -23,11 +25,20 @@ static bool	only_numbers(char *str)
 	return (true);
 }
 
+static bool	long_check(char *str)
+{
+	bool	error;
+
+	error = false;
+	ft_atol(str, &error);
+	return (error);
+}
+
 static unsigned char get_exit_code(char *str)
 {
 	unsigned char	exit_code;
 
-	exit_code = (unsigned char)ft_atoi(str);
+	exit_code = (unsigned char)ft_atol(str, false);
 	return (exit_code);
 }
 
@@ -40,7 +51,7 @@ unsigned char	ft_exit(char **matrix, t_tree *tree, t_env *env)
 		return (1);
 	if (ft_len_matrix(matrix) == 1)
 		ft_clean_and_exit(env, tree, return_value);
-	else if (!only_numbers(matrix[1]))
+	else if (!only_numbers(matrix[1]) || long_check(matrix[1]))
 	{
 		printf("exit\n");
 		printf("minishell: exit: %s: numeric argument required\n", matrix[1]);

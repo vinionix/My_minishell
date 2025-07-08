@@ -28,6 +28,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <termios.h>
+# include <limits.h>
 # include <unistd.h>
 
 void					logi(int x);
@@ -163,5 +164,6 @@ bool					have_char(char *str, char c);
 bool					verify_ls_flag(char **matrix);
 char					**expand_and_wildcard(char **matrix, t_env *env_lst);
 void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
+long					ft_atol(char *str, bool *overflow);
 
 #endif

@@ -46,7 +46,7 @@ void	free_matrix(char **matrix)
 
 char	*get_pwd(void)
 {
-	char	*pwd;
+	char		*pwd;
 	size_t		size;
 
 	pwd = NULL;
@@ -55,19 +55,37 @@ char	*get_pwd(void)
 	{
 		pwd = (char *)malloc(size);
 		if (!pwd)
-		{
-			perror("malloc");
 			return (NULL);
-		}
 		if (getcwd((char *)pwd, size) != NULL)
 			return (pwd);
 		free((char *)pwd);
-		if (errno != ERANGE)
-		{
-			perror("getcwd");
-			return (NULL);
-		}
 		size *= 2;
 	}
 	return (pwd);
+}
+
+long	ft_atol(char *str, bool *error)
+{
+	long long	res;
+	long long	sign;
+
+	res = 0;
+	sign = 1;
+	while (*str == ' ' || (*str >= 9 && *str <= 13))
+		str++;
+	if (!(*str >= '0' && *str <= '9'))
+	{
+		if (*str == '-')
+			sign = -1;
+		else if (*str != '+')
+			*error = true;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		if (!ft_isdigit(*str))
+			*error = true;
+		res = res * 10 + (*str++ - 48);
+	}
+	return ((long)res * sign);
 }
