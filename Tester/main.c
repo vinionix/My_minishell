@@ -71,7 +71,7 @@ int	main(int ac, char **av, const char **env)
 
 	char **matrix = malloc(3 * 8);
 	matrix[0] = ft_strdup("exit");
-	matrix[1] = ft_strdup("   -9223372036854775808    ");
+	matrix[1] = ft_strdup("-1    ");
 	matrix[2] = NULL;
 
 	t_tree *null = NULL;
