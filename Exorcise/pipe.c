@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:32 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/02 06:04:33 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/06 16:11:07 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,34 +63,35 @@ void	wait_free_processs(t_process **process, int saved_stdin)
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdin);
 }
-void	tk_pipe_left(t_tree **current_node)
+
+void	last_iteration(t_process **process, t_tree *current_node)
 {
-	int			saved_stdin;
-	t_process	*process;
 	t_process	*temp;
 	
-	process = NULL;
-	saved_stdin = dup(STDIN_FILENO);
-	while ((*current_node)->prev && (*current_node)->type == TK_PIPE)
+	process_add_back(process, node_process_creator(current_node->right));
+	temp = search_process(process, current_node->right);
+	if (temp->pid == 0)
+		exorcise(current_node->right, 2);
+}
+void	tk_pipe_left(t_tree **current_node, t_process **process)
+{
+	t_process	*temp;
+	
+	if ((*current_node)->left && (*current_node)->left->type == TK_COMMAND)
+		first_iteration(&(*process), (*current_node));
+	if ((*current_node)->right && (*current_node)->right->type == TK_COMMAND)
 	{
-		if ((*current_node)->left->type == TK_COMMAND)
-			first_iteration(&process, (*current_node));
-		if ((*current_node)->right->type == TK_COMMAND)
+		process_add_back(&(*process), node_process_creator((*current_node)->right));
+		temp = search_process(&(*process), (*current_node)->right);
+		if (temp->pid == 0)
+		exorcise((*current_node)->right, 1);
+		else if ((*current_node)->prev && (*current_node)->prev->type == TK_PIPE)
 		{
-			process_add_back(&process, node_process_creator((*current_node)->right));
-			temp = search_process(&process, (*current_node)->right);
-			if (temp->pid == 0)
-				exorcise((*current_node)->right, 1);
-			else if ((*current_node)->prev && (*current_node)->prev->type == TK_PIPE)
-			{
-				dup2((*current_node)->prev->u_define.pipe.pipefd[0], STDIN_FILENO);
-				close((*current_node)->prev->u_define.pipe.pipefd[0]);
-				close((*current_node)->prev->u_define.pipe.pipefd[1]);
-			}
+			dup2((*current_node)->prev->u_define.pipe.pipefd[0], STDIN_FILENO);
+			close((*current_node)->prev->u_define.pipe.pipefd[0]);
+			close((*current_node)->prev->u_define.pipe.pipefd[1]);
 		}
-		(*current_node) = (*current_node)->prev;
 	}
-	wait_free_processs(&process, saved_stdin);
 }
 
 void	tk_pipe_right(t_tree *current_node)
@@ -101,10 +102,15 @@ void	tk_pipe_right(t_tree *current_node)
 	
 	process = NULL;
 	saved_stdin = dup(STDIN_FILENO);
-	while (current_node->right && current_node->type == TK_PIPE)
+	if (current_node->left->type == TK_COMMAND)
+		first_iteration(&process, current_node);
+	while (current_node->type == TK_PIPE)
 	{
-		if (current_node->left->type == TK_COMMAND)
-			first_iteration(&process, current_node);
+		if (current_node->right->type == TK_COMMAND)
+		{
+			last_iteration(&process, current_node);
+			break ;
+		}
 		if (current_node->left->type == TK_COMMAND)
 		{
 			process_add_back(&process, node_process_creator(current_node->left));

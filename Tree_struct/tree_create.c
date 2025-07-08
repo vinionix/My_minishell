@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/19 22:03:58 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/06 14:01:49 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	**creat_command(int id_command, t_token *tokens)
 	}
 	command = malloc(sizeof(char *) * (count_words + 1));
 	command[count_words] = NULL;
-	command[0] = (tokens)[j].value;
+	command[0] = (tokens)[j].value; //usar strdup;
 	if (count_words > 1)
 	{
 
@@ -45,7 +45,7 @@ char	**creat_command(int id_command, t_token *tokens)
 		{
 			if ((tokens)[j].type == TK_CMD_ARG)
 			{
-				command[i] = (tokens)[j].value;
+				command[i] = (tokens)[j].value; //usar strdup;
 				i++;
 			}
 			j++;

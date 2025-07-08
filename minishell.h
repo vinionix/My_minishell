@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/07/02 05:40:33 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/06 15:45:44 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,9 +145,10 @@ void					free_tokens(char **matrix, t_token *tokens);
 void					envadd_back(t_env **lst, t_env *new);
 void					unset_env_if(t_env **env, const char *target_key);
 void					tk_pipe_right(t_tree *current_node);
-void					tk_pipe_left(t_tree **current_node);
+void					tk_pipe_left(t_tree **current_node, t_process **process);
 void					exorcise_manager(t_tree **tree);
 void					exorcise(t_tree *current_node, int flag);
+void					wait_free_processs(t_process **process, int saved_stdin);
 int						sintaxe_error(t_token **tokens);
 int						ft_len_matrix(char **matrix);
 int						jump_char(char chr);
