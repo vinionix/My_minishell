@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 21:06:12 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/26 06:00:17 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:08:26 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	main(int ac, char **av, const char **env)
 
 	char **matrix = malloc(3 * 8);
 	matrix[0] = ft_strdup("exit");
-	matrix[1] = ft_strdup("-9223372036854775809");
+	matrix[1] = ft_strdup("   -9223372036854775808    ");
 	matrix[2] = NULL;
 
 	t_tree *null = NULL;

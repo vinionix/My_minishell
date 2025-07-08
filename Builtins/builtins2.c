@@ -12,20 +12,43 @@
 
 #include "../minishell.h"
 
+static int jump_space_and_0(char *str)
+{
+	int	i;
+
+	i = 0;
+	while(str[i] == ' ')
+		i++;
+	while (str[i] == '0')
+		i++;
+	return (i);
+}
+
 static bool	only_numbers(char *str)
 {
-	if (str[0] && (str[0] == '-' || str[0] == '+'))
-		str++;
-	while (*str)
+	int	i;
+
+	i = jump_space_and_0(str);
+	if (str[i] && (str[i] == '-' || str[i] == '+'))
+		i++;
+	while (str[i])
 	{
-		if (!ft_isdigit((int)*str))
-			return (false);
-		str++;
+		if (!ft_isdigit((int)str[i]))
+		{
+			if (str[i] == ' ')
+				return (str[jump_to_smt_else(str, ' ', i)] == '\0');
+			else
+			{
+				printf("AAA\n");
+				return (false);
+			}
+		}
+		i++;
 	}
 	return (true);
 }
 
-static bool	long_check(char *str)
+bool	long_check(char *str)
 {
 	bool	error;
 
@@ -51,8 +74,9 @@ unsigned char	ft_exit(char **matrix, t_tree *tree, t_env *env)
 		return (1);
 	if (ft_len_matrix(matrix) == 1)
 		ft_clean_and_exit(env, tree, return_value);
-	else if (!only_numbers(matrix[1]) || long_check(matrix[1]))
+	else if (!only_numbers(matrix[1]))
 	{
+		printf("RETORNOU FALSE");
 		printf("exit\n");
 		printf("minishell: exit: %s: numeric argument required\n", matrix[1]);
 		ft_clean_and_exit(env, tree, 2);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/06/11 18:21:43 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:03:05 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,5 +165,6 @@ bool					verify_ls_flag(char **matrix);
 char					**expand_and_wildcard(char **matrix, t_env *env_lst);
 void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
 long					ft_atol(char *str, bool *overflow);
+int						jump_to_smt_else(char *str, char c, int i);
 
 #endif
