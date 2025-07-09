@@ -155,7 +155,7 @@ int	tokenizer(t_arg_main *args)
 	tree_creator(&args->tokens, &tree, -1);
 	exorcise_manager(&tree);
 	print_tree(tree, 0);
-	free_tree(tree);
+	//free_tree(tree);
 	exit(0);
 	if (args)
 	{

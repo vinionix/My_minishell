@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-void	free_tree(t_tree *node)
+/*void	free_tree(t_tree *node)
 {
 	if (node == NULL)
 		return ;
@@ -33,4 +33,4 @@ void	free_tree(t_tree *node)
 		return ;
 	}
 	free(node);
-}
+}*/

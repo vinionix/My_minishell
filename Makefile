@@ -31,7 +31,6 @@ FUNCTIONS = Tester/debug.c \
 			Wildcard/verify_ls_flag.c \
 			Tree_struct/tree_utils.c \
 			Tree_struct/tree_create.c \
-      Tree_struct/free_tree.c \
 			Exorcise/execution.c \
 			Exorcise/pipe.c
 
