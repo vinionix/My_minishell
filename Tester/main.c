@@ -67,19 +67,5 @@ int	main(int ac, char **av, const char **env)
 {
 	(void)ac;
 	(void)av;
-	(void)env;
-
-	char **matrix = malloc(3 * 8);
-	matrix[0] = ft_strdup("exit");
-	matrix[1] = ft_strdup("-1    ");
-	matrix[2] = NULL;
-
-	t_tree *null = NULL;
-	t_env *envs = get_env_vars(env);
-
-
-	printf("status code: %d\n", (int)ft_exit(matrix, null, envs));
-	printf("Program did not finish!");
-
-	free_matrix(matrix);
+	aux_main(env);
 }
