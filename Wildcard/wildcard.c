@@ -102,16 +102,11 @@ char	**wildcard(char **matrix)
 {
 	t_wildcard	*list;
 	t_var		var;
-	bool		is_solo;
 
 	list = NULL;
-	is_solo = false;
 	init_vars(&var);
 	read_current_dir(&list);
-	matrix = command_with_asterisk(matrix, &is_solo);
 	matrix = wildcard_aux(matrix, list, &var, verify_ls_flag(matrix));
-	if (is_solo)
-		matrix = take_first_pointer_only(matrix);
 	free_wildlist(&list);
 	return (matrix);
 }

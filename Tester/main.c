@@ -48,24 +48,15 @@ void	aux_main(const char **env)
 	}
 }
 
-void free_env_list(t_env *list)
-{
-	t_env *temp;
-
-	temp = list;
-	while (temp)
-	{
-		temp = list->next;
-		free(list->value);
-		free(list->key);
-		free(list);
-		list = temp;	
-	}
-}
-
 int	main(int ac, char **av, const char **env)
 {
 	(void)ac;
 	(void)av;
-	aux_main(env);
+	(void)env;
+	//aux_main(env);
+	char **matrix = malloc(3 * 8);
+	matrix[0] = ft_strdup("exit");
+	matrix[1] = ft_strdup("      9223372036854775807-   ");
+	matrix[2] = NULL;
+	ft_exit(matrix, NULL, NULL);
 }

@@ -64,28 +64,21 @@ char	*get_pwd(void)
 	return (pwd);
 }
 
-long	ft_atol(char *str, bool *error)
+unsigned long long	ft_atol(char *str, int *sign)
 {
-	long long	res;
-	long long	sign;
+	unsigned long long	res;
 
 	res = 0;
-	sign = 1;
+	*sign = 1;
 	while (*str == ' ' || (*str >= 9 && *str <= 13))
 		str++;
 	if (!(*str >= '0' && *str <= '9'))
 	{
 		if (*str == '-')
-			sign = -1;
-		else if (*str != '+')
-			*error = true;
+			*sign = -1;
 		str++;
 	}
 	while (*str >= '0' && *str <= '9')
-	{
-		if (!ft_isdigit(*str))
-			*error = true;
 		res = res * 10 + (*str++ - 48);
-	}
-	return ((long)res * sign);
+	return (res);
 }

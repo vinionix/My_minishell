@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-static void free_env_list(t_env *list)
+void free_env_list(t_env *list)
 {
 	t_env *temp;
 
@@ -29,9 +29,12 @@ static void free_env_list(t_env *list)
 
 void	ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code)
 {
-	(void)tree;
-	free_env_list(env);
-	//free_tree(tree);
-	printf("\nEXITING WITH CODE: %d\n", exit_code);
+	if (env)
+		free_env_list(env);
+	if (tree)
+	{
+		//free_tree(tree);
+	}
+	//printf("\nEXITING WITH CODE: %d\n", exit_code);
 	exit(exit_code);
 }
