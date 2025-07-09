@@ -1,16 +1,8 @@
-06/21/2025
+Vinicius:
 
-Tratar cd ~/ (expandir a variável $HOME e fazer join como o resto).
-difficulty: Easy
-
-Tratar $? na expansão
-difficulty: Easy
-
-exit built in.
-difficulty: Medium
-
-separar strings por apenas um espaço
-difficulty: ???
-
-consertar final do echo (normal)
-difficulty: easy
+1 - Tratar erros de sintaxe da forma correta;
+2 - Achar paths dos comandos na hora da execução;
+3 - Criar Heredoc;
+4 - Fazer redirs na execução sendo eles com comandos ou sem comandos;
+5 - Criar subshell;
+6 - Identificar se um comando é bultin ou não na hora de executar;
