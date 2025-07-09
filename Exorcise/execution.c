@@ -100,11 +100,16 @@ void	tk_or(t_tree **current_node)
 	{
 		pid = fork();
 		if (pid == 0)
+		{
+			signal(SIGINT, SIG_DFL);
 			exorcise((*current_node)->left, -1);
+		}
 		else
 		{
 			waitpid(pid, &status, 0);
 			get_data()->exit_code = WEXITSTATUS(status);
+			if (get_data()->exit_code == SIGINT)
+				printf("aaaaameu deusss\n");
 		}
 	}
 	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code != 0)

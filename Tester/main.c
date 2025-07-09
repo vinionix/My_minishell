@@ -52,11 +52,9 @@ int	main(int ac, char **av, const char **env)
 {
 	(void)ac;
 	(void)av;
-	(void)env;
-	//aux_main(env);
-	char **matrix = malloc(3 * 8);
+	aux_main(env);
+	/*char **matrix = malloc(3 * 8);
 	matrix[0] = ft_strdup("exit");
 	matrix[1] = ft_strdup("      9223372036854775807-   ");
-	matrix[2] = NULL;
-	ft_exit(matrix, NULL, NULL);
+	matrix[2] = NULL;*/
 }
