@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/12 01:17:47 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/04 00:52:20 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,6 @@ void	print_tree(t_tree *node, int level)
 		printf(" CMD: \"%s\"", node->u_define.command.cmd[0]); // ou mais argumentos se quiser
 		printf(" PREV: \"%d\"", node->prev->type); // ou mais argumentos se quiser
 	}
-	if (node->type == TK_HEREDOC)
-		printf(" EOF: \"%s\"", node->u_define.here.eof);
 	printf("\n");
 	if (node->left || node->right)
 	{
@@ -155,6 +153,7 @@ int	tokenizer(t_arg_main *args)
 
 	tree = NULL;
 	tree_creator(&args->tokens, &tree, -1);
+	exorcise_manager(&tree);
 	print_tree(tree, 0);
 	free_tree(tree);
 	exit(0);
@@ -166,5 +165,3 @@ int	tokenizer(t_arg_main *args)
 	}
 	return (0);
 }
-
-

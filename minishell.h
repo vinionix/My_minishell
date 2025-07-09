@@ -30,19 +30,13 @@
 # include <termios.h>
 # include <limits.h>
 # include <unistd.h>
+# include <sys/wait.h>
 
 void					logi(int x);
 void					logfl(float x);
 void					logd(double x);
 void					logc(char x);
 void					logs(const char *x);
-
-typedef struct s_env
-{
-	char				*key;
-	char				*value;
-	struct s_env		*next;
-}						t_env;
 
 typedef enum e_token_type
 {
@@ -63,6 +57,13 @@ typedef enum e_token_type
 	TK_COMMAND 
 }						t_token_type;
 
+typedef struct s_env
+{
+	char				*key;
+	char				*value;
+	struct s_env		*next;
+}						t_env;
+
 typedef struct s_token
 {
 	t_token_type		type;
@@ -70,6 +71,7 @@ typedef struct s_token
 	int					passed;
 	char				*value;
 }						t_token;
+
 
 typedef struct s_arg_main
 {
@@ -80,10 +82,19 @@ typedef struct s_arg_main
 	int					i;
 }						t_arg_main;
 
+typedef struct s_redir
+{
+	t_token_type		type;
+	char				*file;
+	char				*eof;
+	struct s_redir		*next;
+}						t_redir;
+
 typedef struct s_command
 {
 	char				**cmd;
 	const char			*path;
+	t_redir				*list_redir;
 }						t_command;
 
 typedef struct s_pipe
@@ -91,33 +102,22 @@ typedef struct s_pipe
 	int					pipefd[2];
 }						t_pipe;
 
-typedef struct s_operators
+typedef struct s_data
 {
-	int	result1;
-	int	result2;
-}						t_operators;
+	int					exit_code;
+	char				**env;
+}						t_data;
 
-typedef struct s_redir
-{
-	int	fd;
-}						t_redir;
-
-typedef struct s_here
-{
-	char *eof;
-}						t_here;
 
 typedef struct s_tree
 {
 	t_token_type		type;
 	int					n_builtin;
 	int					id_tree;
+	int					main;
 	union
 	{
 		t_pipe			pipe;
-		t_redir			redir;
-		t_here			here;
-		t_operators		operators;
 		t_command		command;
 	} u_define;
 	struct s_tree		*left;
@@ -126,19 +126,38 @@ typedef struct s_tree
 	struct s_tree		*subtree;
 }						t_tree;
 
+typedef	struct s_process
+{
+	pid_t				pid;
+	t_tree				*dad;
+	int					id_tree;
+	struct s_process	*prev;
+	struct s_process	*next;
+}						t_process;
+
 char					**ft_split(char const *s, char c);
 char					**creat_command(int id_command, t_token *tokens);
+char					*built_pwd(void);
 void					tree_creator(t_token **tokens, t_tree **tree, int id);
 void					ft_lexer(t_token **tokens);
 void					free_split(char **input);
+void					process_add_back(t_process **main, t_process *node);
 void					free_tokens(char **matrix, t_token *tokens);
 void					envadd_back(t_env **lst, t_env *new);
+void					tk_pipe_right(t_tree *current_node);
+void					tk_pipe_left(t_tree **current_node, t_process **process);
+void					exorcise_manager(t_tree **tree);
+void					exorcise(t_tree *current_node, int flag);
+void					wait_free_processs(t_process **process, int saved_stdin);
 int						sintaxe_error(t_token **tokens);
 int						ft_len_matrix(char **matrix);
 int						jump_char(char chr);
 int						chr_separator(char *input, int i);
 int						tokenizer(t_arg_main *args);
 int						env_lstsize(t_env *lst);
+t_process				*node_process_creator(t_tree *node);
+t_tree					*last_left(t_tree *tree);
+t_data					*get_data(void);
 int						ft_cd(char **matrix, t_env *env_list);
 int						ft_echo(char **matrix);
 int						ft_echo_n(char **matrix);

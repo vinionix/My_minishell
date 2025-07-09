@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:19:27 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/12 01:05:25 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:21:14 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,61 @@ static int	final_pos_tokens(t_token *tokens)
 	return (i);
 }
 
+t_redir	*creator_node_redir(t_token tokens)
+{
+	t_redir	*redir;
 
+	redir = malloc(sizeof(t_redir));
+	redir->type = (tokens).type;
+	redir->eof = NULL;
+	redir->next = NULL;
+	redir->file = NULL;
+	if ((tokens).type == TK_EOF)
+		redir->eof = (tokens).value;
+	else if ((tokens).type >= TK_FILE_IN && (tokens).type <= TK_FILE_APP)
+		redir->file = (tokens).value;
+	return (redir);
+}
+
+void	redir_add_back(t_redir **redirects, t_redir *node)
+{
+	t_redir	*head;
+
+	if ((*redirects) == NULL)
+	{
+		(*redirects) = node;
+		return ;
+	}
+	head = (*redirects);
+	while ((*redirects)->next)
+		(*redirects) = (*redirects)->next;
+	(*redirects)->next = node;
+	(*redirects) = head;
+	return ;
+}
+
+static t_redir *creat_list_redir(int id, t_token *tokens)
+{
+	t_redir	*redirects;
+	int		i;
+
+	i = 0;
+	redirects = NULL;
+	while ((tokens)[i].id != id)
+		i++;
+	while ((tokens)[i].id >= 0 && ((tokens)[i].type != TK_COMMAND 
+		&& (!((tokens)[i].type >= TK_PIPE && (tokens)[i].type <= TK_OR))))
+		i--;
+	i++;
+	while ((tokens)[i].value && ((tokens)[i].type != TK_COMMAND 
+		&& (!((tokens)[i].type >= TK_PIPE && (tokens)[i].type <= TK_OR))))
+	{
+		if ((tokens)[i].type >= TK_FILE_IN && (tokens)[i].type <= TK_EOF)
+			redir_add_back(&redirects, creator_node_redir((tokens)[i]));
+		i++;
+	}
+	return (redirects);
+}
 
 t_tree	*node_creator(t_token *tokens, int id)
 {
@@ -42,29 +96,15 @@ t_tree	*node_creator(t_token *tokens, int id)
 	node->right = NULL;
 	node->subtree = NULL;
 	node->prev = NULL;
+	node->main = 0;
 	if ((tokens)[i].type == TK_COMMAND)
 	{
 		node->n_builtin = 0; //is_bultin(tokens);
 		node->u_define.command.cmd = creat_command(id, tokens);
+		node->u_define.command.list_redir = creat_list_redir(id, tokens);
 	}
-	else if ((tokens)[i].type >= TK_REDIR_IN && (tokens)[i].type <= TK_APPEND)
-	{
-		if ((tokens)[i].type == TK_REDIR_IN)
-			node->u_define.redir.fd = open((tokens)[i + 1].value, O_RDONLY);
-		else if ((tokens)[i].type == TK_REDIR_OUT)
-			node->u_define.redir.fd = open((tokens)[i + 1].value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if ((tokens)[i].type == TK_APPEND)
-			node->u_define.redir.fd = open((tokens)[i + 1].value, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	}
-	else if ((tokens)[i].type == TK_HEREDOC)
-		node->u_define.here.eof = ft_strdup((tokens)[i + 1].value);
 	else if ((tokens)[i].type == TK_PIPE)
 		pipe(node->u_define.pipe.pipefd);
-	else if ((tokens)[i].type == TK_AND || (tokens)[i].type == TK_OR)
-	{
-		node->u_define.operators.result1 = -1;
-		node->u_define.operators.result2 = -1;
-	}
 	return(node);
 }
 
@@ -92,15 +132,9 @@ int	search_left(t_token **tokens, int id)
 			flag = 2;
 			receiver = i;
 		}
-		else if ((*tokens)[i].type >= TK_REDIR_IN && (*tokens)[i].type <= TK_HEREDOC 
-			&& flag != 1 && flag != 2 && flag != 3)
+		else if ((*tokens)[i].type == TK_COMMAND && flag != 1 && flag != 2 && flag != 3)
 		{
 			flag = 3;
-			receiver = i;
-		}
-		else if ((*tokens)[i].type == TK_COMMAND && flag != 1 && flag != 2 && flag != 3 && flag != 4)
-		{
-			flag = 4;
 			receiver = i;
 		}
 		i--;
@@ -131,15 +165,9 @@ int	search_right(t_token **tokens, int id)
 			flag = 2;
 			receiver = i;
 		}
-		else if ((*tokens)[i].type >= TK_REDIR_IN && (*tokens)[i].type <= TK_HEREDOC 
-			&& flag != 2 && flag != 3)
+		else if ((*tokens)[i].type == TK_COMMAND && flag != 2 && flag != 3)
 		{
 			flag = 3;
-			receiver = i;
-		}
-		else if ((*tokens)[i].type == TK_COMMAND && flag != 2 && flag != 3 && flag != 4)
-		{
-			flag = 4;
 			receiver = i;
 		}
 		i++;
@@ -171,8 +199,7 @@ t_tree	*search_for_bigger(t_token **tokens)
 			flag = 2;
 			receiver = i;
 		}
-		else if ((*tokens)[i].type >= TK_REDIR_IN && (*tokens)[i].type <= TK_HEREDOC 
-			&& flag != 1 && flag != 2 && flag != 3)
+			else if ((*tokens)[i].type == TK_COMMAND && flag != 1 && flag != 2 && flag != 3)
 		{
 			flag = 3;
 			receiver = i;
@@ -192,6 +219,7 @@ void	tree_creator(t_token **tokens, t_tree **tree, int id)
 	{
 		(*tree) = search_for_bigger(tokens);
 		printf("main: %d\n", (*tree)->id_tree);
+		(*tree)->main = 1;
 		id = (*tree)->id_tree;
 	}
 	id_left_creat = search_left(tokens, id);
