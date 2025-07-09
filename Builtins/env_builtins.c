@@ -12,13 +12,6 @@
 
 #include "../minishell.h"
 
-int	export_env(t_env **env, const char *new_env)
-{
-	(void)env;
-	(void)new_env;
-	return (0);
-}
-
 void	unset_env_if(t_env **envs, const char *target_key)
 {
 	t_env	*temp;

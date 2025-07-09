@@ -12,52 +12,79 @@
 
 #include "../minishell.h"
 
-int	built_cd(const char *str)
+int	ft_cd(char **matrix, t_env *env_list)
 {
-	(void)str;
-	//if (!ft_strncmp(str, "~") || !ft_strncmp(str, "~/"))
+	int		return_value;
+
+	return_value = 0;
+	if (!matrix)
+		return (1);
+	if (ft_len_matrix(matrix) > 1)
 	{
-		if (chdir("/home"))
-			return (1);
+		printf("Too many args for cd command\n");
+		return_value = 1;
+	}
+	else if (!ft_strcmp(*matrix, "~") || !ft_strcmp(*matrix, "~/"))
+	{
+		if (chdir(find_env("HOME=", env_list)->value))
+			return_value = 1;
+	}
+	else if (chdir(*matrix))
+		return_value = 1;
+	if (return_value == 0)
+		change_cwd(env_list);
+	return (return_value);
+}
+
+int	ft_echo_n(char **matrix)
+{
+	int	i;
+
+	i = 0;
+	while (matrix[i])
+	{
+		if (matrix[i + 1] != NULL)
+			printf("%s ", matrix[i++]);
+		else
+			printf("%s", matrix[i++]);
 	}
 	return (0);
 }
 
-int	built_echo_n(const char *str)
+int	ft_echo(char **matrix)
 {
-	printf("%s", str);
+	int	i;
+
+	i = -1;
+	while (matrix[i + 2] != NULL)
+	{
+		printf("%s ", matrix[++i]);
+	}
+	printf("%s\n", matrix[i]);
 	return (0);
 }
 
-int	built_echo(const char *str)
-{
-	printf("%s\n", str);
-	return (0);
-}
-
-char	*built_pwd(void)
+int	ft_pwd(char **matrix)
 {
 	char	*pwd;
-	size_t	size;
+	int		flag;
 
-	pwd = NULL;
-	size = 128;
-	while (42)
+	flag = check_flag(matrix);
+	if (flag)
 	{
-		pwd = (char *)malloc(size);
-		if (!pwd)
-		{
-			perror("malloc");
-			return (NULL);
-		}
-		if (getcwd(pwd, size) != NULL)
-			return (pwd);
-		free(pwd);
-		if (errno != ERANGE)
-		{
-			perror("getcwd");
-			return (NULL);
-		}
-		size *= 2;
+		printf("minishell: pwd: %c%c: invalid option\n", (*matrix)[0], (*matrix)[1]);
+		free_matrix(matrix);
+		return (2);
 	}
+	pwd = get_pwd();
+	if (!pwd)
+		return (1);
+	printf("%s\n", pwd);
+	free(pwd);
+	return (0);
+}
+
+int	ft_export(char **matrix, t_env **envs)
+{
+	return (new_var_parsing(matrix, envs));
 }

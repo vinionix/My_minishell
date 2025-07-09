@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/07/06 15:45:44 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:03:05 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <termios.h>
+# include <limits.h>
 # include <unistd.h>
 # include <sys/wait.h>
 
@@ -143,7 +144,6 @@ void					free_split(char **input);
 void					process_add_back(t_process **main, t_process *node);
 void					free_tokens(char **matrix, t_token *tokens);
 void					envadd_back(t_env **lst, t_env *new);
-void					unset_env_if(t_env **env, const char *target_key);
 void					tk_pipe_right(t_tree *current_node);
 void					tk_pipe_left(t_tree **current_node, t_process **process);
 void					exorcise_manager(t_tree **tree);
@@ -155,16 +155,35 @@ int						jump_char(char chr);
 int						chr_separator(char *input, int i);
 int						tokenizer(t_arg_main *args);
 int						env_lstsize(t_env *lst);
-int						built_cd(const char *str);
-int						built_echo(const char *str);
-int						built_echo_n(const char *str);
-int						new_var_parsing(t_token *tokens, t_env **envs);
-int						built_env(t_env *env);
-int						strchr_index(const char *str, char stop); 
 t_process				*node_process_creator(t_tree *node);
 t_tree					*last_left(t_tree *tree);
+t_data					*get_data(void);
+int						ft_cd(char **matrix, t_env *env_list);
+int						ft_echo(char **matrix);
+int						ft_echo_n(char **matrix);
+int						new_var_parsing(char **matrix, t_env **envs);
+int						ft_pwd(char **matrix);
+int						ft_env(t_env *env);
+unsigned char			ft_exit(char **matrix, t_tree *tree, t_env *env);
+char					*get_pwd(void);
+void					unset_env_if(t_env **env, const char *target_key);
+int						strchr_index(const char *str, char stop);
 t_env					*env_new(void);
 t_env					*get_env_vars(const char **env);
-t_data					*get_data(void);
+void					free_tree(t_tree *tree);
+void					free_matrix(char **matrix);
+int						check_flag(char **matrix);
+t_env					*find_env(const char *target_key, t_env *envs);
+void					change_cwd(t_env *env_list);
+char					*get_pwd(void);
+void					expand_variables(char **matrix, t_env *env_lst);
+int						ft_export(char **matrix, t_env **envs);
+char					**wildcard(char **matrix);
+bool					have_char(char *str, char c);
+bool					verify_ls_flag(char **matrix);
+char					**expand_and_wildcard(char **matrix, t_env *env_lst);
+void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
+long					ft_atol(char *str, bool *overflow);
+int						jump_to_smt_else(char *str, char c, int i);
 
 #endif

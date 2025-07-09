@@ -1,0 +1,16 @@
+06/21/2025
+
+Tratar cd ~/ (expandir a variável $HOME e fazer join como o resto).
+difficulty: Easy
+
+Tratar $? na expansão
+difficulty: Easy
+
+exit built in.
+difficulty: Medium
+
+separar strings por apenas um espaço
+difficulty: ???
+
+consertar final do echo (normal)
+difficulty: easy
