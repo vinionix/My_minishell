@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wildcard.c                                         :+:      :+:    :+:   */
+/*   wildcard_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/16 04:06:53 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:12:33 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "wildcard.h"
 
 void	init_vars(t_var *vars)
 {
@@ -44,15 +44,19 @@ int	strchr_index_next(const char *str, char stop, unsigned int start)
 	return (start);
 }
 
-t_wildcard	*wild_lstnew(const char *content)
+t_wildcard	*wild_lstnew(char *content)
 {
 	t_wildcard	*new_node;
 
 	new_node = (t_wildcard *)malloc(sizeof(t_wildcard));
 	if (!new_node)
 		return (NULL);
-	new_node->fileOrDir = content;
+	new_node->file_dir = content;
 	new_node->match = true;
+	if (is_hidden_file(content))
+		new_node->is_hidden = true;
+	else
+		new_node->is_hidden = false;
 	new_node->index = 0;
 	new_node->next = (NULL);
 	return (new_node);

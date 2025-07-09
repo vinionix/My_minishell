@@ -1,70 +1,93 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_cd.c                                          :+:      :+:    :+:   */
+/*   list_to_matrix.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/16 04:06:53 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:12:32 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "wildcard.h"
 
 void	free_wildlist(t_wildcard **list)
 {
-	t_wildcard *temp;
+	t_wildcard	*temp;
 
 	temp = *list;
 	while (*list)
 	{
 		temp = (*list)->next;
-		if (!(*list)->match)
-		{
-			free((char *)(*list)->fileOrDir);
-			free(*list);
-		}
-		else
-			free((*list));
+		free((char *)(*list)->file_dir);
+		free(*list);
 		*list = temp;
 	}
 }
 
-static int	wild_matches_size(t_wildcard *list)
+static int	wild_matches_size(t_wildcard *list, bool show_hidden)
 {
 	int	i;
 
 	i = 0;
-	while (list)
+	if (show_hidden)
 	{
-		if (list->match)
-			i++;
-		list = list->next;
+		while (list)
+		{
+			if (list->match)
+				i++;
+			list = list->next;
+		}
+	}
+	else
+	{
+		while (list)
+		{
+			if (list->match && !list->is_hidden)
+				i++;
+			list = list->next;
+		}
 	}
 	return (i);
 }
 
-const char	**list_to_matrix(t_wildcard *list)
+static void	dup_into_matrix(t_wildcard *temp, char **matrix,
+			bool show_hidden, int size)
 {
-	const char		**matrix;
+	if (show_hidden)
+	{
+		while (temp)
+		{
+			if (temp->match)
+				matrix[--size] = ft_strdup(temp->file_dir);
+			temp = temp->next;
+		}
+	}
+	else
+	{
+		while (temp)
+		{
+			if (temp->match && !temp->is_hidden)
+				matrix[--size] = ft_strdup(temp->file_dir);
+			temp = temp->next;
+		}
+	}
+}
+
+char	**list_to_matrix(t_wildcard *list, bool show_hidden)
+{
+	char		**matrix;
 	int			size;
-	t_wildcard	*temp;
 
 	matrix = NULL;
-	size = wild_matches_size(list);
+	size = wild_matches_size(list, show_hidden);
 	if (size == 0)
 		return (NULL);
-	matrix = (const char **)malloc((size + 1) * sizeof(char *));
+	matrix = (char **)malloc((size + 1) * sizeof(char *));
 	if (!matrix)
 		return (NULL);
-	temp = list;
 	matrix[size] = NULL;
-	while (temp)
-	{
-		if (temp->match)
-			matrix[--size] = temp->fileOrDir;
-		temp = temp->next;
-	}
+	dup_into_matrix(list, matrix, show_hidden, size);
 	return (matrix);
 }

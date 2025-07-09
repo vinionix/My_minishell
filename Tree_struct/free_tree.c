@@ -12,44 +12,25 @@
 
 #include "../minishell.h"
 
-char	**creat_command(int id_command, t_token *tokens)
+void	free_tree(t_tree *node)
 {
-	int	count_words;
-	int i;
-	int	j;
-	char	**command;
-
-	count_words = 1;
-	i = 0;
-	while ((tokens)[i].id != id_command)
-		i++;
-	j = i;
-	i++;
-	while ((tokens)[i].value && (((tokens)[i].type != TK_COMMAND) 
-		&& (!((tokens)[i].type >= TK_PIPE && (tokens)[i].type <= TK_OR))))
+	if (node == NULL)
+		return ;
+	free_tree(node->left);
+	free_tree(node->right);
+	if (node->type == TK_COMMAND)
 	{
-		if ((tokens)[i].type == TK_CMD_ARG)
-			count_words++;
-		i++;
+		if (node->u_define.command.cmd)
+			free_matrix(node->u_define.command.cmd);
+		free((char *)node->u_define.command.path);
+		free(node);
+		return ;
 	}
-	command = malloc(sizeof(char *) * (count_words + 1));
-	command[count_words] = NULL;
-	command[0] = (tokens)[j].value;
-	if (count_words > 1)
+	else if (node->type == TK_HEREDOC)
 	{
-
-		i = 1;
-		j++;
-		while ((tokens)[j].value && (((tokens)[j].type != TK_COMMAND) 
-			&& (!((tokens)[j].type >= TK_PIPE && (tokens)[j].type <= TK_OR))))
-		{
-			if ((tokens)[j].type == TK_CMD_ARG)
-			{
-				command[i] = (tokens)[j].value;
-				i++;
-			}
-			j++;
-		}
+		if (node->u_define.here.eof)
+			free(node->u_define.here.eof);
+		return ;
 	}
-	return (command);
+	free(node);
 }

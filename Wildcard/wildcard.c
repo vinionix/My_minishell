@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/16 04:06:53 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/06/25 20:36:29 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-
-static char	*update_vars(t_wildcard *list, const char *wildcard, t_var *var)
-{
-	char *str;
-
-	str = NULL;
-	list->index += var->size - var->start;
-	var->start = var->size + 1;
-	if (var->start - 1 < (unsigned int)ft_strlen(wildcard))
-		var->size = strchr_index_next(wildcard, '*', var->start);
-	str = ft_substr(wildcard, var->start, var->size - var->start);
-	return (str);
-}
+#include "wildcard.h"
 
 static void	later_matches(t_wildcard *list, const char *wildcard, t_var *var)
 {
@@ -32,15 +19,16 @@ static void	later_matches(t_wildcard *list, const char *wildcard, t_var *var)
 		var->current_card = update_vars(list, wildcard, var);
 		if (wildcard[var->start - 1] == '\0')
 			return ;
-		if (!ft_strstr(list->fileOrDir + list->index, var->current_card))
+		if (!ft_strstr(list->file_dir + list->index, var->current_card))
 		{
 			list->match = false;
 			return ;
 		}
-		if (wildcard[list->index + (var->size - var->start) + 1 + var->ast] == '\0')
+		if (wildcard[list->index + (var->size - var->start) + 1 + var->ast]
+			== '\0')
 		{
-			if (str_revcmp(list->fileOrDir + list->index,
-				  (const char *)var->current_card))
+			if (str_revcmp(list->file_dir + list->index,
+					(const char *)var->current_card))
 			{
 				list->match = false;
 				return ;
@@ -56,9 +44,9 @@ static void	later_matches(t_wildcard *list, const char *wildcard, t_var *var)
 static void	is_match(t_wildcard *list, const char *wildcard, t_var *var)
 {
 	var->current_card = ft_substr(wildcard, var->start, var->size - var->start);
-	if (var->start == 0 && ft_strncmp(list->fileOrDir,
+	if (var->start == 0 && ft_strncmp(list->file_dir,
 			(const char *)var->current_card, ft_strlen(var->current_card))
-				&& wildcard[0] != '*')
+		&& wildcard[0] != '*')
 	{
 		list->match = false;
 		return ;
@@ -68,7 +56,7 @@ static void	is_match(t_wildcard *list, const char *wildcard, t_var *var)
 	later_matches(list, wildcard, var);
 }
 
-static int	parse_wildcard(t_wildcard *list,
+static int	expand_wildcard(t_wildcard *list,
 				const char *wildcard, t_var *var)
 {
 	t_wildcard		*temp;
@@ -86,17 +74,44 @@ static int	parse_wildcard(t_wildcard *list,
 	return (0);
 }
 
-const char	**wildcard(const char *wildcard)
+static char	**wildcard_aux(char **matrix, t_wildcard *list,
+			t_var *var, bool show_hidden)
+{
+	int		i;
+	char	**matches;
+
+	i = -1;
+	matches = NULL;
+	while (matrix[++i])
+	{
+		if (have_char(matrix[i], '*'))
+		{
+			expand_wildcard(list, matrix[i], var);
+			matches = list_to_matrix(list, show_hidden);
+			if (!matches)
+				continue ;
+			matrix = join_matrices(matrix, matches, i);
+			reset_matches(list);
+			continue ;
+		}
+	}
+	return (matrix);
+}
+
+char	**wildcard(char **matrix)
 {
 	t_wildcard	*list;
 	t_var		var;
-	const char		**matches;
+	bool		is_solo;
 
 	list = NULL;
+	is_solo = false;
 	init_vars(&var);
 	read_current_dir(&list);
-	parse_wildcard(list, wildcard, &var);
-	matches = list_to_matrix(list);
+	matrix = command_with_asterisk(matrix, &is_solo);
+	matrix = wildcard_aux(matrix, list, &var, verify_ls_flag(matrix));
+	if (is_solo)
+		matrix = take_first_pointer_only(matrix);
 	free_wildlist(&list);
-	return (matches);
+	return (matrix);
 }
