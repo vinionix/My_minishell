@@ -14,8 +14,8 @@
 
 char	**expand_and_wildcard(char **matrix, t_env *env_lst)
 {
-	parse_quotes(matrix, '\'', '\"', SINGLE_QUOTE_MARKER);
 	parse_quotes(matrix, '\"', '\'', DOUBLE_QUOTE_MARKER);
+	parse_quotes(matrix, '\'', '\"', SINGLE_QUOTE_MARKER);
 	parse_quotes(matrix, '$', '\'', EXPANSION_MARKER);
 	expand_variables(matrix, env_lst);
 	reset_modified_chars(matrix, '$');
