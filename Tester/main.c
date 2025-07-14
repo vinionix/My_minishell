@@ -53,13 +53,17 @@ int	main(int ac, char **av, const char **env)
 	(void)ac;
 	(void)av;
 	//aux_main(env);
-	char **matrix = malloc(3 * 8);
-	matrix[0] = ft_strdup("exit");
-	matrix[1] = ft_strdup("*'\"''$USER''\"'");
-	matrix[2] = NULL;
+	char **matrix = malloc(2 * 8);
+	matrix[0] = ft_strdup("cd");
+	matrix[1] = NULL;
 
 	t_env *envs = get_env_vars(env);
 	matrix = expand_and_wildcard(matrix, envs);
 
+	logi(ft_cd(matrix, envs));
+	
+
 	logs(matrix[1]);
+
+	ft_pwd(matrix);
 }
