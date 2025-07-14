@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:19:27 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/29 16:21:14 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/12 16:23:28 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ t_redir	*creator_node_redir(t_token tokens)
 	redir->next = NULL;
 	redir->file = NULL;
 	if ((tokens).type == TK_EOF)
-		redir->eof = (tokens).value;
+		redir->eof = ft_strdup((tokens).value);
 	else if ((tokens).type >= TK_FILE_IN && (tokens).type <= TK_FILE_APP)
-		redir->file = (tokens).value;
+		redir->file = ft_strdup((tokens).value);
 	return (redir);
 }
 

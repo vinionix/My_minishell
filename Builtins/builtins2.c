@@ -47,10 +47,10 @@ static bool	only_numbers(char *str)
 	return (true);
 }
 
-bool	long_check(char *str)
-{
+// bool	long_check(char *str)
+// {
 	
-}
+// }
 
 static unsigned char get_exit_code(char *str)
 {

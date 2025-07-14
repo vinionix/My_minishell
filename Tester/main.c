@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 21:06:12 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/08 18:08:26 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:44:57 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static void	initialize_args_main(t_arg_main *args)
 {
-	args->rdline = NULL;
+	//args->rdline = NULL;
+	args->tree = NULL;
 	args->matrix = NULL;
 	args->temp = NULL;
 	args->tokens = NULL;
@@ -39,7 +40,10 @@ void	aux_main(const char **env)
 			if (args.rdline[0] != '\0')
 			{
 				if (tokenizer(&args) == 0)
+				{
 					free_tokens(args.matrix, args.tokens);
+					exorcise_manager(&args.tree);
+				}
 			}
 			add_history(args.rdline);
 		}
@@ -67,19 +71,5 @@ int	main(int ac, char **av, const char **env)
 {
 	(void)ac;
 	(void)av;
-	(void)env;
-
-	char **matrix = malloc(3 * 8);
-	matrix[0] = ft_strdup("exit");
-	matrix[1] = ft_strdup("-1    ");
-	matrix[2] = NULL;
-
-	t_tree *null = NULL;
-	t_env *envs = get_env_vars(env);
-
-
-	printf("status code: %d\n", (int)ft_exit(matrix, null, envs));
-	printf("Program did not finish!");
-
-	free_matrix(matrix);
+	aux_main(env);
 }

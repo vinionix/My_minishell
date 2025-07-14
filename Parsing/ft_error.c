@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 03:51:03 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/26 13:13:32 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:53:23 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int	sintaxe_error(t_token **tokens)
 			printf("minishell: syntax error near unexpected token `newline'\n");
 			return (1);
 		}
-		if (i > 0 && (*tokens)[i].type <= TK_OR && (*tokens)[i
-			- 1].type <= TK_OR)
+		if (i > 0 && ((*tokens)[i].type >= TK_PIPE && (*tokens)[i].type <= TK_OR) 
+			&& ((*tokens)[i - 1].type >= TK_PIPE && (*tokens)[i - 1].type <= TK_OR))
 		{
 			printf("minishell: syntax error near unexpected token `%s'\n",
 				(*tokens)[i].value);

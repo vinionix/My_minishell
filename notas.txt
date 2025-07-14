@@ -1,8 +1,9 @@
 Vinicius:
 
-1 - Tratar erros de sintaxe da forma correta;
-2 - Achar paths dos comandos na hora da execução;
-3 - Criar Heredoc;
-4 - Fazer redirs na execução sendo eles com comandos ou sem comandos;
-5 - Criar subshell;
-6 - Identificar se um comando é bultin ou não na hora de executar;
+1 - Fazer loop funcinar corretamente(*).
+2 - Tratar erros de sintaxe da forma correta(*);
+3 - Achar paths dos comandos na hora da execução;
+4 - Criar Heredoc;
+5 - Fazer redirs na execução sendo eles com comandos ou sem comandos(*);
+6 - Criar subshell;
+7 - Identificar se um comando é bultin ou não na hora de executar;

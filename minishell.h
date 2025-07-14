@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/07/08 18:03:05 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:05:49 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,6 @@ typedef struct s_token
 	char				*value;
 }						t_token;
 
-
-typedef struct s_arg_main
-{
-	char				*rdline;
-	char				**matrix;
-	char				*temp;
-	t_token				*tokens;
-	int					i;
-}						t_arg_main;
-
 typedef struct s_redir
 {
 	t_token_type		type;
@@ -125,6 +115,16 @@ typedef struct s_tree
 	struct s_tree		*prev;
 	struct s_tree		*subtree;
 }						t_tree;
+
+typedef struct s_arg_main
+{
+	char				*rdline;
+	char				**matrix;
+	char				*temp;
+	t_token				*tokens;
+	t_tree				*tree;
+	int					i;
+}						t_arg_main;
 
 typedef	struct s_process
 {

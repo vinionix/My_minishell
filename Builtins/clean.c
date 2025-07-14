@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/06/11 18:21:43 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:51:24 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static void free_env_list(t_env *list)
 void	ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code)
 {
 	free_env_list(env);
-	free_tree(tree);
+	(void)tree;
+	//free_tree(tree);
 	printf("\nEXITING WITH CODE: %d\n", exit_code);
 	exit(exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:32 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/06 16:11:07 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:40:05 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,13 @@ void	tk_pipe_left(t_tree **current_node, t_process **process)
 	t_process	*temp;
 	
 	if ((*current_node)->left && (*current_node)->left->type == TK_COMMAND)
-		first_iteration(&(*process), (*current_node));
+		first_iteration(process, (*current_node));
 	if ((*current_node)->right && (*current_node)->right->type == TK_COMMAND)
 	{
-		process_add_back(&(*process), node_process_creator((*current_node)->right));
-		temp = search_process(&(*process), (*current_node)->right);
+		process_add_back(process, node_process_creator((*current_node)->right));
+		temp = search_process(process, (*current_node)->right);
 		if (temp->pid == 0)
-		exorcise((*current_node)->right, 1);
+			exorcise((*current_node)->right, 1);
 		else if ((*current_node)->prev && (*current_node)->prev->type == TK_PIPE)
 		{
 			dup2((*current_node)->prev->u_define.pipe.pipefd[0], STDIN_FILENO);

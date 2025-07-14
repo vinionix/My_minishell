@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/06 16:40:33 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/12 16:44:48 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ void	process_add_back(t_process **main, t_process *node)
 }
 void	exorcise(t_tree *current_node, int flag)
 {
+	int	current_fd;
+
+	current_fd = 0;
 	if (flag == 0)
 	{
 		if (current_node->prev && current_node->prev->type == TK_PIPE)
@@ -65,8 +68,8 @@ void	exorcise(t_tree *current_node, int flag)
 		{
 			dup2(current_node->prev->prev->u_define.pipe.pipefd[1],
 				STDOUT_FILENO);
-			close(current_node->prev->prev->u_define.pipe.pipefd[0]);
 			close(current_node->prev->prev->u_define.pipe.pipefd[1]);
+			close(current_node->prev->prev->u_define.pipe.pipefd[0]);
 		}
 	}
 	else if (flag == 2)
@@ -78,6 +81,49 @@ void	exorcise(t_tree *current_node, int flag)
 				STDOUT_FILENO);
 			close(current_node->prev->right->u_define.pipe.pipefd[0]);
 			close(current_node->prev->right->u_define.pipe.pipefd[1]);
+		}
+	}
+	if (current_node->u_define.command.list_redir)
+	{
+		while(current_node->u_define.command.list_redir)
+		{
+			// if (current_node->u_define.command.list_redir->type == TK_HEREDOC)
+			//	here(current_node->u_define.command.list_redir->eof);
+			if (current_node->u_define.command.list_redir->type == TK_FILE_APP)
+			{
+				current_fd = open(current_node->u_define.command.list_redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
+				if (current_fd == -1)
+					perror("minishell$");
+				else
+				{
+					dup2(current_fd, STDOUT_FILENO);
+					close(current_fd);
+				}
+			}
+			else if (current_node->u_define.command.list_redir->type == TK_FILE_OUT)
+			{
+				current_fd = open(current_node->u_define.command.list_redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
+				if (current_fd == -1)
+					perror("minishell$");
+				else
+				{
+					dup2(current_fd, STDOUT_FILENO);
+					close(current_fd);
+				}
+			}
+			else if (current_node->u_define.command.list_redir->type == TK_FILE_IN)
+			{
+				current_fd = open(current_node->u_define.command.list_redir->file, O_RDONLY);
+				if (current_fd == -1)
+					perror("minishell$");
+				else
+				{
+					dup2(current_fd, STDIN_FILENO);
+					close(current_fd);
+				}
+			}
+			current_node->u_define.command.list_redir = current_node->u_define.command.list_redir->next;
 		}
 	}
 	execve(current_node->u_define.command.cmd[0], current_node->u_define.command.cmd, NULL);
@@ -163,6 +209,7 @@ void	exorcise_manager(t_tree **tree)
 	get_data()->exit_code = -1;
 	process = NULL;
 	current_node = last_left((*tree));
+	saved_stdin = dup(STDIN_FILENO);
 	if (current_node->main == 1)
 	{
 		if (current_node->type == TK_AND && (get_data()->exit_code == 0
@@ -176,24 +223,21 @@ void	exorcise_manager(t_tree **tree)
 	}
 	while (current_node)
 	{
-		if (current_node->type == TK_AND && (get_data()->exit_code == 0
+		if (current_node && current_node->type == TK_AND && (get_data()->exit_code == 0
 				|| get_data()->exit_code == -1))
 		{
 			if (process)
 				wait_free_processs(&process, saved_stdin);
 			tk_and(&current_node);
 		}
-		else if (current_node->type == TK_OR && get_data()->exit_code != 0)
+		else if (current_node && current_node->type == TK_OR && get_data()->exit_code != 0)
 		{
 			if (process)
 				wait_free_processs(&process, saved_stdin);
 			tk_or(&current_node);
 		}
-		if (current_node->type == TK_PIPE)
-		{
-			saved_stdin = dup(STDIN_FILENO);
+		if (current_node && current_node->type == TK_PIPE)
 			tk_pipe_left(&current_node, &process);
-		}
 		current_node = current_node->prev;
 	}
 	if (process)

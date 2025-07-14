@@ -6,47 +6,11 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:23:00 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/22 21:52:59 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:03:54 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// static size_t	count_words(char const *s, char c)
-// {
-// 	int		i;
-// 	int		counter;
-// 	int		flag;
-// 	char	chr_jump;
-
-// 	i = 0;
-// 	counter = 0;
-// 	flag = 0;
-// 	while (s[i])
-// 	{
-// 		if (s[i] != c && flag == 0)
-// 		{
-// 			chr_jump = jump_char(s[i]);
-// 			if (chr_jump == 2 || chr_jump == 3)
-// 			{
-// 				i++;
-// 				while (s[i] && jump_char(s[i]) != chr_jump)
-// 					i++;
-// 				if (s[i] == '\0')
-// 				{
-// 					printf("Error");
-// 					exit(1);
-// 				}
-// 			}
-// 			counter++;
-// 			flag = 1;
-// 		}
-// 		else if (s[i] == c)
-// 			flag = 0;
-// 		i++;
-// 	}
-// 	return (counter);
-// }
 
 static void	handle_jump(const char *s, int *i, char chr_jump)
 {
@@ -172,7 +136,6 @@ char	**ft_split(char const *s, char c)
 	array = (char **)malloc((count_words(s, c) + 1) * sizeof(char *));
 	if (!array)
 		return (NULL);
-	printf("%zu\n", count_words(s, c));
 	while (i < count_words(s, c))
 	{
 		size = find_size(s, c, &index);
