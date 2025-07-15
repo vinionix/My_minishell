@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/12 16:44:48 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/14 23:52:28 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,40 @@ void	process_add_back(t_process **main, t_process *node)
 	(*main)->next = node;
 	*main = temp;
 }
+
+static char	**env_execv(t_env *env)
+{
+	
+	t_env	*temp;	
+	int		i;
+	char	**env_exe;
+
+	i = 0;
+	temp = env;
+	while(temp)
+	{
+		i++;
+		temp = temp->next;
+	}
+	env_exe = malloc(sizeof(char *) * (i + 1));
+	env_exe[i] = NULL;
+	i = 0;
+	while(env)
+	{
+		env_exe[i] = env->full;
+		i++;
+		env = env->next;
+	}
+	return (env_exe);
+}
 void	exorcise(t_tree *current_node, int flag)
 {
-	int	current_fd;
+	char	**path;
+	char	**env_exe;
+	int		current_fd;
 
+	path = NULL;
+	env_exe = NULL;
 	current_fd = 0;
 	if (flag == 0)
 	{
@@ -126,7 +156,10 @@ void	exorcise(t_tree *current_node, int flag)
 			current_node->u_define.command.list_redir = current_node->u_define.command.list_redir->next;
 		}
 	}
-	execve(current_node->u_define.command.cmd[0], current_node->u_define.command.cmd, NULL);
+	path = get_path(get_data()->env);
+	env_exe = env_execv(get_data()->env);
+	valid_path(current_node->u_define.command.cmd, path);
+	execve(current_node->u_define.command.cmd[0], current_node->u_define.command.cmd, env_exe);
 	exit(1);
 }
 
@@ -172,8 +205,10 @@ void	tk_or(t_tree **current_node)
 void	tk_and(t_tree **current_node)
 {
 	pid_t	pid;
+	int		current_fd;
 	int		status;
 
+	current_fd = 0;
 	if ((*current_node)->left->type == TK_COMMAND)
 	{
 		pid = fork();
@@ -183,6 +218,31 @@ void	tk_and(t_tree **current_node)
 		{
 			waitpid(pid, &status, 0);
 			get_data()->exit_code = WEXITSTATUS(status);
+		}
+	}
+	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC)
+	{
+		while ((*current_node)->left->u_define.command.list_redir)
+		{
+			/*if ((*current_node)->left->u_define.command.list_redir->type == TK_HEREDOC)
+				here();*/
+			if ((*current_node)->u_define.command.list_redir->type == TK_FILE_APP)
+				current_fd = open((*current_node)->u_define.command.list_redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
+			else if ((*current_node)->u_define.command.list_redir->type == TK_FILE_OUT)
+				current_fd = open((*current_node)->u_define.command.list_redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			else if ((*current_node)->u_define.command.list_redir->type == TK_FILE_IN)
+				current_fd = open((*current_node)->u_define.command.list_redir->file, O_RDONLY);
+			if (current_fd == -1)
+			{
+				get_data()->exit_code = 1;
+				perror("minishell$");
+			}
+			else
+			{
+				get_data()->exit_code = 0;
+				close(current_fd);
+			}
+			(*current_node)->left->u_define.command.list_redir = (*current_node)->left->u_define.command.list_redir->next;
 		}
 	}
 	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code == 0)

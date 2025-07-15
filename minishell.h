@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/07/11 15:05:49 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/14 20:16:00 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_env
 {
 	char				*key;
 	char				*value;
+	char				*full;
 	struct s_env		*next;
 }						t_env;
 
@@ -95,7 +96,7 @@ typedef struct s_pipe
 typedef struct s_data
 {
 	int					exit_code;
-	char				**env;
+	t_env				*env;
 }						t_data;
 
 
@@ -138,6 +139,7 @@ typedef	struct s_process
 char					**ft_split(char const *s, char c);
 char					**creat_command(int id_command, t_token *tokens);
 char					*built_pwd(void);
+char					**get_path(t_env *env);
 void					tree_creator(t_token **tokens, t_tree **tree, int id);
 void					ft_lexer(t_token **tokens);
 void					free_split(char **input);
@@ -155,6 +157,7 @@ int						jump_char(char chr);
 int						chr_separator(char *input, int i);
 int						tokenizer(t_arg_main *args);
 int						env_lstsize(t_env *lst);
+int						valid_path(char **cmd, char **path);
 t_process				*node_process_creator(t_tree *node);
 t_tree					*last_left(t_tree *tree);
 t_data					*get_data(void);

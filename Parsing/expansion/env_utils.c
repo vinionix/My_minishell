@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:07:31 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/15 22:05:10 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/14 19:17:48 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_env	*env_new(void)
 		return (NULL);
 	new_node->key = (NULL);
 	new_node->value = (NULL);
+	new_node->full = (NULL);
 	new_node->next = (NULL);
 	return (new_node);
 }

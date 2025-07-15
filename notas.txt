@@ -2,7 +2,7 @@ Vinicius:
 
 1 - Fazer loop funcinar corretamente(*).
 2 - Tratar erros de sintaxe da forma correta(*);
-3 - Achar paths dos comandos na hora da execução;
+3 - Achar paths dos comandos na hora da execução(*);
 4 - Criar Heredoc;
 5 - Fazer redirs na execução sendo eles com comandos ou sem comandos(*);
 6 - Criar subshell;

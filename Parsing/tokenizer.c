@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/11 15:07:56 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/14 23:41:37 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,14 @@ void	print_tree(t_tree *node, int level)
 	if (node->type == TK_COMMAND && node->u_define.command.cmd)
 	{
 		printf(" CMD: \"%s\"", node->u_define.command.cmd[0]); // ou mais argumentos se quiser
+		if (node->u_define.command.list_redir)
+			printf(" lst: \"%s\"", node->u_define.command.list_redir->file);
 		printf(" PREV: \"%d\"", node->prev->type); // ou mais argumentos se quiser
+	}
+	if (node->type >= TK_REDIR_IN && node->type <= TK_HEREDOC)
+	{
+		if (node->u_define.command.list_redir)
+			printf(" lst: \"%s\"", node->u_define.command.list_redir->file);
 	}
 	printf("\n");
 	if (node->left || node->right)
@@ -150,7 +157,7 @@ int	tokenizer(t_arg_main *args)
 		}
 	}
 	tree_creator(&args->tokens, &args->tree, -1);
-	//print_tree(args->tree, 0);
+	print_tree(args->tree, 0);
 	//free_tree(args->tree);
 	// exit(0);
 	// if (args)
