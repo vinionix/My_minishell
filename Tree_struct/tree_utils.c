@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:19:27 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/14 23:46:54 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/15 05:11:59 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,53 +55,57 @@ void	redir_add_back(t_redir **redirects, t_redir *node)
 	return ;
 }
 
-static t_redir *creat_list_redir(int id, t_token *tokens)
+static t_redir *creat_list_redir(int id, t_token **tokens)
 {
 	t_redir	*redirects;
 	int		i;
 
 	i = 0;
 	redirects = NULL;
-	while ((tokens)[i].id != id)
+	while ((*tokens)[i].id != id)
 		i++;
-	while ((tokens)[i].id > 0 && (!((tokens)[i].type >= TK_PIPE && (tokens)[i].type <= TK_OR)))
+	while ((*tokens)[i].id > 0 && (!((*tokens)[i].type >= TK_PIPE && (*tokens)[i].type <= TK_OR)))
 		i--;
-	while ((tokens)[i].value && (!((tokens)[i].type >= TK_PIPE && (tokens)[i].type <= TK_OR)))
+	i++;
+	while ((*tokens)[i].value && (!((*tokens)[i].type >= TK_PIPE && (*tokens)[i].type <= TK_OR)))
 	{
-		if ((tokens)[i].type >= TK_FILE_IN && (tokens)[i].type <= TK_EOF)
-			redir_add_back(&redirects, creator_node_redir((tokens)[i]));
+		if ((*tokens)[i].type >= TK_FILE_IN && (*tokens)[i].type <= TK_EOF)
+		{
+			(*tokens)[i - 1].passed = 1;
+			redir_add_back(&redirects, creator_node_redir((*tokens)[i]));
+		}
 		i++;
 	}
 	return (redirects);
 }
 
-t_tree	*node_creator(t_token *tokens, int id)
+t_tree	*node_creator(t_token **tokens, int id)
 {
 	int	i;
 	t_tree	*node;
 
 	i = 0;
-	while ((tokens)[i].value && (tokens)[i].id != id)
+	while ((*tokens)[i].value && (*tokens)[i].id != id)
 		i++; 
-	if ((tokens)[i].value == NULL)
+	if ((*tokens)[i].value == NULL)
 		return (NULL);
 	node = (t_tree *)ft_calloc(1, sizeof(t_tree));
 	node->n_builtin = -1;
-	node->type = (tokens)[i].type;
+	node->type = (*tokens)[i].type;
 	node->id_tree = id;
 	node->left = NULL;
 	node->right = NULL;
 	node->subtree = NULL;
 	node->prev = NULL;
 	node->main = 0;
-	if ((tokens)[i].type == TK_COMMAND || ((tokens)[i].type >= TK_REDIR_IN && (tokens)[i].type <= TK_HEREDOC))
+	if ((*tokens)[i].type == TK_COMMAND || ((*tokens)[i].type >= TK_REDIR_IN && (*tokens)[i].type <= TK_HEREDOC))
 	{
-		node->n_builtin = 0; //is_bultin(tokens);
-		if ((tokens)[i].type == TK_COMMAND)
-			node->u_define.command.cmd = creat_command(id, tokens);
+		node->n_builtin = 0; //is_bultin(*tokens);
+		if ((*tokens)[i].type == TK_COMMAND)
+			node->u_define.command.cmd = creat_command(id, (*tokens));
 		node->u_define.command.list_redir = creat_list_redir(id, tokens);
 	}
-	else if ((tokens)[i].type == TK_PIPE)
+	else if ((*tokens)[i].type == TK_PIPE)
 		pipe(node->u_define.pipe.pipefd);
 	return(node);
 }
@@ -118,7 +122,7 @@ int	search_left(t_token **tokens, int id)
 	while ((*tokens)[i].value != NULL && (*tokens)[i].id != id)
 		i++;
 	i--;
-	while (i >= 0 && (*tokens)[i].passed == -1)
+	while (i >= 0 && (*tokens)[i].passed != 1)
 	{
 		if ((((*tokens)[i].type == TK_AND || (*tokens)[i].type == TK_OR) && flag != 1))
 		{
@@ -220,7 +224,7 @@ t_tree	*search_for_bigger(t_token **tokens)
 		i--;
 	}
 	(*tokens)[receiver].passed = 1;
-	return (node_creator((*tokens), (*tokens)[receiver].id));
+	return (node_creator(tokens, (*tokens)[receiver].id));
 }
 
 void	tree_creator(t_token **tokens, t_tree **tree, int id)
@@ -239,16 +243,16 @@ void	tree_creator(t_token **tokens, t_tree **tree, int id)
 	id_right_creat = search_right(tokens, id);
 	if (id_left_creat != -1)
 	{
-		(*tree)->left = node_creator((*tokens), id_left_creat);
+		(*tree)->left = node_creator(tokens, id_left_creat);
 		printf("left: %d\n", (*tree)->left->id_tree);
 		(*tree)->left->prev = *tree;
 		tree_creator(&(*tokens), &(*tree)->left, id_left_creat);
 	}
 	if (id_right_creat != -1)
 	{
-		(*tree)->right = node_creator((*tokens), id_right_creat);
+		(*tree)->right = node_creator(tokens, id_right_creat);
 		printf("rigth: %d\n", (*tree)->right->id_tree);
 		(*tree)->right->prev = *tree;
-		tree_creator(&(*tokens), &(*tree)->right, id_right_creat);
+		tree_creator(tokens, &(*tree)->right, id_right_creat);
 	}
 }

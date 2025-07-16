@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/07/14 20:16:00 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/15 06:10:41 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ void					tk_pipe_left(t_tree **current_node, t_process **process);
 void					exorcise_manager(t_tree **tree);
 void					exorcise(t_tree *current_node, int flag);
 void					wait_free_processs(t_process **process, int saved_stdin);
+void					creat_solo_redirect(t_redir *redir);
 int						sintaxe_error(t_token **tokens);
 int						ft_len_matrix(char **matrix);
 int						jump_char(char chr);

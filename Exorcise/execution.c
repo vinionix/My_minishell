@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/14 23:52:28 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/16 16:21:22 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,35 @@ t_data	*get_data(void)
 	return (&data);
 }
 
+void	creat_solo_redirect(t_redir *redir)
+{
+	int	current_fd;
+
+	current_fd = 0;
+	while (redir)
+	{
+		/*if ((*current_node)->left->u_define.command.list_redir->type == TK_HEREDOC)
+			here();*/
+		if (redir->type == TK_FILE_APP)
+			current_fd = open(redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		else if (redir->type == TK_FILE_OUT)
+			current_fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		else if (redir->type == TK_FILE_IN)
+			current_fd = open(redir->file, O_RDONLY);
+		if (current_fd == -1)
+		{
+			get_data()->exit_code = 1;
+			perror("minishell$");
+		}
+		else
+		{
+			get_data()->exit_code = 0;
+			close(current_fd);
+		}
+		redir = redir->next;
+	}
+}
+
 void	tk_or(t_tree **current_node)
 {
 	pid_t	pid;
@@ -186,6 +215,8 @@ void	tk_or(t_tree **current_node)
 			get_data()->exit_code = WEXITSTATUS(status);
 		}
 	}
+	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC)
+		creat_solo_redirect((*current_node)->left->u_define.command.list_redir);
 	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code != 0)
 		tk_pipe_right((*current_node)->right);
 	else if ((*current_node)->right->type == TK_COMMAND
@@ -200,15 +231,15 @@ void	tk_or(t_tree **current_node)
 			get_data()->exit_code = WEXITSTATUS(status);
 		}
 	}
+	else if ((*current_node)->right->type >= TK_REDIR_IN && (*current_node)->right->type <= TK_HEREDOC && get_data()->exit_code != 0)
+		creat_solo_redirect((*current_node)->right->u_define.command.list_redir);
 }
 
 void	tk_and(t_tree **current_node)
 {
 	pid_t	pid;
-	int		current_fd;
 	int		status;
 
-	current_fd = 0;
 	if ((*current_node)->left->type == TK_COMMAND)
 	{
 		pid = fork();
@@ -221,30 +252,7 @@ void	tk_and(t_tree **current_node)
 		}
 	}
 	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC)
-	{
-		while ((*current_node)->left->u_define.command.list_redir)
-		{
-			/*if ((*current_node)->left->u_define.command.list_redir->type == TK_HEREDOC)
-				here();*/
-			if ((*current_node)->u_define.command.list_redir->type == TK_FILE_APP)
-				current_fd = open((*current_node)->u_define.command.list_redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
-			else if ((*current_node)->u_define.command.list_redir->type == TK_FILE_OUT)
-				current_fd = open((*current_node)->u_define.command.list_redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			else if ((*current_node)->u_define.command.list_redir->type == TK_FILE_IN)
-				current_fd = open((*current_node)->u_define.command.list_redir->file, O_RDONLY);
-			if (current_fd == -1)
-			{
-				get_data()->exit_code = 1;
-				perror("minishell$");
-			}
-			else
-			{
-				get_data()->exit_code = 0;
-				close(current_fd);
-			}
-			(*current_node)->left->u_define.command.list_redir = (*current_node)->left->u_define.command.list_redir->next;
-		}
-	}
+		creat_solo_redirect((*current_node)->left->u_define.command.list_redir);
 	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code == 0)
 		tk_pipe_right((*current_node)->right);
 	else if ((*current_node)->right->type == TK_COMMAND
@@ -259,6 +267,8 @@ void	tk_and(t_tree **current_node)
 			get_data()->exit_code = WEXITSTATUS(status);
 		}
 	}
+	else if ((*current_node)->right->type >= TK_REDIR_IN && (*current_node)->right->type <= TK_HEREDOC && get_data()->exit_code == 0)
+		creat_solo_redirect((*current_node)->right->u_define.command.list_redir);
 }
 void	exorcise_manager(t_tree **tree)
 {

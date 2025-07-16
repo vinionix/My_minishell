@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:12:24 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/14 20:34:20 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/15 04:13:03 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,8 @@ static char	*ft_strjoin_pipex(char const *s1, char const *s2)
 char	**get_path(t_env *env)
 {
 	char	**path;
-	int		i;
     t_env   *temp;
 
-	i = 0;
     temp = find_env("PATH=", env);
 	path = NULL;
 	path = ft_split(temp->value, ':');

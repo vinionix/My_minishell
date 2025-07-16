@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/14 23:41:37 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/15 05:50:46 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,13 @@ void	print_tree(t_tree *node, int level)
 	if (node->type >= TK_REDIR_IN && node->type <= TK_HEREDOC)
 	{
 		if (node->u_define.command.list_redir)
-			printf(" lst: \"%s\"", node->u_define.command.list_redir->file);
+		{
+			while(node->u_define.command.list_redir)
+			{
+				printf(" lst: \"%s\"", node->u_define.command.list_redir->file);
+				node->u_define.command.list_redir = node->u_define.command.list_redir->next;
+			}
+		}
 	}
 	printf("\n");
 	if (node->left || node->right)
@@ -157,7 +163,7 @@ int	tokenizer(t_arg_main *args)
 		}
 	}
 	tree_creator(&args->tokens, &args->tree, -1);
-	print_tree(args->tree, 0);
+	//print_tree(args->tree, 0);
 	//free_tree(args->tree);
 	// exit(0);
 	// if (args)
