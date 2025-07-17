@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/24 15:38:02 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/07/16 22:27:19 by vfidelis         ###   ########.fr       */
+/*   Created: 2025/07/16 20:58:08 by vfidelis          #+#    #+#             */
+/*   Updated: 2025/07/16 22:45:59 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+void	here(char *eof)
 {
-	unsigned int	i;
-	unsigned char	*s;
-
-	i = 0;
-	s = (unsigned char *)s1;
-	if (s == NULL)
-		return (1);
-	while (s[i] != '\0' && s2[i] != '\0')
+	//int		pipefd[2];
+	char	*readl;
+	
+	readl = NULL;
+	while (ft_strcmp((const char *)readl, (const char *)eof))
 	{
-		if (s[i] != s2[i])
-			return (s[i] - s2[i]);
-		i++;
+		readl = readline("> ");
 	}
-	return (0);
 }

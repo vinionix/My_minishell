@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/07/15 06:10:41 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/16 22:17:38 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,10 +140,17 @@ char					**ft_split(char const *s, char c);
 char					**creat_command(int id_command, t_token *tokens);
 char					*built_pwd(void);
 char					**get_path(t_env *env);
+char					*get_pwd(void);
+char					*get_pwd(void);
+char					**wildcard(char **matrix);
+char					**expand_and_wildcard(char **matrix, t_env *env_lst);
+unsigned char			ft_exit(char **matrix, t_tree *tree, t_env *env);
 void					tree_creator(t_token **tokens, t_tree **tree, int id);
+void					free_tree(t_tree *tree);
 void					ft_lexer(t_token **tokens);
 void					free_split(char **input);
 void					process_add_back(t_process **main, t_process *node);
+void					change_cwd(t_env *env_list);
 void					free_tokens(char **matrix, t_token *tokens);
 void					envadd_back(t_env **lst, t_env *new);
 void					tk_pipe_right(t_tree *current_node);
@@ -151,7 +158,12 @@ void					tk_pipe_left(t_tree **current_node, t_process **process);
 void					exorcise_manager(t_tree **tree);
 void					exorcise(t_tree *current_node, int flag);
 void					wait_free_processs(t_process **process, int saved_stdin);
+void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
 void					creat_solo_redirect(t_redir *redir);
+void					here(char *eof);
+void					free_matrix(char **matrix);
+void					unset_env_if(t_env **env, const char *target_key);
+void					expand_variables(char **matrix, t_env *env_lst);
 int						sintaxe_error(t_token **tokens);
 int						ft_len_matrix(char **matrix);
 int						jump_char(char chr);
@@ -159,35 +171,24 @@ int						chr_separator(char *input, int i);
 int						tokenizer(t_arg_main *args);
 int						env_lstsize(t_env *lst);
 int						valid_path(char **cmd, char **path);
-t_process				*node_process_creator(t_tree *node);
-t_tree					*last_left(t_tree *tree);
-t_data					*get_data(void);
 int						ft_cd(char **matrix, t_env *env_list);
 int						ft_echo(char **matrix);
 int						ft_echo_n(char **matrix);
 int						new_var_parsing(char **matrix, t_env **envs);
 int						ft_pwd(char **matrix);
 int						ft_env(t_env *env);
-unsigned char			ft_exit(char **matrix, t_tree *tree, t_env *env);
-char					*get_pwd(void);
-void					unset_env_if(t_env **env, const char *target_key);
 int						strchr_index(const char *str, char stop);
+int						check_flag(char **matrix);
+int						ft_export(char **matrix, t_env **envs);
+int						jump_to_smt_else(char *str, char c, int i);
+long					ft_atol(char *str, bool *overflow);
+t_data					*get_data(void);
 t_env					*env_new(void);
 t_env					*get_env_vars(const char **env);
-void					free_tree(t_tree *tree);
-void					free_matrix(char **matrix);
-int						check_flag(char **matrix);
 t_env					*find_env(const char *target_key, t_env *envs);
-void					change_cwd(t_env *env_list);
-char					*get_pwd(void);
-void					expand_variables(char **matrix, t_env *env_lst);
-int						ft_export(char **matrix, t_env **envs);
-char					**wildcard(char **matrix);
-bool					have_char(char *str, char c);
+t_process				*node_process_creator(t_tree *node);
+t_tree					*last_left(t_tree *tree);
 bool					verify_ls_flag(char **matrix);
-char					**expand_and_wildcard(char **matrix, t_env *env_lst);
-void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
-long					ft_atol(char *str, bool *overflow);
-int						jump_to_smt_else(char *str, char c, int i);
+bool					have_char(char *str, char c);
 
 #endif

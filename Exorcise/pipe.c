@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:32 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/16 16:15:19 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/16 20:27:36 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ void	tk_pipe_left(t_tree **current_node, t_process **process)
 	
 	if ((*current_node)->left && (*current_node)->left->type == TK_COMMAND)
 		first_iteration(process, (*current_node));
+	else if ((*current_node)->left && (*current_node)->left->type >= TK_REDIR_IN
+			&& (*current_node)->left->type <= TK_HEREDOC)
+		creat_solo_redirect((*current_node)->left->u_define.command.list_redir);
 	if ((*current_node)->right && (*current_node)->right->type == TK_COMMAND)
 	{
 		process_add_back(process, node_process_creator((*current_node)->right));
@@ -92,6 +95,9 @@ void	tk_pipe_left(t_tree **current_node, t_process **process)
 			close((*current_node)->prev->u_define.pipe.pipefd[1]);
 		}
 	}
+	else if ((*current_node)->right && (*current_node)->right->type >= TK_REDIR_IN
+			&& (*current_node)->right->type <= TK_HEREDOC)
+		creat_solo_redirect((*current_node)->right->u_define.command.list_redir);
 }
 
 void	tk_pipe_right(t_tree *current_node)
@@ -104,9 +110,7 @@ void	tk_pipe_right(t_tree *current_node)
 	saved_stdin = dup(STDIN_FILENO);
 	if (current_node->left->type == TK_COMMAND)
 		first_iteration(&process, current_node);
-	else if (current_node->left->type >= TK_REDIR_IN && current_node->left->type <= TK_HEREDOC)
-			creat_solo_redirect(current_node->left->u_define.command.list_redir);
-	while (current_node->type == TK_PIPE)
+	while (current_node && current_node->type == TK_PIPE)
 	{
 		if (current_node->right->type == TK_COMMAND)
 		{
@@ -114,10 +118,7 @@ void	tk_pipe_right(t_tree *current_node)
 			break ;
 		}
 		else if (current_node->right->type >= TK_REDIR_IN && current_node->right->type <= TK_HEREDOC)
-		{
 			creat_solo_redirect(current_node->right->u_define.command.list_redir);
-			break ;
-		}
 		if (current_node->left->type == TK_COMMAND)
 		{
 			process_add_back(&process, node_process_creator(current_node->left));
@@ -132,10 +133,7 @@ void	tk_pipe_right(t_tree *current_node)
 			}
 		}
 		else if (current_node->left->type >= TK_REDIR_IN && current_node->left->type <= TK_HEREDOC)
-		{
 			creat_solo_redirect(current_node->left->u_define.command.list_redir);
-			break ;
-		}
 		current_node = current_node->right;
 	}
 	wait_free_processs(&process, saved_stdin);
