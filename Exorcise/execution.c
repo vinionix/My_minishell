@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/16 22:41:48 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/21 05:25:58 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ void	exorcise(t_tree *current_node, int flag)
 	{
 		if (current_node->prev && current_node->prev->type == TK_PIPE)
 		{
-			dup2(current_node->prev->u_define.pipe.pipefd[1], STDOUT_FILENO);
 			close(current_node->prev->u_define.pipe.pipefd[0]);
+			dup2(current_node->prev->u_define.pipe.pipefd[1], STDOUT_FILENO);
 			close(current_node->prev->u_define.pipe.pipefd[1]);
 		}
 	}
@@ -98,10 +98,10 @@ void	exorcise(t_tree *current_node, int flag)
 		if (current_node->prev->prev
 			&& current_node->prev->prev->type == TK_PIPE)
 		{
+			close(current_node->prev->prev->u_define.pipe.pipefd[0]);
 			dup2(current_node->prev->prev->u_define.pipe.pipefd[1],
 				STDOUT_FILENO);
 			close(current_node->prev->prev->u_define.pipe.pipefd[1]);
-			close(current_node->prev->prev->u_define.pipe.pipefd[0]);
 		}
 	}
 	else if (flag == 2)
@@ -109,9 +109,9 @@ void	exorcise(t_tree *current_node, int flag)
 		if (current_node->prev->right
 			&& current_node->prev->right->type == TK_PIPE)
 		{
+			close(current_node->prev->right->u_define.pipe.pipefd[0]);
 			dup2(current_node->prev->right->u_define.pipe.pipefd[1],
 				STDOUT_FILENO);
-			close(current_node->prev->right->u_define.pipe.pipefd[0]);
 			close(current_node->prev->right->u_define.pipe.pipefd[1]);
 		}
 	}
@@ -119,9 +119,12 @@ void	exorcise(t_tree *current_node, int flag)
 	{
 		while(current_node->u_define.command.list_redir)
 		{
-			// if (current_node->u_define.command.list_redir->type == TK_HEREDOC)
-			//	here(current_node->u_define.command.list_redir->eof);
-			if (current_node->u_define.command.list_redir->type == TK_FILE_APP)
+			if (current_node->u_define.command.list_redir->type == TK_EOF)
+			{
+				dup2(current_node->u_define.command.list_redir->fd_heredoc, STDIN_FILENO);
+				close(current_node->u_define.command.list_redir->fd_heredoc);
+			}
+			else if (current_node->u_define.command.list_redir->type == TK_FILE_APP)
 			{
 				current_fd = open(current_node->u_define.command.list_redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
 				if (current_fd == -1)
@@ -180,7 +183,7 @@ void	creat_solo_redirect(t_redir *redir)
 	while (redir)
 	{
 		if (redir->type == TK_EOF)
-			here(redir->eof);
+			here(redir->eof, 0, 0);
 		else if (redir->type == TK_FILE_APP)
 			current_fd = open(redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		else if (redir->type == TK_FILE_OUT)

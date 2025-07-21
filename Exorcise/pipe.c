@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:32 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/16 20:27:36 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/21 05:32:13 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void    first_iteration(t_process **process, t_tree *current_node)
 {
 	t_process	*temp;
 
+	pipe(current_node->u_define.pipe.pipefd);
     process_add_back(process, node_process_creator(current_node->left));
     temp = (*process);
     while (temp->id_tree != current_node->left->id_tree)
@@ -25,9 +26,9 @@ void    first_iteration(t_process **process, t_tree *current_node)
     	exorcise(current_node->left, 0);
     else
     {
-        dup2(current_node->u_define.pipe.pipefd[0], STDIN_FILENO);
-        close(current_node->u_define.pipe.pipefd[0]);
-        close(current_node->u_define.pipe.pipefd[1]);
+		close(current_node->u_define.pipe.pipefd[1]);
+		dup2(current_node->u_define.pipe.pipefd[0], STDIN_FILENO);
+		close(current_node->u_define.pipe.pipefd[0]);
     }
 }
 
@@ -76,7 +77,7 @@ void	last_iteration(t_process **process, t_tree *current_node)
 void	tk_pipe_left(t_tree **current_node, t_process **process)
 {
 	t_process	*temp;
-	
+
 	if ((*current_node)->left && (*current_node)->left->type == TK_COMMAND)
 		first_iteration(process, (*current_node));
 	else if ((*current_node)->left && (*current_node)->left->type >= TK_REDIR_IN
@@ -87,12 +88,13 @@ void	tk_pipe_left(t_tree **current_node, t_process **process)
 		process_add_back(process, node_process_creator((*current_node)->right));
 		temp = search_process(process, (*current_node)->right);
 		if (temp->pid == 0)
-			exorcise((*current_node)->right, 1);
+		exorcise((*current_node)->right, 1);
 		else if ((*current_node)->prev && (*current_node)->prev->type == TK_PIPE)
 		{
+			pipe((*current_node)->prev->u_define.pipe.pipefd);
+			close((*current_node)->prev->u_define.pipe.pipefd[1]);
 			dup2((*current_node)->prev->u_define.pipe.pipefd[0], STDIN_FILENO);
 			close((*current_node)->prev->u_define.pipe.pipefd[0]);
-			close((*current_node)->prev->u_define.pipe.pipefd[1]);
 		}
 	}
 	else if ((*current_node)->right && (*current_node)->right->type >= TK_REDIR_IN
@@ -127,9 +129,10 @@ void	tk_pipe_right(t_tree *current_node)
 				exorcise(current_node->left, 2);
 			else if (current_node->right && current_node->right->type == TK_PIPE)
 			{
+				pipe(current_node->right->u_define.pipe.pipefd);
+				close(current_node->right->u_define.pipe.pipefd[1]);
 				dup2(current_node->right->u_define.pipe.pipefd[0], STDIN_FILENO);
 				close(current_node->right->u_define.pipe.pipefd[0]);
-				close(current_node->right->u_define.pipe.pipefd[1]);
 			}
 		}
 		else if (current_node->left->type >= TK_REDIR_IN && current_node->left->type <= TK_HEREDOC)

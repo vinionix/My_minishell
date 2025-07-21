@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/16 20:44:16 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/20 15:17:09 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,11 +166,11 @@ int	tokenizer(t_arg_main *args)
 	//print_tree(args->tree, 0);
 	//free_tree(args->tree);
 	// exit(0);
-	// if (args)
-	// {
-	// 	for (int i = 0; args->tokens[i].value != NULL; i++)
-	// 	printf("Command: %s <--------> Token Number %d: %d\n",
-	// 		args->tokens[i].value, args->tokens[i].id, args->tokens[i].type);
-	// }
+	if (args)
+	{
+		for (int i = 0; args->tokens[i].value != NULL; i++)
+		printf("Command: %s <--------> Token Number %d: %d\n",
+			args->tokens[i].value, args->tokens[i].id, args->tokens[i].type);
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/07/16 22:17:38 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/21 04:16:45 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_redir
 	t_token_type		type;
 	char				*file;
 	char				*eof;
+	int					fd_heredoc;
 	struct s_redir		*next;
 }						t_redir;
 
@@ -160,10 +161,12 @@ void					exorcise(t_tree *current_node, int flag);
 void					wait_free_processs(t_process **process, int saved_stdin);
 void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
 void					creat_solo_redirect(t_redir *redir);
-void					here(char *eof);
+void					here(char *eof, int is_command, int *pipefd);
 void					free_matrix(char **matrix);
 void					unset_env_if(t_env **env, const char *target_key);
 void					expand_variables(char **matrix, t_env *env_lst);
+void					creat_here_command(t_tree **tree);
+int						here_verify(t_redir *redir);
 int						sintaxe_error(t_token **tokens);
 int						ft_len_matrix(char **matrix);
 int						jump_char(char chr);

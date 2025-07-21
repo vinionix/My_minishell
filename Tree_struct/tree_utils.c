@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:19:27 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/16 22:21:28 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/21 05:01:29 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,12 +104,11 @@ t_tree	*node_creator(t_token **tokens, int id)
 		if ((*tokens)[i].type == TK_COMMAND)
 			node->u_define.command.cmd = creat_command(id, (*tokens));
 		node->u_define.command.list_redir = creat_list_redir(id, tokens);
+		if (node->type == TK_COMMAND && here_verify(node->u_define.command.list_redir) == 1)
+			creat_here_command(&node);
 	}
-	else if ((*tokens)[i].type == TK_PIPE)
-		pipe(node->u_define.pipe.pipefd);
 	return(node);
 }
-
 int	search_left(t_token **tokens, int id)
 {
 	int	i;
@@ -152,19 +151,11 @@ int	search_left(t_token **tokens, int id)
 	return ((*tokens)[receiver].id);
 }
 
-int	search_right(t_token **tokens, int id)
+static int	find_next_r(t_token **tokens, int start, int receiver, int flag)
 {
 	int	i;
-	int	flag;
-	int	receiver;
-	
-	i = 0;
-	flag = -1;
-	receiver = 0;
-	while ((*tokens)[i].value && (*tokens)[i].id != id)
-		i++;
-	if ((*tokens)[i + 1].value != NULL)
-		i++;
+
+	i = start;
 	while ((*tokens)[i].value != NULL && (*tokens)[i].passed == -1)
 	{
 		if ((*tokens)[i].type == TK_PIPE && flag != 2)
@@ -184,11 +175,27 @@ int	search_right(t_token **tokens, int id)
 		}
 		i++;
 	}
-	if ((*tokens)[receiver].passed == 1)
+	return (receiver);
+}
+
+
+int	search_right(t_token **tokens, int id)
+{
+	int	i;
+	int	receiver;
+
+	i = 0;
+	while ((*tokens)[i].value && (*tokens)[i].id != id)
+		i++;
+	if ((*tokens)[i + 1].value != NULL)
+		i++;
+	receiver = find_next_r(tokens, i, -1, -1);
+	if (receiver == -1 || (*tokens)[receiver].passed == 1)
 		return (-1);
 	(*tokens)[receiver].passed = 1;
 	return ((*tokens)[receiver].id);
 }
+
 
 t_tree	*search_for_bigger(t_token **tokens)
 {
