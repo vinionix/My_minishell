@@ -2,6 +2,3 @@
 
 Tratar $? na expansão
 difficulty: Easy
-
-consertar final do echo (normal)
-difficulty: Easy

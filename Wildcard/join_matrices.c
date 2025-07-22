@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/12 16:12:32 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/07/22 17:55:01 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,4 @@ char **join_matrices(char **matrix1, char **matrix2, int copy_until)
 	free_matrix(matrix1);
 	free_matrix(matrix2);
 	return (new_matrix);
-}
-
-char	**take_first_pointer_only(char **matrix)
-{
-	char	**new_m;
-
-	new_m = (char **)malloc(2 * sizeof(char *));
-	if (!new_m)
-		return (NULL);
-	new_m[0] = ft_strdup(matrix[0]);
-	new_m[1] = NULL;
-	free_matrix(matrix);
-	return (new_m);
 }

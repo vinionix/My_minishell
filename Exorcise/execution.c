@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/06 16:40:33 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/22 17:36:06 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int			exit_status = -1;
+int exit_status = -1;
 
-t_tree	*last_left(t_tree *tree)
+t_tree *last_left(t_tree *tree)
 {
 	while (tree->left && tree->left->type != TK_COMMAND)
 		tree = tree->left;
 	return (tree);
 }
 
-t_process	*node_process_creator(t_tree *node)
+t_process *node_process_creator(t_tree *node)
 {
-	t_process	*node_process;
+	t_process *node_process;
 
 	node_process = malloc(sizeof(t_process));
 	node_process->prev = NULL;
@@ -31,15 +31,15 @@ t_process	*node_process_creator(t_tree *node)
 	node_process->id_tree = node->id_tree;
 	return (node_process);
 }
-void	process_add_back(t_process **main, t_process *node)
+void process_add_back(t_process **main, t_process *node)
 {
-	t_process	*temp;
+	t_process *temp;
 
 	temp = (*main);
 	if ((*main) == NULL)
 	{
 		*main = node;
-		return ;
+		return;
 	}
 	while ((*main)->next != NULL)
 		*main = (*main)->next;
@@ -47,7 +47,7 @@ void	process_add_back(t_process **main, t_process *node)
 	(*main)->next = node;
 	*main = temp;
 }
-void	exorcise(t_tree *current_node, int flag)
+void exorcise(t_tree *current_node, int flag)
 {
 	if (flag == 0)
 	{
@@ -60,22 +60,20 @@ void	exorcise(t_tree *current_node, int flag)
 	}
 	else if (flag == 1)
 	{
-		if (current_node->prev->prev
-			&& current_node->prev->prev->type == TK_PIPE)
+		if (current_node->prev->prev && current_node->prev->prev->type == TK_PIPE)
 		{
 			dup2(current_node->prev->prev->u_define.pipe.pipefd[1],
-				STDOUT_FILENO);
+				 STDOUT_FILENO);
 			close(current_node->prev->prev->u_define.pipe.pipefd[0]);
 			close(current_node->prev->prev->u_define.pipe.pipefd[1]);
 		}
 	}
 	else if (flag == 2)
 	{
-		if (current_node->prev->right
-			&& current_node->prev->right->type == TK_PIPE)
+		if (current_node->prev->right && current_node->prev->right->type == TK_PIPE)
 		{
 			dup2(current_node->prev->right->u_define.pipe.pipefd[1],
-				STDOUT_FILENO);
+				 STDOUT_FILENO);
 			close(current_node->prev->right->u_define.pipe.pipefd[0]);
 			close(current_node->prev->right->u_define.pipe.pipefd[1]);
 		}
@@ -84,17 +82,17 @@ void	exorcise(t_tree *current_node, int flag)
 	exit(1);
 }
 
-t_data	*get_data(void)
+t_data *get_data(void)
 {
-	static t_data	data;
+	static t_data data;
 
 	return (&data);
 }
 
-void	tk_or(t_tree **current_node)
+void tk_or(t_tree **current_node)
 {
-	pid_t	pid;
-	int		status;
+	pid_t pid;
+	int status;
 
 	if ((*current_node)->left->type == TK_COMMAND)
 	{
@@ -114,8 +112,7 @@ void	tk_or(t_tree **current_node)
 	}
 	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code != 0)
 		tk_pipe_right((*current_node)->right);
-	else if ((*current_node)->right->type == TK_COMMAND
-		&& get_data()->exit_code != 0)
+	else if ((*current_node)->right->type == TK_COMMAND && get_data()->exit_code != 0)
 	{
 		pid = fork();
 		if (pid == 0)
@@ -128,10 +125,10 @@ void	tk_or(t_tree **current_node)
 	}
 }
 
-void	tk_and(t_tree **current_node)
+void tk_and(t_tree **current_node)
 {
-	pid_t	pid;
-	int		status;
+	pid_t pid;
+	int status;
 
 	if ((*current_node)->left->type == TK_COMMAND)
 	{
@@ -146,8 +143,7 @@ void	tk_and(t_tree **current_node)
 	}
 	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code == 0)
 		tk_pipe_right((*current_node)->right);
-	else if ((*current_node)->right->type == TK_COMMAND
-		&& get_data()->exit_code == 0)
+	else if ((*current_node)->right->type == TK_COMMAND && get_data()->exit_code == 0)
 	{
 		pid = fork();
 		if (pid == 0)
@@ -159,30 +155,28 @@ void	tk_and(t_tree **current_node)
 		}
 	}
 }
-void	exorcise_manager(t_tree **tree)
+void exorcise_manager(t_tree **tree)
 {
-	t_tree		*current_node;
-	t_process	*process;
-	int			saved_stdin;
+	t_tree *current_node;
+	t_process *process;
+	int saved_stdin;
 
 	get_data()->exit_code = -1;
 	process = NULL;
 	current_node = last_left((*tree));
 	if (current_node->main == 1)
 	{
-		if (current_node->type == TK_AND && (get_data()->exit_code == 0
-				|| get_data()->exit_code == -1))
+		if (current_node->type == TK_AND && (get_data()->exit_code == 0 || get_data()->exit_code == -1))
 			tk_and(&current_node);
 		else if (current_node->type == TK_OR && get_data()->exit_code != 0)
 			tk_or(&current_node);
 		if (current_node->type == TK_PIPE)
 			tk_pipe_right(current_node);
-		return ;
+		return;
 	}
 	while (current_node)
 	{
-		if (current_node->type == TK_AND && (get_data()->exit_code == 0
-				|| get_data()->exit_code == -1))
+		if (current_node->type == TK_AND && (get_data()->exit_code == 0 || get_data()->exit_code == -1))
 		{
 			if (process)
 				wait_free_processs(&process, saved_stdin);
@@ -203,5 +197,5 @@ void	exorcise_manager(t_tree **tree)
 	}
 	if (process)
 		wait_free_processs(&process, saved_stdin);
-	//printf("\nsaida = %d\n", get_data()->exit_code);
+	// printf("\nsaida = %d\n", get_data()->exit_code);
 }

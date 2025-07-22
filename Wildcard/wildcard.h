@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/26 05:33:38 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/07/22 17:36:37 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void			remove_quotes(char **matrix);
 void			parse_quotes(char **matrix, char c, char quote_type, char marker);
 int				count_chars(char *str);
 void			reset_modified_chars(char **matrix, char c);
-char			**command_with_asterisk(char **matrix, bool *is_solo);
 bool			is_hidden_file(char *str);
 
 #endif
