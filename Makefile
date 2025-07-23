@@ -20,6 +20,7 @@ FUNCTIONS = Tester/debug.c \
 			Parsing/expansion/export_utils.c \
 			Parsing/expansion/expansion_utils.c \
 			Parsing/expansion/expansion.c \
+			Parsing/expansion/change_env_variable.c \
 			Wildcard/wildcard.c \
 			Wildcard/wildcard_utils.c \
 			Wildcard/list_to_matrix.c \

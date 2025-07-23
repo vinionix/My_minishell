@@ -185,5 +185,6 @@ char					**expand_and_wildcard(char **matrix, t_env *env_lst);
 void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
 unsigned long long		ft_atol(char *str, int *sign);
 int						jump_to_smt_else(char *str, char c, int i);
+void					change_env_var(t_env *envs, char *env_to_change, char *value);
 
 #endif

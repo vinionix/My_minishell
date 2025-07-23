@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_exit_status.c                                  :+:      :+:    :+:   */
+/*   change_env_variable.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -14,12 +14,11 @@
 
 /* Só passar um itoa do exit_status aqui */
 
-void    change_status(t_env *envs, char *status)
+void    change_env_var(t_env *envs, char *env_to_change, char *value)
 {
-    t_env   *status_var;
+    t_env   *env;
 
-    status_var = find_env("?=", envs);
-    free(status_var->value);
-    status_var->value = ft_strdup(status);
-    free(status);
+    env = find_env(env_to_change, envs);
+    free(env->value);
+    env->value = ft_strdup(value);
 }
