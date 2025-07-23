@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/21 05:25:58 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/23 07:52:47 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,39 +82,10 @@ void	exorcise(t_tree *current_node, int flag)
 	int		current_fd;
 
 	path = NULL;
+	(void)flag;
 	env_exe = NULL;
 	current_fd = 0;
-	if (flag == 0)
-	{
-		if (current_node->prev && current_node->prev->type == TK_PIPE)
-		{
-			close(current_node->prev->u_define.pipe.pipefd[0]);
-			dup2(current_node->prev->u_define.pipe.pipefd[1], STDOUT_FILENO);
-			close(current_node->prev->u_define.pipe.pipefd[1]);
-		}
-	}
-	else if (flag == 1)
-	{
-		if (current_node->prev->prev
-			&& current_node->prev->prev->type == TK_PIPE)
-		{
-			close(current_node->prev->prev->u_define.pipe.pipefd[0]);
-			dup2(current_node->prev->prev->u_define.pipe.pipefd[1],
-				STDOUT_FILENO);
-			close(current_node->prev->prev->u_define.pipe.pipefd[1]);
-		}
-	}
-	else if (flag == 2)
-	{
-		if (current_node->prev->right
-			&& current_node->prev->right->type == TK_PIPE)
-		{
-			close(current_node->prev->right->u_define.pipe.pipefd[0]);
-			dup2(current_node->prev->right->u_define.pipe.pipefd[1],
-				STDOUT_FILENO);
-			close(current_node->prev->right->u_define.pipe.pipefd[1]);
-		}
-	}
+
 	if (current_node->u_define.command.list_redir)
 	{
 		while(current_node->u_define.command.list_redir)
@@ -179,7 +150,7 @@ void	creat_solo_redirect(t_redir *redir)
 {
 	int	current_fd;
 
-	current_fd = 0;
+	current_fd = -2;
 	while (redir)
 	{
 		if (redir->type == TK_EOF)
@@ -280,14 +251,14 @@ void	exorcise_manager(t_tree **tree)
 {
 	t_tree		*current_node;
 	t_process	*process;
-	int			saved_stdin;
 	int			pid;
 	int			status;
+	int			first;
 
+	first = 0;
 	get_data()->exit_code = -1;
 	process = NULL;
 	current_node = last_left((*tree));
-	saved_stdin = dup(STDIN_FILENO);
 	if (current_node->main == 1)
 	{
 		if (current_node->type == TK_AND && (get_data()->exit_code == 0
@@ -316,21 +287,12 @@ void	exorcise_manager(t_tree **tree)
 	{
 		if (current_node && current_node->type == TK_AND && (get_data()->exit_code == 0
 				|| get_data()->exit_code == -1))
-		{
-			if (process)
-				wait_free_processs(&process, saved_stdin);
 			tk_and(&current_node);
-		}
 		else if (current_node && current_node->type == TK_OR && get_data()->exit_code != 0)
-		{
-			if (process)
-				wait_free_processs(&process, saved_stdin);
 			tk_or(&current_node);
-		}
 		if (current_node && current_node->type == TK_PIPE)
 			tk_pipe_left(&current_node, &process);
+		first++;
 		current_node = current_node->prev;
 	}
-	if (process)
-		wait_free_processs(&process, saved_stdin);
 }

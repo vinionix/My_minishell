@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/07/21 04:16:45 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/23 07:03:27 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void					tk_pipe_right(t_tree *current_node);
 void					tk_pipe_left(t_tree **current_node, t_process **process);
 void					exorcise_manager(t_tree **tree);
 void					exorcise(t_tree *current_node, int flag);
-void					wait_free_processs(t_process **process, int saved_stdin);
+void					wait_free_process(t_process **process);
 void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
 void					creat_solo_redirect(t_redir *redir);
 void					here(char *eof, int is_command, int *pipefd);
@@ -190,6 +190,7 @@ t_env					*env_new(void);
 t_env					*get_env_vars(const char **env);
 t_env					*find_env(const char *target_key, t_env *envs);
 t_process				*node_process_creator(t_tree *node);
+t_process				*search_process(t_process **process, t_tree *current_node);
 t_tree					*last_left(t_tree *tree);
 bool					verify_ls_flag(char **matrix);
 bool					have_char(char *str, char c);

@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:19:27 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/21 05:01:29 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/23 07:48:11 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,9 @@ t_tree	*node_creator(t_token **tokens, int id)
 		node->u_define.command.list_redir = creat_list_redir(id, tokens);
 		if (node->type == TK_COMMAND && here_verify(node->u_define.command.list_redir) == 1)
 			creat_here_command(&node);
+		if (node->type == TK_HEREDOC)
+			here(node->u_define.command.list_redir->eof, 0, 0);
+			
 	}
 	return(node);
 }

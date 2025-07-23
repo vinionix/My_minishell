@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/20 15:17:09 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/23 07:53:14 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ int	tokenizer(t_arg_main *args)
 	tree_creator(&args->tokens, &args->tree, -1);
 	//print_tree(args->tree, 0);
 	//free_tree(args->tree);
-	// exit(0);
+	//exit(0);
 	if (args)
 	{
 		for (int i = 0; args->tokens[i].value != NULL; i++)
