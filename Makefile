@@ -9,6 +9,9 @@ FUNCTIONS = Tester/debug.c \
 						Builtins/builtins_utils.c \
 						Builtins/builtins2.c \
 						Builtins/clean.c \
+						Builtins/cd_utils.c \
+						Builtins/exec_builtin.c \
+						Builtins/unset.c \
 						Parsing/expansion/default_env.c \
 						Parsing/expansion/env_utils.c \
 						Parsing/expansion/new_var_parsing.c \

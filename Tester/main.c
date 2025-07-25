@@ -51,22 +51,22 @@ void	aux_main(const char **env)
 int	main(int ac, char **av, const char **env)
 {
 	(void)ac;
-	(void)av;
 	//aux_main(env);
-	char **matrix = malloc(3 * 8);
-	matrix[0] = ft_strdup("echo");
-	matrix[1] = ft_strdup("$USER$a");
-	matrix[2] = NULL;
+	char **matrix = malloc(ac * 8);
+	for (int i = 0; i < ac - 1; i++)
+		matrix[i] = ft_strdup(av[i + 1]);
+	matrix[ac - 1] = NULL;
 
 	t_env *envs = get_env_vars(env);
 
-	char **oi = malloc(3 * 8);
-	oi[0] = ft_strdup("echo");
-	oi[1] = ft_strdup("\"'a=expans$ao'\"");
-	oi[2] = NULL;
+	char **unsetm = malloc(3 * 8);
+	unsetm[0] = ft_strdup("unset");
+	unsetm[1] = ft_strdup("HOME");
+	unsetm[2] = NULL;
 	create_default_env(&envs);
-	matrix = expand_and_wildcard(oi, envs);
+	ft_unset(unsetm, &envs);
+	matrix = expand_and_wildcard(matrix, envs);
 
-	ft_echo(oi);
-
+	return (exec_builtin(matrix, &envs, NULL));
+	return (0);
 }

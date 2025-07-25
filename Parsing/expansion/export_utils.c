@@ -16,8 +16,7 @@ int	check_first_char(char *variable)
 {
 	if (!ft_isalpha((int)variable[0]) && variable[0] != '_')
 	{
-		printf("minishell: export: `%s': not a valid identifier\n",
-			variable);
+		printf("minishell: export: `%s': not a valid identifier\n", variable);
 		return (1);
 	}
 	return (0);
@@ -25,7 +24,7 @@ int	check_first_char(char *variable)
 
 int	check_following_chars(char *variable, char c)
 {
-	if (!ft_isalnum((int)c))
+	if (!ft_isalnum((int)c) && c != '_')
 	{
 		printf("minishell: export: `%s': not a valid identifier\n",
 				variable);

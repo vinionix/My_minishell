@@ -159,6 +159,8 @@ t_process				*node_process_creator(t_tree *node);
 t_tree					*last_left(t_tree *tree);
 t_data					*get_data(void);
 int						ft_cd(char **matrix, t_env *env_list);
+int						check_home(char *str);
+void					parse_home(char **matrix, int home, t_env *env_list);
 int						ft_echo(char **matrix);
 int						ft_echo_n(char **matrix);
 int						new_var_parsing(char **matrix, t_env **envs);
@@ -166,7 +168,8 @@ int						ft_pwd(char **matrix);
 int						ft_env(t_env *env, char **matrix);
 unsigned char			ft_exit(char **matrix, t_tree *tree, t_env *env);
 char					*get_pwd(void);
-void					unset_env_if(t_env **env, const char *target_key);
+int						ft_unset(char **matrix, t_env **envs);
+int						unset_env_if(t_env **env, const char *target_key);
 int						strchr_index(const char *str, char stop);
 t_env					*env_new(void);
 t_env					*get_env_vars(const char **env);
@@ -187,5 +190,6 @@ unsigned long long		ft_atol(char *str, int *sign);
 int						jump_to_smt_else(char *str, char c, int i);
 void					change_env_var(t_env *envs, char *env_to_change, char *value);
 void					create_default_env(t_env **envs);
+int						exec_builtin(char **matrix, t_env **envs, t_tree *tree);
 
 #endif

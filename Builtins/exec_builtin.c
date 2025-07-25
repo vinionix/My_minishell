@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,12 +12,26 @@
 
 #include "../minishell.h"
 
-int	ft_unset(char **matrix, t_env **envs)
+int	exec_builtin(char **matrix, t_env **envs, t_tree *tree)
 {
-	int	i;
+	char	*command;
 
-	i = 0;
-	while (matrix[++i] != NULL)
-		unset_env_if(envs, matrix[i]);
-	return (0);
+	command = matrix[0];
+	if (!ft_strcmp(command, "exit"))
+		return (ft_exit(matrix, tree, *envs));
+	else if (!ft_strcmp(command, "env"))
+		return (ft_env(*envs, matrix));
+	else if (!ft_strcmp(command, "cd"))
+		return (ft_cd(matrix, *envs));
+	else if (!ft_strcmp(command, "export"))
+		return (ft_export(matrix, envs));
+	else if (!ft_strcmp(command, "echo") && matrix[1] && !ft_strcmp(matrix[1], "-n"))
+		return (ft_echo_n(matrix));
+	else if (!ft_strcmp(command, "echo"))
+		return (ft_echo(matrix));
+	else if (!ft_strcmp(command, "unset"))
+		return (ft_unset(matrix, envs));
+	else if (!ft_strcmp(command, "pwd"))
+		return (ft_pwd(matrix));
+	return (1337);
 }

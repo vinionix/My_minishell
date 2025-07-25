@@ -19,14 +19,14 @@ static int	is_unchangeable(const char *key)
 	return (0);
 }
 
-void	unset_env_if(t_env **envs, const char *target_key)
+int	unset_env_if(t_env **envs, const char *target_key)
 {
 	t_env	*temp;
 
 	if (!*envs || !envs)
-		return ;
+		return (0);
 	if (is_unchangeable(target_key))
-		return ;
+		return (0);
 	temp = *envs;
 	if (!(ft_strcmp(target_key, (const char *)(*envs)->key)))
 	{
@@ -39,6 +39,7 @@ void	unset_env_if(t_env **envs, const char *target_key)
 		temp = *envs;
 		unset_env_if(&temp->next, target_key);
 	}
+	return (0);
 }
 
 int	ft_env(t_env *env, char **matrix)

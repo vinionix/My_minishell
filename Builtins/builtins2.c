@@ -47,7 +47,7 @@ static bool	only_numbers(char *str)
 	return (true);
 }
 
-bool	long_check(char *str)
+static bool	long_check(char *str)
 {
 	unsigned long long	max;
 	unsigned long long	res;
@@ -66,7 +66,7 @@ bool	long_check(char *str)
 	return (true);
 }
 
-unsigned char get_exit_code(char *str)
+static unsigned char get_exit_code(char *str)
 {
 	unsigned char	exit_code;
 	int				sign;
