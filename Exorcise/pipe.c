@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:32 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/23 08:11:41 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/24 19:59:07 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	wait_free_processs(t_process **process)
 		get_data()->exit_code  = WEXITSTATUS(status);
 		temp = temp->next;
 	}
-	wait(NULL);
 	while ((*process))
 	{
 		temp = (*process);
@@ -43,3 +42,4 @@ void	wait_free_processs(t_process **process)
 		free(temp);
 	}
 }
+

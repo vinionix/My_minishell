@@ -3,7 +3,9 @@ Vinicius:
 1 - Fazer loop funcinar corretamente(*).
 2 - Tratar erros de sintaxe da forma correta(*);
 3 - Achar paths dos comandos na hora da execução(*);
-4 - Criar Heredoc;
-5 - Fazer redirs na execução sendo eles com comandos ou sem comandos(*);
+4 - Criar Heredoc(*);
+5 - Fazer redirs na execução sendo eles com comandos ou sem comandos;
 6 - Criar subshell;
 7 - Identificar se um comando é bultin ou não na hora de executar;
+8 - Criar pipe com uma Flag para verificar se a stdin está aberta ou não.
+9 - Criar um fd assim que for passado um heredoc;
