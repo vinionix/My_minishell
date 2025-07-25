@@ -69,7 +69,7 @@ static void	do_not_expand(char **matrix)
 		{
 			if (matrix[i][j] == '$' && count_quotes_right(matrix[i] + j, '\'') % 2 != 0
 				&& count_quotes_left(matrix[i], j, '\'') % 2 != 0)
-				matrix[i][j] = EXPANSION_MARKER;
+				matrix[i][j] = DOLLAR_MARKER;
 			else if (matrix[i][j] == '*' && ((count_quotes_right(matrix[i] + j, '\'') % 2 != 0
 				&& count_quotes_left(matrix[i], j, '\'') % 2 != 0)
 					|| (count_quotes_right(matrix[i] + j, '\"') % 2 != 0

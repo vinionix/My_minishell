@@ -46,7 +46,7 @@ void	reset_modified_chars(char **matrix, char c)
 	{
 		while (matrix[i][++j])
 		{
-			if (matrix[i][j] == EXPANSION_MARKER && c == '$')
+			if (matrix[i][j] == DOLLAR_MARKER && c == '$')
 				matrix[i][j] = c;
 			else if (matrix[i][j] == EXPANSION_MARKER && c == '*')
 				matrix[i][j] = c;

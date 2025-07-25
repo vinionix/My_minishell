@@ -61,13 +61,12 @@ int	main(int ac, char **av, const char **env)
 	t_env *envs = get_env_vars(env);
 
 	char **oi = malloc(3 * 8);
-	oi[0] = ft_strdup("export");
-	oi[1] = ft_strdup("a=expansao");
+	oi[0] = ft_strdup("echo");
+	oi[1] = ft_strdup("\"'a=expans$ao'\"");
 	oi[2] = NULL;
-	ft_export(oi, &envs);
 	create_default_env(&envs);
-	matrix = expand_and_wildcard(matrix, envs);
+	matrix = expand_and_wildcard(oi, envs);
 
-	ft_echo(matrix);
+	ft_echo(oi);
 
 }

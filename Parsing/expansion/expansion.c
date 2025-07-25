@@ -226,7 +226,7 @@ static char	*mark_expansions(char *str)
 			i = jump_to(copy, '$', i);
 			continue ;
 		}
-		while (copy[i] && copy[i] != ' ' && copy[i] != '$'
+		while (copy[i] && copy[i] != ' ' && copy[i] != '$' && copy[i] != DOLLAR_MARKER
 			&& copy[i] != SINGLE_QUOTE_MARKER && copy[i] != DOUBLE_QUOTE_MARKER
 				&& copy[i] != '\'' && copy[i] != '\"' && copy[i] != '*'
 					&& copy[i] != '/' && copy[i] != ',' && copy[i] != EXPANSION_MARKER)
@@ -280,7 +280,7 @@ void	parse_edge_case(char **matrix)
 			if (matrix[i][j] && matrix[i][j] == '$' && (matrix[i][j + 1] == ' '
 				|| matrix[i][j + 1] == SINGLE_QUOTE_MARKER
 					|| matrix[i][j + 1] == '\0'))
-				matrix[i][j] = EXPANSION_MARKER;
+				matrix[i][j] = DOLLAR_MARKER;
 		}
 		j = -1;
 	}
