@@ -12,7 +12,7 @@
 
 #include "wildcard.h"
 
-static int	count_quotes_right(char *str, char c)
+int	count_quotes_right(char *str, char c)
 {
 	int	i;
 	int	size;
@@ -27,7 +27,7 @@ static int	count_quotes_right(char *str, char c)
 	return (size);
 }
 
-static int	count_quotes_left(char *str, int i, char c)
+int	count_quotes_left(char *str, int i, char c)
 {
 	int	size;
 
@@ -41,30 +41,67 @@ static int	count_quotes_left(char *str, int i, char c)
 	return (size);
 }
 
-void parse_quotes(char **matrix, char c, char quote_type, char marker)
+static void turn_into_meta(char *str, char quote_type, int *i)
 {
-	int		i;
-	int		index;
-	int		start;
+	(*i)++;
+	while (str[*i] && str[*i] != quote_type)
+	{
+		if (str[*i] == '\'')
+			str[*i] = SINGLE_QUOTE_MARKER;
+		else if (str[*i] == '\"')
+			str[*i] = DOUBLE_QUOTE_MARKER;
+		(*i)++;
+	}
+	if (str[*i])
+		(*i)++;
+}
+
+static void	do_not_expand(char **matrix)
+{
+	int	i;
+	int	j;
 
 	i = -1;
-	start = 0;
+	j = 0;
+	while (matrix[++i])
+	{
+		while (matrix[i][j])
+		{
+			if (matrix[i][j] == '$' && count_quotes_right(matrix[i] + j, '\'') % 2 != 0
+				&& count_quotes_left(matrix[i], j, '\'') % 2 != 0)
+				matrix[i][j] = EXPANSION_MARKER;
+			else if (matrix[i][j] == '*' && ((count_quotes_right(matrix[i] + j, '\'') % 2 != 0
+				&& count_quotes_left(matrix[i], j, '\'') % 2 != 0)
+					|| (count_quotes_right(matrix[i] + j, '\"') % 2 != 0
+						&& count_quotes_left(matrix[i], j, '\"') % 2 != 0)))
+				matrix[i][j] = EXPANSION_MARKER;
+			j++;
+		}
+		j = 0;
+	}
+}
+
+void parse_quotes(char **matrix)
+{
+	int		i;
+	int		j;
+
+	i = -1;
+	j = 0;
 	while (matrix[++i])
 	{
 		if (matrix[i][0] == '\0')
 			continue ;
-		while (matrix[i][start])
+		while (matrix[i][j])
 		{
-			index = strchr_index_next(matrix[i], c, start);
-			if (count_quotes_right(matrix[i] + index, quote_type) % 2 != 0
-					&& count_quotes_left(matrix[i], index, quote_type) % 2 != 0)
-				matrix[i][index] = marker;
-			if (matrix[i][index])
-				start = index + 1;
+			if (matrix[i][j] == '\'')
+				turn_into_meta(matrix[i], '\'', &j);
+			else if (matrix[i][j] == '\"')
+				turn_into_meta(matrix[i], '\"', &j);
 			else
-				break ;
+				j++;
 		}
-		start = 0;
-		index = 0;
+		j = 0;
 	}
+	do_not_expand(matrix);
 }

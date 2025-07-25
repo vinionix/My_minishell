@@ -22,3 +22,18 @@ void    change_env_var(t_env *envs, char *env_to_change, char *value)
     free(env->value);
     env->value = ft_strdup(value);
 }
+
+void	create_default_env(t_env **envs)
+{
+	int		pid;
+	char	*pid_str;
+	char	*pid_var;
+
+	pid = getpid();
+	pid_str = ft_itoa(pid);
+	pid_var = ft_strjoin("$=", pid_str);
+	create_env(pid_var, envs);
+	create_env("?=0", envs);
+	free(pid_str);
+	free(pid_var);
+}

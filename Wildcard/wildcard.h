@@ -50,7 +50,7 @@ char			**join_matrices(char **matrix1, char **matrix2, int copy_until);
 char			*update_vars(t_wildcard *list, const char *wildcard, t_var *var);
 void			reset_matches(t_wildcard *list);
 void			remove_quotes(char **matrix);
-void			parse_quotes(char **matrix, char c, char quote_type, char marker);
+void			parse_quotes(char **matrix);
 int				count_chars(char *str);
 void			reset_modified_chars(char **matrix, char c);
 bool			is_hidden_file(char *str);

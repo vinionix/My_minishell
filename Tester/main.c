@@ -54,15 +54,20 @@ int	main(int ac, char **av, const char **env)
 	(void)av;
 	//aux_main(env);
 	char **matrix = malloc(3 * 8);
-	matrix[0] = ft_strdup("export");
-	matrix[1] = ft_strdup("oi=10");
+	matrix[0] = ft_strdup("echo");
+	matrix[1] = ft_strdup("$USER$a");
 	matrix[2] = NULL;
 
 	t_env *envs = get_env_vars(env);
-	matrix = expand_and_wildcard(matrix, envs);
-	ft_export(matrix, &envs);
-	logs(find_env("oi=", envs)->value);
-	change_env_var(envs, "oi=", "20");
 
-	logs(find_env("oi=", envs)->value);
+	char **oi = malloc(3 * 8);
+	oi[0] = ft_strdup("export");
+	oi[1] = ft_strdup("a=expansao");
+	oi[2] = NULL;
+	ft_export(oi, &envs);
+	create_default_env(&envs);
+	matrix = expand_and_wildcard(matrix, envs);
+
+	ft_echo(matrix);
+
 }

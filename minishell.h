@@ -163,7 +163,7 @@ int						ft_echo(char **matrix);
 int						ft_echo_n(char **matrix);
 int						new_var_parsing(char **matrix, t_env **envs);
 int						ft_pwd(char **matrix);
-int						ft_env(t_env *env);
+int						ft_env(t_env *env, char **matrix);
 unsigned char			ft_exit(char **matrix, t_tree *tree, t_env *env);
 char					*get_pwd(void);
 void					unset_env_if(t_env **env, const char *target_key);
@@ -186,5 +186,6 @@ void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
 unsigned long long		ft_atol(char *str, int *sign);
 int						jump_to_smt_else(char *str, char c, int i);
 void					change_env_var(t_env *envs, char *env_to_change, char *value);
+void					create_default_env(t_env **envs);
 
 #endif
