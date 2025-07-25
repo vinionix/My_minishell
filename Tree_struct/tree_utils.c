@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:19:27 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/23 07:48:11 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:52:59 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,12 +104,15 @@ t_tree	*node_creator(t_token **tokens, int id)
 		if ((*tokens)[i].type == TK_COMMAND)
 			node->u_define.command.cmd = creat_command(id, (*tokens));
 		node->u_define.command.list_redir = creat_list_redir(id, tokens);
-		if (node->type == TK_COMMAND && here_verify(node->u_define.command.list_redir) == 1)
+		if (node->type == TK_COMMAND && here_verify(node->u_define.command.list_redir, 1) == 1)
 			creat_here_command(&node);
+		else
+			here_verify(node->u_define.command.list_redir, 0);
 		if (node->type == TK_HEREDOC)
 			here(node->u_define.command.list_redir->eof, 0, 0);
-			
 	}
+	else if ((*tokens)[i].type == TK_PIPE)
+		node->u_define.pipe.std_in = -1;
 	return(node);
 }
 int	search_left(t_token **tokens, int id)

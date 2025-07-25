@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 20:58:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/23 07:58:16 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:34:37 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	creat_here_command(t_tree **tree)
 	(*tree)->u_define.command.list_redir = temp;
 }
 
-int	here_verify(t_redir *redir)
+int	here_verify(t_redir *redir, int is_command)
 {
 	t_redir	*temp;
 
@@ -41,9 +41,13 @@ int	here_verify(t_redir *redir)
 	while(temp)
 	{
 		if (temp->type == TK_EOF)
-			return (1);
+			break ;
 		temp = temp->next;
 	}
+	if (temp && temp->type == TK_EOF && is_command == 1)
+		return (1);
+	else if (temp && temp->type == TK_EOF && is_command == 0)
+		here(temp->eof, 0, 0);
 	return (0);
 }
 

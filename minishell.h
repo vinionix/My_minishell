@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/07/23 07:03:27 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:05:24 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct s_command
 typedef struct s_pipe
 {
 	int					pipefd[2];
+	int					std_in;
 }						t_pipe;
 
 typedef struct s_data
@@ -154,8 +155,7 @@ void					process_add_back(t_process **main, t_process *node);
 void					change_cwd(t_env *env_list);
 void					free_tokens(char **matrix, t_token *tokens);
 void					envadd_back(t_env **lst, t_env *new);
-void					tk_pipe_right(t_tree *current_node);
-void					tk_pipe_left(t_tree **current_node, t_process **process);
+void					ft_pipe(t_tree **tree, int left_or_rigth);
 void					exorcise_manager(t_tree **tree);
 void					exorcise(t_tree *current_node, int flag);
 void					wait_free_process(t_process **process);
@@ -166,7 +166,7 @@ void					free_matrix(char **matrix);
 void					unset_env_if(t_env **env, const char *target_key);
 void					expand_variables(char **matrix, t_env *env_lst);
 void					creat_here_command(t_tree **tree);
-int						here_verify(t_redir *redir);
+int						here_verify(t_redir *redir, int is_command);
 int						sintaxe_error(t_token **tokens);
 int						ft_len_matrix(char **matrix);
 int						jump_char(char chr);

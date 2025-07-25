@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/23 07:52:47 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:50:33 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,9 +153,7 @@ void	creat_solo_redirect(t_redir *redir)
 	current_fd = -2;
 	while (redir)
 	{
-		if (redir->type == TK_EOF)
-			here(redir->eof, 0, 0);
-		else if (redir->type == TK_FILE_APP)
+		if (redir->type == TK_FILE_APP)
 			current_fd = open(redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		else if (redir->type == TK_FILE_OUT)
 			current_fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -194,9 +192,9 @@ void	tk_or(t_tree **current_node)
 	}
 	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC)
 		creat_solo_redirect((*current_node)->left->u_define.command.list_redir);
-	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code != 0)
-		tk_pipe_right((*current_node)->right);
-	else if ((*current_node)->right->type == TK_COMMAND
+	// if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code != 0)
+	// 	tk_pipe_right((*current_node)->right);
+	if ((*current_node)->right->type == TK_COMMAND
 		&& get_data()->exit_code != 0)
 	{
 		pid = fork();
@@ -230,9 +228,9 @@ void	tk_and(t_tree **current_node)
 	}
 	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC)
 		creat_solo_redirect((*current_node)->left->u_define.command.list_redir);
-	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code == 0)
-		tk_pipe_right((*current_node)->right);
-	else if ((*current_node)->right->type == TK_COMMAND
+	// if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code == 0)
+	// 	tk_pipe_right((*current_node)->right);
+	if ((*current_node)->right->type == TK_COMMAND
 		&& get_data()->exit_code == 0)
 	{
 		pid = fork();
@@ -267,7 +265,7 @@ void	exorcise_manager(t_tree **tree)
 		else if (current_node->type == TK_OR && get_data()->exit_code != 0)
 			tk_or(&current_node);
 		if (current_node->type == TK_PIPE)
-			tk_pipe_right(current_node);
+			ft_pipe(&current_node, 1);
 		if (current_node->type >= TK_REDIR_IN && current_node->type <= TK_HEREDOC)
 			creat_solo_redirect(current_node->u_define.command.list_redir);
 		if (current_node->type == TK_COMMAND)
@@ -291,7 +289,7 @@ void	exorcise_manager(t_tree **tree)
 		else if (current_node && current_node->type == TK_OR && get_data()->exit_code != 0)
 			tk_or(&current_node);
 		if (current_node && current_node->type == TK_PIPE)
-			tk_pipe_left(&current_node, &process);
+			ft_pipe(&current_node, 1);
 		first++;
 		current_node = current_node->prev;
 	}
