@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   verify_ls_flag.c                                   :+:      :+:    :+:   */
+/*   verify_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,6 +11,50 @@
 /* ************************************************************************** */
 
 #include "wildcard.h"
+
+bool	double_wildcard(const char *str)
+{
+	return (ft_strstr(str, "**") == NULL);
+}
+
+bool	check_sufix(t_wildcard *list, const char *wildcard)
+{
+	char	*card;
+
+	card = NULL;
+	if (wildcard[0] == '*' && count_char(wildcard, '*') == 1)
+	{
+		card = ft_substr(wildcard, 1, ft_strlen(wildcard) - 1);
+		if (str_revcmp(list->file_dir, card))
+		{
+			free(card);
+			list->match = false;
+			return (true);
+		}
+		else
+		{
+			free(card);
+			return (true);
+		}
+	}
+	if (card)
+		free(card);
+	return (false);
+}
+
+int	count_char(const char *str, char c)
+{
+	int	size;
+
+	size = 0;
+	while (*str)
+	{
+		if (*str == c)
+			size++;
+		str++;
+	}
+	return (size);
+}
 
 bool	verify_ls_flag(char **matrix)
 {

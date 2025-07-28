@@ -59,14 +59,20 @@ int	main(int ac, char **av, const char **env)
 
 	t_env *envs = get_env_vars(env);
 
-	char **unsetm = malloc(3 * 8);
-	unsetm[0] = ft_strdup("unset");
-	unsetm[1] = ft_strdup("HOME");
-	unsetm[2] = NULL;
 	create_default_env(&envs);
-	ft_unset(unsetm, &envs);
 	matrix = expand_and_wildcard(matrix, envs);
-
-	return (exec_builtin(matrix, &envs, NULL));
+	exec_builtin(matrix, &envs, NULL);
+	//for (int i = 0; i < ?; i++)
+	//	free(matrix[i]);
+	//free(matrix);
+	t_env *temp = envs;
+	while (temp)
+	{
+		temp = envs->next;
+		free(envs->key);
+		free(envs->value);
+		free(envs);
+		envs = temp;
+	}
 	return (0);
 }

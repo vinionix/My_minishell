@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int	ft_strstr(const char *big, const char *little)
+const char	*ft_strstr(const char *big, const char *little)
 {
 	int		i;
 	size_t	k;
@@ -22,19 +22,19 @@ int	ft_strstr(const char *big, const char *little)
 	k = 0;
 	str = (char *)big;
 	if (big[i] == '\0')
-		return (-1);
+		return (NULL);
 	if (little[k] == '\0')
-		return (0);
+		return (NULL);
 	while (str[i] != '\0')
 	{
 		k = 0;
 		while ((str[i + k] == little[k]) || little[k] == '\0')
 		{
 			if (little[k] == '\0')
-				return (i);
+				return (big + i);
 			k++;
 		}
 		i++;
 	}
-	return (i);
+	return (NULL);
 }

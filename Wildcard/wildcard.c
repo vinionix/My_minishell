@@ -14,35 +14,41 @@
 
 static void	later_matches(t_wildcard *list, const char *wildcard, t_var *var)
 {
+	const char	*temp;
+	int			i;
+
+	temp = list->file_dir;
+	i = 0;
 	while (1337)
 	{
-		var->current_card = update_vars(list, wildcard, var);
-		if (wildcard[var->start - 1] == '\0')
+		if (!*var->current_card)
 			return ;
-		if (!ft_strstr(list->file_dir + list->index, var->current_card))
+		if (!ft_strstr(temp, var->current_card))
 		{
 			list->match = false;
 			return ;
 		}
-		if (wildcard[list->index + (var->size - var->start) + 1 + var->ast]
-			== '\0')
+		if (wildcard[i + ft_strlen(var->current_card) + 1] == '\0')
 		{
-			if (str_revcmp(list->file_dir + list->index,
-					(const char *)var->current_card))
+			if (str_revcmp(temp, (const char *)var->current_card))
 			{
 				list->match = false;
 				return ;
 			}
-			return ;
 		}
+		i = strchr_index_next(wildcard, '*', i);
+		temp = ft_strstr(temp, var->current_card);
+		temp += ft_strlen(var->current_card);
 		free(var->current_card);
 		var->current_card = NULL;
-		var->ast++;
+		var->current_card = update_vars(wildcard, var);
 	}
 }
 
 static void	is_match(t_wildcard *list, const char *wildcard, t_var *var)
 {
+	if (wildcard[0] == '*')
+		var->start = 1;
 	var->current_card = ft_substr(wildcard, var->start, var->size - var->start);
 	if (var->start == 0 && ft_strncmp(list->file_dir,
 			(const char *)var->current_card, ft_strlen(var->current_card))
@@ -51,8 +57,13 @@ static void	is_match(t_wildcard *list, const char *wildcard, t_var *var)
 		list->match = false;
 		return ;
 	}
-	free(var->current_card);
-	var->current_card = NULL;
+	if (count_char(wildcard, '*') == 1
+			&& wildcard[strchr_index(wildcard, '*') + 1] == '\0')
+		return ;
+	if (check_sufix(list, wildcard))
+		return ;
+	if (edge_case(list, wildcard))
+		return ;
 	later_matches(list, wildcard, var);
 }
 
@@ -84,7 +95,7 @@ static char	**wildcard_aux(char **matrix, t_wildcard *list,
 	matches = NULL;
 	while (matrix[++i])
 	{
-		if (have_char(matrix[i], '*'))
+		if (have_char(matrix[i], '*') && double_wildcard(matrix[i]))
 		{
 			expand_wildcard(list, matrix[i], var);
 			matches = list_to_matrix(list, show_hidden);
@@ -92,7 +103,6 @@ static char	**wildcard_aux(char **matrix, t_wildcard *list,
 				continue ;
 			matrix = join_matrices(matrix, matches, i);
 			reset_matches(list);
-			continue ;
 		}
 	}
 	return (matrix);

@@ -22,12 +22,11 @@ void	reset_matches(t_wildcard *list)
 	}
 }
 
-char	*update_vars(t_wildcard *list, const char *wildcard, t_var *var)
+char	*update_vars(const char *wildcard, t_var *var)
 {
 	char	*str;
 
 	str = NULL;
-	list->index += var->size - var->start;
 	var->start = var->size + 1;
 	if (var->start - 1 < (unsigned int)ft_strlen(wildcard))
 		var->size = strchr_index_next(wildcard, '*', var->start);
@@ -57,6 +56,32 @@ void	reset_modified_chars(char **matrix, char c)
 		}
 		j = -1;
 	}
+}
+
+bool	edge_case(t_wildcard *list, const char *wildcard)
+{
+	char	*card;
+
+	card = NULL;
+	if (count_char(wildcard, '*') == 2 && wildcard[0] == '*'
+			&& wildcard[ft_strlen(wildcard) - 1] == '*')
+	{
+		card = ft_substr(wildcard, 1, ft_strlen(wildcard) - 2);
+		if (ft_strstr(list->file_dir, card))
+		{
+			free(card);
+			return (true);
+		}
+		else
+		{
+			free(card);
+			list->match = false;
+			return (true);
+		}
+	}
+	if (card)
+		free(card);
+	return (false);
 }
 
 bool	is_hidden_file(char *str)

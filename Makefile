@@ -32,7 +32,7 @@ FUNCTIONS = Tester/debug.c \
 			Wildcard/quotes_utils.c \
 			Wildcard/wildcard_utils2.c \
 			Wildcard/read_cd.c \
-			Wildcard/verify_ls_flag.c \
+			Wildcard/verify_utils.c \
 			Tree_struct/tree_utils.c \
 			Tree_struct/tree_create.c \
 			Exorcise/execution.c \
