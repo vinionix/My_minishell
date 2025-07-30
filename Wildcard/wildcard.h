@@ -58,6 +58,9 @@ bool			is_hidden_file(char *str);
 bool			edge_case(t_wildcard *list, const char *wildcard);
 int				count_char(const char *str, char c);
 bool			check_sufix(t_wildcard *list, const char *wildcard);
+char			*compress_wildcards(char *str);
+int				len_except(const char *str, char exception);
 bool			double_wildcard(const char *str);
+void			reduce(const char *str, char *new);
 
 #endif

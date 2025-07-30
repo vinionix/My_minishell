@@ -33,6 +33,7 @@ FUNCTIONS = Tester/debug.c \
 			Wildcard/wildcard_utils2.c \
 			Wildcard/read_cd.c \
 			Wildcard/verify_utils.c \
+			Wildcard/len_except.c \
 			Tree_struct/tree_utils.c \
 			Tree_struct/tree_create.c \
 			Exorcise/execution.c \

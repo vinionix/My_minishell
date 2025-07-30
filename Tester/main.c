@@ -62,9 +62,9 @@ int	main(int ac, char **av, const char **env)
 	create_default_env(&envs);
 	matrix = expand_and_wildcard(matrix, envs);
 	exec_builtin(matrix, &envs, NULL);
-	//for (int i = 0; i < ?; i++)
-	//	free(matrix[i]);
-	//free(matrix);
+	for (int i = 0; i < ft_len_matrix(matrix); i++)
+		free(matrix[i]);
+	free(matrix);
 	t_env *temp = envs;
 	while (temp)
 	{

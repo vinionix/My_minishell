@@ -14,7 +14,28 @@
 
 bool	double_wildcard(const char *str)
 {
-	return (ft_strstr(str, "**") == NULL);
+	return (ft_strstr(str, "**") != NULL);
+}
+
+char	*compress_wildcards(char *str)
+{
+	int		i;
+	int		size;
+	char	*new;
+
+	i = 0;
+	size = 0;
+	while (str[i])
+	{
+		size++;
+		i = jump_to(str, '*', i);
+		i = jump_to_smt_else(str, '*', i);
+		i = jump_to(str, '*', i);
+	}
+	size += len_except(str, '*');
+	new = (char *)ft_calloc(1, size + 1);
+	reduce(str, new);
+	return (new);
 }
 
 bool	check_sufix(t_wildcard *list, const char *wildcard)

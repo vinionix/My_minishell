@@ -90,17 +90,25 @@ static char	**wildcard_aux(char **matrix, t_wildcard *list,
 {
 	int		i;
 	char	**matches;
+	char	*old_temp;
 
 	i = -1;
-	matches = NULL;
 	while (matrix[++i])
 	{
-		if (have_char(matrix[i], '*') && double_wildcard(matrix[i]))
+		if (have_char(matrix[i], '*'))
 		{
+			old_temp = matrix[i];
+			if (double_wildcard(matrix[i]))
+				matrix[i] = compress_wildcards(matrix[i]);
 			expand_wildcard(list, matrix[i], var);
 			matches = list_to_matrix(list, show_hidden);
 			if (!matches)
+			{
+				free(matrix[i]);
+				matrix[i] = old_temp;
 				continue ;
+			}
+			free(old_temp);
 			matrix = join_matrices(matrix, matches, i);
 			reset_matches(list);
 		}

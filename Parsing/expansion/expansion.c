@@ -12,14 +12,14 @@
 
 #include "expansion.h"
 
-static int	jump_to(char *str, char c, int i)
+int	jump_to(const char *str, char c, int i)
 {
 	while (str[i] && str[i] != c)
 		i++;
 	return (i);
 }
 
-int	jump_to_smt_else(char *str, char c, int i)
+int	jump_to_smt_else(const char *str, char c, int i)
 {
 	if (str[i])
 	{
@@ -42,7 +42,7 @@ void	remove_key_len(char *copy, t_vars *var)
 	}
 }
 
-	char	*remove_dollar(char *str)
+char	*remove_dollar(char *str)
 {
 	char	*new;
 	int		i;

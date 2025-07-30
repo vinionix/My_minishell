@@ -187,9 +187,10 @@ bool					verify_ls_flag(char **matrix);
 char					**expand_and_wildcard(char **matrix, t_env *env_lst);
 void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
 unsigned long long		ft_atol(char *str, int *sign);
-int						jump_to_smt_else(char *str, char c, int i);
+int						jump_to_smt_else(const char *str, char c, int i);
 void					change_env_var(t_env *envs, char *env_to_change, char *value);
 void					create_default_env(t_env **envs);
 int						exec_builtin(char **matrix, t_env **envs, t_tree *tree);
+int						jump_to(const char *str, char c, int i);
 
 #endif

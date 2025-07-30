@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-// static size_t	count_words(char const *s, char c)
+/*// static size_t	count_words(char const *s, char c)
 // {
 // 	int		i;
 // 	int		counter;
@@ -46,7 +46,7 @@
 // 		i++;
 // 	}
 // 	return (counter);
-// }
+// }*/
 
 static void	handle_jump(const char *s, int *i, char chr_jump)
 {
@@ -172,7 +172,6 @@ char	**ft_split(char const *s, char c)
 	array = (char **)malloc((count_words(s, c) + 1) * sizeof(char *));
 	if (!array)
 		return (NULL);
-	printf("%zu\n", count_words(s, c));
 	while (i < count_words(s, c))
 	{
 		size = find_size(s, c, &index);
