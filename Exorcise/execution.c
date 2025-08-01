@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/25 17:50:33 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/28 17:25:06 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,10 +226,10 @@ void	tk_and(t_tree **current_node)
 			get_data()->exit_code = WEXITSTATUS(status);
 		}
 	}
-	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC)
+	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC && get_data()->exit_code == 0)
 		creat_solo_redirect((*current_node)->left->u_define.command.list_redir);
-	// if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code == 0)
-	// 	tk_pipe_right((*current_node)->right);
+	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code == 0)
+		ft_pipe(&(*current_node)->right, 0);
 	if ((*current_node)->right->type == TK_COMMAND
 		&& get_data()->exit_code == 0)
 	{
@@ -248,14 +248,12 @@ void	tk_and(t_tree **current_node)
 void	exorcise_manager(t_tree **tree)
 {
 	t_tree		*current_node;
-	t_process	*process;
 	int			pid;
 	int			status;
 	int			first;
 
 	first = 0;
 	get_data()->exit_code = -1;
-	process = NULL;
 	current_node = last_left((*tree));
 	if (current_node->main == 1)
 	{

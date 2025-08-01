@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:32 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/25 17:48:24 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/28 17:52:06 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,24 @@ void	pipe_for_command(t_tree **tree, int *stdin_fd, t_process **process)
 			dup2(*stdin_fd, STDIN_FILENO);
 			close(*stdin_fd);
 		}
-		dup2((*tree)->prev->u_define.pipe.pipefd[1], STDOUT_FILENO);
+		if ((*tree)->prev->main != 1)
+			dup2((*tree)->prev->u_define.pipe.pipefd[1], STDOUT_FILENO);
 		close((*tree)->prev->u_define.pipe.pipefd[1]);
 		close((*tree)->prev->u_define.pipe.pipefd[0]);
 		exorcise((*tree), -1);
 	}
 	else
 	{
-		if (*stdin_fd != -1)
-			close(*stdin_fd);
 		close((*tree)->prev->u_define.pipe.pipefd[1]);
-		*stdin_fd = (*tree)->prev->u_define.pipe.pipefd[0];
+		if (*stdin_fd != -1)
+		{
+			close(*stdin_fd);
+			*stdin_fd = -1;
+		}
+		if ((*tree)->main != 1)
+			*stdin_fd = (*tree)->prev->u_define.pipe.pipefd[0];
+		else
+			close((*tree)->prev->u_define.pipe.pipefd[0]);
 	}
 }
 
@@ -136,7 +143,10 @@ int	first_iteration(t_tree **tree, t_process **process)
 	if ((*tree)->main != 1)
 		(*tree) = (*tree)->prev;
 	else
+	{
 		close(stdin_fd);
+		stdin_fd = -1;
+	}
 	return (stdin_fd);
 }
 
@@ -148,23 +158,30 @@ void	ft_pipe(t_tree **tree, int left_or_rigth)
 
 	current = (*tree);
 	process = NULL;
-	stdin_fd = first_iteration(&current, &process);
-	if (current->main == 1)
+	stdin_fd = first_iteration(tree, &process);
+	if (stdin_fd == -1)
 	{
-		wait_free_process(&process);
+		if (process)
+			wait_free_process(&process);
 		return ;
 	}
-	while (current->type == TK_PIPE && current->main == 1)
+	while ((*tree)->type == TK_PIPE)
 	{
 		if (left_or_rigth == 1)
 		{
 			pipe_iteration(tree, &stdin_fd, &process);
-			current = current->prev;
+			if ((*tree)->main == 1)
+				break ;
+			(*tree) = (*tree)->prev;
 		}
-		else
+		if (left_or_rigth == 0)
 		{
 			pipe_iteration(tree, &stdin_fd, &process);
-			current = current->right;
+			(*tree) = (*tree)->right;
 		}
 	}
+	if (left_or_rigth == 0)
+		(*tree) = current;
+	if (process)
+		wait_free_process(&process);
 }
