@@ -104,12 +104,10 @@ t_tree	*node_creator(t_token **tokens, int id)
 		if ((*tokens)[i].type == TK_COMMAND)
 			node->u_define.command.cmd = creat_command(id, (*tokens));
 		node->u_define.command.list_redir = creat_list_redir(id, tokens);
-		if (node->type == TK_COMMAND && here_verify(node->u_define.command.list_redir, 1) == 1)
+		if (node->type == TK_COMMAND)
 			creat_here_command(&node);
-		else
+		else if (node->type != TK_COMMAND)
 			here_verify(node->u_define.command.list_redir, 0);
-		if (node->type == TK_HEREDOC)
-			here(node->u_define.command.list_redir->eof, 0, 0);
 	}
 	else if ((*tokens)[i].type == TK_PIPE)
 		node->u_define.pipe.std_in = -1;

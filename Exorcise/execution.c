@@ -250,9 +250,7 @@ void	exorcise_manager(t_tree **tree)
 	t_tree		*current_node;
 	int			pid;
 	int			status;
-	int			first;
 
-	first = 0;
 	get_data()->exit_code = -1;
 	current_node = last_left((*tree));
 	if (current_node->main == 1)
@@ -288,7 +286,6 @@ void	exorcise_manager(t_tree **tree)
 			tk_or(&current_node);
 		if (current_node && current_node->type == TK_PIPE)
 			ft_pipe(&current_node, 1);
-		first++;
 		current_node = current_node->prev;
 	}
 }

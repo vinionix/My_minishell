@@ -58,15 +58,15 @@ void	here(char *eof, int is_command, int *pipefd)
 	while (1)
 	{
 		readl = readline("> ");
+		if (ft_strcmp(readl, eof) == 0)
+		{
+			free(readl);
+			break;
+		}
 		if (!readl)
 		{
 			if (is_command == 1)
 				close(pipefd[1]);
-			break;
-		}
-		if (ft_strcmp(readl, eof) == 0)
-		{
-			free(readl);
 			break;
 		}
 		if (is_command == 1)
