@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 21:06:12 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/22 17:32:49 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/05 00:49:42 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,10 @@ int	main(int ac, char **av, const char **env)
 		matrix[i] = ft_strdup(av[i + 1]);
 	matrix[ac - 1] = NULL;
 
+	for (int i = 0; matrix[i]; i++)
+	{
+		logs(matrix[i]);
+	}
 	t_env *envs = get_env_vars(env);
 
 	create_default_env(&envs);

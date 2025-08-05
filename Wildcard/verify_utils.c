@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/12 16:12:34 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/05 01:03:41 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	*compress_wildcards(char *str)
 	size += len_except(str, '*');
 	new = (char *)ft_calloc(1, size + 1);
 	reduce(str, new);
+	free(str);
 	return (new);
 }
 

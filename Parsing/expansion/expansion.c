@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:07:31 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/06/26 06:10:55 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/05 00:26:12 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ static char	*mark_expansions(char *str)
 	int		i;
 	char	*copy;
 
-	i = strchr_index_next(str, '$', 0);
+	i = jump_to(str, '$', 0);
 	copy = ft_strdup((const char *)str);
 	while (copy[i])
 	{

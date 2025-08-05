@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/25 20:36:29 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/05 01:04:05 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static char	**wildcard_aux(char **matrix, t_wildcard *list,
 	{
 		if (have_char(matrix[i], '*'))
 		{
-			old_temp = matrix[i];
+			old_temp = ft_strdup(matrix[i]);
 			if (double_wildcard(matrix[i]))
 				matrix[i] = compress_wildcards(matrix[i]);
 			expand_wildcard(list, matrix[i], var);
@@ -105,7 +105,8 @@ static char	**wildcard_aux(char **matrix, t_wildcard *list,
 			if (!matches)
 			{
 				free(matrix[i]);
-				matrix[i] = old_temp;
+				matrix[i] = ft_strdup(old_temp);
+				free(old_temp);
 				continue ;
 			}
 			free(old_temp);
