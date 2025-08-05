@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/28 17:25:06 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/05 05:59:59 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,8 +192,8 @@ void	tk_or(t_tree **current_node)
 	}
 	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC)
 		creat_solo_redirect((*current_node)->left->u_define.command.list_redir);
-	// if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code != 0)
-	// 	tk_pipe_right((*current_node)->right);
+	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code != 0)
+		ft_pipe(&(*current_node)->right, 0);
 	if ((*current_node)->right->type == TK_COMMAND
 		&& get_data()->exit_code != 0)
 	{
@@ -226,11 +226,11 @@ void	tk_and(t_tree **current_node)
 			get_data()->exit_code = WEXITSTATUS(status);
 		}
 	}
-	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC && get_data()->exit_code == 0)
+	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC)
 		creat_solo_redirect((*current_node)->left->u_define.command.list_redir);
 	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code == 0)
 		ft_pipe(&(*current_node)->right, 0);
-	if ((*current_node)->right->type == TK_COMMAND
+	else if ((*current_node)->right->type == TK_COMMAND
 		&& get_data()->exit_code == 0)
 	{
 		pid = fork();
@@ -279,13 +279,13 @@ void	exorcise_manager(t_tree **tree)
 	}
 	while (current_node)
 	{
+		if (current_node && current_node->type == TK_PIPE)
+			ft_pipe(&current_node, 1);
 		if (current_node && current_node->type == TK_AND && (get_data()->exit_code == 0
 				|| get_data()->exit_code == -1))
 			tk_and(&current_node);
 		else if (current_node && current_node->type == TK_OR && get_data()->exit_code != 0)
 			tk_or(&current_node);
-		if (current_node && current_node->type == TK_PIPE)
-			ft_pipe(&current_node, 1);
 		current_node = current_node->prev;
 	}
 }

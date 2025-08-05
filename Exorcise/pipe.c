@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:32 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/28 17:52:06 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/05 04:28:26 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	wait_free_process(t_process **process)
 	{
 		waitpid(temp->pid, &status, 0);
 		get_data()->exit_code  = WEXITSTATUS(status);
-		logi(temp->id_tree);
 		temp = temp->next;
 	}
 	while ((*process))
@@ -54,54 +53,7 @@ void	solo_redirect(t_tree *tree, int *stdin_fd)
 	creat_solo_redirect(tree->u_define.command.list_redir);
 }
 
-void	pipe_for_command(t_tree **tree, int *stdin_fd, t_process **process)
-{
-	t_process	*temp;
-	
-	pipe((*tree)->prev->u_define.pipe.pipefd);
-	process_add_back(process, node_process_creator((*tree)));
-	temp = search_process(process, (*tree));
-	if (temp->pid == 0)
-	{
-		if (*stdin_fd != -1)
-		{
-			dup2(*stdin_fd, STDIN_FILENO);
-			close(*stdin_fd);
-		}
-		if ((*tree)->prev->main != 1)
-			dup2((*tree)->prev->u_define.pipe.pipefd[1], STDOUT_FILENO);
-		close((*tree)->prev->u_define.pipe.pipefd[1]);
-		close((*tree)->prev->u_define.pipe.pipefd[0]);
-		exorcise((*tree), -1);
-	}
-	else
-	{
-		close((*tree)->prev->u_define.pipe.pipefd[1]);
-		if (*stdin_fd != -1)
-		{
-			close(*stdin_fd);
-			*stdin_fd = -1;
-		}
-		if ((*tree)->main != 1)
-			*stdin_fd = (*tree)->prev->u_define.pipe.pipefd[0];
-		else
-			close((*tree)->prev->u_define.pipe.pipefd[0]);
-	}
-}
-
-void	pipe_iteration(t_tree **tree, int *stdin_fd, t_process **process)
-{
-	if ((*tree)->left->type >= TK_REDIR_IN && (*tree)->left->type <= TK_APPEND)
-		solo_redirect((*tree)->left, stdin_fd);
-	else if ((*tree)->left->type >= TK_COMMAND)
-		pipe_for_command(&(*tree)->left, stdin_fd, process);
-	if ((*tree)->right->type >= TK_REDIR_IN && (*tree)->right->type <= TK_APPEND)
-		solo_redirect((*tree)->right, stdin_fd);
-	else if ((*tree)->right->type >= TK_COMMAND)
-		pipe_for_command(&(*tree)->right, stdin_fd, process);
-}
-
-void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd)
+void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd, int l_or_r)
 {
 	int	pipe_temp[2];
 	t_process	*temp;
@@ -147,7 +99,7 @@ void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd)
 				dup2(*stdin_fd, STDIN_FILENO);
 				close(*stdin_fd);
 			}
-			if ((*tree)->main != 1)
+			if ((*tree)->main != 1 && (*tree)->prev->type == TK_PIPE && l_or_r == 1)
 				dup2(pipe_temp[1], STDOUT_FILENO);
 			close(pipe_temp[0]);
 			close(pipe_temp[1]);
@@ -180,11 +132,11 @@ void	ft_pipe(t_tree **tree, int left_or_rigth)
 	stdin_fd = -1;
 	if (left_or_rigth == 1)
 	{
-		first_iteration(tree, &process, &stdin_fd);
+		first_iteration(tree, &process, &stdin_fd, 1);
 		if ((*tree)->main != 1)
 			(*tree) = (*tree)->prev;
 	}
-		if (stdin_fd == -1 && left_or_rigth == 1)
+	if (stdin_fd == -1 && left_or_rigth == 1)
 	{
 		if (process)
 			wait_free_process(&process);
@@ -194,20 +146,14 @@ void	ft_pipe(t_tree **tree, int left_or_rigth)
 	{
 		if (left_or_rigth == 1)
 		{
-			pipe_iteration(tree, &stdin_fd, &process);
+			first_iteration(tree, &process, &stdin_fd, 1);
 			if ((*tree)->main == 1)
 				break ;
 			(*tree) = (*tree)->prev;
 		}
 		if (left_or_rigth == 0)
 		{
-			if ((*tree)->right->type != TK_PIPE)
-			{
-				first_iteration(tree, &process, &stdin_fd);
-				break ;
-			}
-			else
-				pipe_iteration(tree, &stdin_fd, &process);
+			first_iteration(tree, &process, &stdin_fd, 0);
 			(*tree) = (*tree)->right;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 20:58:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/25 17:34:37 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/05 02:14:13 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void	creat_here_command(t_tree **tree)
 	int		pipefd[2];
 		
 	temp = (*tree)->u_define.command.list_redir;
-	pipe(pipefd);
 	while ((*tree)->u_define.command.list_redir)
 	{
 		if ((*tree)->u_define.command.list_redir->type == TK_EOF)
 		{
+			pipe(pipefd);
 			here((*tree)->u_define.command.list_redir->eof, 1, pipefd);
 			(*tree)->u_define.command.list_redir->fd_heredoc = pipefd[0];
 		}
