@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 21:06:12 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/16 22:36:52 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/05 00:49:42 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,6 @@ static void	aux_main(void)
 		}
 		if (args.rdline)
 			free(args.rdline);
-	}
-}
-
-void free_env_list(t_env *list)
-{
-	t_env *temp;
-
-	temp = list;
-	while (temp)
-	{
-		temp = list->next;
-		free(list->value);
-		free(list->key);
-		free(list);
-		list = temp;	
 	}
 }
 

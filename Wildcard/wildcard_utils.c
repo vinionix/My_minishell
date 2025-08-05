@@ -27,6 +27,8 @@ int	str_revcmp(const char *s1, const char *s2)
 
 	l1 = (int)ft_strlen(s1);
 	l2 = (int)ft_strlen(s2);
+	if ((l1 == 0 && l2 > 0) || (l2 == 0 && l1 > 0))
+		return (1);
 	while (l1 >= 0 && l2 >= 0)
 	{
 		if (s1[l1] != s2[l2])
@@ -39,6 +41,8 @@ int	str_revcmp(const char *s1, const char *s2)
 
 int	strchr_index_next(const char *str, char stop, unsigned int start)
 {
+	if (str[start])
+		start++;
 	while (str[start] && str[start] != stop)
 		start++;
 	return (start);

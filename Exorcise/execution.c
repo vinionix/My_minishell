@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
 /*   Updated: 2025/08/05 05:59:59 by vfidelis         ###   ########.fr       */
@@ -12,9 +12,9 @@
 
 #include "../minishell.h"
 
-int			exit_status = -1;
+int exit_status = -1;
 
-t_tree	*last_left(t_tree *tree)
+t_tree *last_left(t_tree *tree)
 {
 	while (tree->left && tree->left->type != TK_COMMAND 
 			&& !(tree->left->type >= TK_REDIR_IN && tree->left->type <= TK_HEREDOC))
@@ -22,9 +22,9 @@ t_tree	*last_left(t_tree *tree)
 	return (tree);
 }
 
-t_process	*node_process_creator(t_tree *node)
+t_process *node_process_creator(t_tree *node)
 {
-	t_process	*node_process;
+	t_process *node_process;
 
 	node_process = malloc(sizeof(t_process));
 	node_process->prev = NULL;
@@ -33,15 +33,16 @@ t_process	*node_process_creator(t_tree *node)
 	node_process->id_tree = node->id_tree;
 	return (node_process);
 }
-void	process_add_back(t_process **main, t_process *node)
+
+void process_add_back(t_process **main, t_process *node)
 {
-	t_process	*temp;
+	t_process *temp;
 
 	temp = (*main);
 	if ((*main) == NULL)
 	{
 		*main = node;
-		return ;
+		return;
 	}
 	while ((*main)->next != NULL)
 		*main = (*main)->next;
@@ -139,9 +140,9 @@ void	exorcise(t_tree *current_node, int flag)
 	exit(1);
 }
 
-t_data	*get_data(void)
+t_data *get_data(void)
 {
-	static t_data	data;
+	static t_data data;
 
 	return (&data);
 }
@@ -176,18 +177,23 @@ void	creat_solo_redirect(t_redir *redir)
 
 void	tk_or(t_tree **current_node)
 {
-	pid_t	pid;
-	int		status;
+	pid_t pid;
+	int status;
 
 	if ((*current_node)->left->type == TK_COMMAND)
 	{
 		pid = fork();
 		if (pid == 0)
+		{
+			signal(SIGINT, SIG_DFL);
 			exorcise((*current_node)->left, -1);
+		}
 		else
 		{
 			waitpid(pid, &status, 0);
 			get_data()->exit_code = WEXITSTATUS(status);
+			if (get_data()->exit_code == SIGINT)
+				printf("aaaaameu deusss\n");
 		}
 	}
 	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC)
@@ -210,10 +216,10 @@ void	tk_or(t_tree **current_node)
 		creat_solo_redirect((*current_node)->right->u_define.command.list_redir);
 }
 
-void	tk_and(t_tree **current_node)
+void tk_and(t_tree **current_node)
 {
-	pid_t	pid;
-	int		status;
+	pid_t pid;
+	int status;
 
 	if ((*current_node)->left->type == TK_COMMAND)
 	{
@@ -245,7 +251,7 @@ void	tk_and(t_tree **current_node)
 	else if ((*current_node)->right->type >= TK_REDIR_IN && (*current_node)->right->type <= TK_HEREDOC && get_data()->exit_code == 0)
 		creat_solo_redirect((*current_node)->right->u_define.command.list_redir);
 }
-void	exorcise_manager(t_tree **tree)
+void exorcise_manager(t_tree **tree)
 {
 	t_tree		*current_node;
 	int			pid;
@@ -255,8 +261,7 @@ void	exorcise_manager(t_tree **tree)
 	current_node = last_left((*tree));
 	if (current_node->main == 1)
 	{
-		if (current_node->type == TK_AND && (get_data()->exit_code == 0
-				|| get_data()->exit_code == -1))
+		if (current_node->type == TK_AND && (get_data()->exit_code == 0 || get_data()->exit_code == -1))
 			tk_and(&current_node);
 		else if (current_node->type == TK_OR && get_data()->exit_code != 0)
 			tk_or(&current_node);

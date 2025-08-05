@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   join_matrices.c                                    :+:      :+:    :+:   */
+/*   len_except.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,27 +12,34 @@
 
 #include "wildcard.h"
 
-char **join_matrices(char **matrix1, char **matrix2, int copy_until)
+void	reduce(const char *str, char *new)
 {
-	int		new_size;
-	char	**new_matrix;
-	int		i;
-	int		pos;
+	int	i;
+	int	size;
 
-	new_size = ft_len_matrix(matrix1) + ft_len_matrix(matrix2);
-	new_matrix = (char **)malloc(new_size * sizeof(char *));
 	i = 0;
-	pos = 0;
-	while (matrix1[i] && i != copy_until)
-		new_matrix[pos++] = ft_strdup(matrix1[i++]);
+	size = 0;
+	while (str[i])
+	{
+		while (str[i] && str[i] != '*')
+			new[size++] = str[i++];
+		if (str[i])
+			new[size++] = '*';
+		i = jump_to_smt_else(str, '*', i);
+	}
+}
+
+int	len_except(const char *str, char exception)
+{
+	int	i;
+	int	len;
+
 	i = 0;
-	while (matrix2[i])
-		new_matrix[pos++] = ft_strdup(matrix2[i++]);
-	copy_until++;
-	while (matrix1[copy_until])
-		new_matrix[pos++] = ft_strdup(matrix1[copy_until++]);
-	new_matrix[pos] = NULL;
-	free_matrix(matrix1);
-	free_matrix(matrix2);
-	return (new_matrix);
+	len = 0;
+	while (str[i])
+	{
+		if (str[i++] != exception)
+			len++;
+	}
+	return (len);
 }

@@ -9,6 +9,9 @@ FUNCTIONS = Tester/debug.c \
 						Builtins/builtins_utils.c \
 						Builtins/builtins2.c \
 						Builtins/clean.c \
+						Builtins/cd_utils.c \
+						Builtins/exec_builtin.c \
+						Builtins/unset.c \
 						Parsing/expansion/default_env.c \
 						Parsing/expansion/env_utils.c \
 						Parsing/expansion/new_var_parsing.c \
@@ -20,6 +23,7 @@ FUNCTIONS = Tester/debug.c \
 			Parsing/expansion/export_utils.c \
 			Parsing/expansion/expansion_utils.c \
 			Parsing/expansion/expansion.c \
+			Parsing/expansion/change_env_variable.c \
 			Wildcard/wildcard.c \
 			Wildcard/wildcard_utils.c \
 			Wildcard/list_to_matrix.c \
@@ -28,10 +32,11 @@ FUNCTIONS = Tester/debug.c \
 			Wildcard/quotes_utils.c \
 			Wildcard/wildcard_utils2.c \
 			Wildcard/read_cd.c \
-			Wildcard/verify_ls_flag.c \
+			Wildcard/verify_utils.c \
+			Wildcard/len_except.c \
 			Tree_struct/tree_utils.c \
 			Tree_struct/tree_create.c \
-     		Tree_struct/free_tree.c \
+     	Tree_struct/free_tree.c \
 			Exorcise/execution.c \
 			Exorcise/pipe.c \
 			Exorcise/find_path.c \

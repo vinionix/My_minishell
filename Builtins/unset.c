@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   verify_ls_flag.c                                   :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/12 16:12:34 by gada-sil         ###   ########.fr       */
+/*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
+/*   Updated: 2025/05/15 22:18:08 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wildcard.h"
+#include "../minishell.h"
 
-bool	verify_ls_flag(char **matrix)
+int	ft_unset(char **matrix, t_env **envs)
 {
-	if (matrix[0] && matrix[1])
-		return (ft_strcmp(matrix[0], "ls") == 0 && matrix[1][0] == '-'
-					&& ft_strchr(matrix[1], 'a'));
-	return (false);
+	int	i;
+
+	i = 0;
+	while (matrix[++i] != NULL)
+		unset_env_if(envs, matrix[i]);
+	return (0);
 }

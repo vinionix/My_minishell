@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:41 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/15 22:17:31 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/22 17:40:46 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,52 @@
 
 int	ft_cd(char **matrix, t_env *env_list)
 {
-	int		return_value;
+	int		home;
 
-	return_value = 0;
-	if (!matrix)
-		return (1);
-	if (ft_len_matrix(matrix) > 1)
+	if (ft_len_matrix(matrix) > 2)
 	{
 		printf("Too many args for cd command\n");
-		return_value = 1;
+		return (1);
 	}
-	else if (!ft_strcmp(*matrix, "~") || !ft_strcmp(*matrix, "~/"))
+	else if (ft_len_matrix(matrix) == 1)
 	{
 		if (chdir(find_env("HOME=", env_list)->value))
-			return_value = 1;
-	}
-	else if (chdir(*matrix))
-		return_value = 1;
-	if (return_value == 0)
+		{
+			printf("minishell: cd: HOME not set\n");
+			return (1);
+		}
 		change_cwd(env_list);
-	return (return_value);
+		return (0);
+	}
+	home = check_home(*(++matrix));
+	parse_home(matrix, home, env_list);
+	if (chdir(*matrix))
+	{
+		printf("minishell: cd: %s: No such file or directory\n", *matrix);
+		return (1);
+	}
+	change_cwd(env_list);
+	return (0);
 }
 
 int	ft_echo_n(char **matrix)
 {
 	int	i;
 
-	i = 0;
-	while (matrix[i])
+	i = 2;
+	if (matrix[i])
 	{
-		if (matrix[i + 1] != NULL)
-			printf("%s ", matrix[i++]);
-		else
-			printf("%s", matrix[i++]);
+		while (matrix[i])
+		{
+			if (matrix[i + 1] != NULL)
+				printf("%s ", matrix[i]);
+			else
+				printf("%s", matrix[i]);
+			i++;
+		}
 	}
+	else
+		printf("\n");
 	return (0);
 }
 
@@ -55,12 +67,20 @@ int	ft_echo(char **matrix)
 {
 	int	i;
 
-	i = -1;
-	while (matrix[i + 2] != NULL)
+	i = 1;
+	if (matrix[i] != NULL)
 	{
-		printf("%s ", matrix[++i]);
+		while (matrix[i] != NULL)
+		{
+			if (matrix[i + 1] == NULL)
+				printf("%s\n", matrix[i]);
+			else
+				printf("%s ", matrix[i]);
+			i++;
+		}
 	}
-	printf("%s\n", matrix[i]);
+	else
+		printf("\n");
 	return (0);
 }
 

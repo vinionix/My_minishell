@@ -22,12 +22,11 @@ void	reset_matches(t_wildcard *list)
 	}
 }
 
-char	*update_vars(t_wildcard *list, const char *wildcard, t_var *var)
+char	*update_vars(const char *wildcard, t_var *var)
 {
 	char	*str;
 
 	str = NULL;
-	list->index += var->size - var->start;
 	var->start = var->size + 1;
 	if (var->start - 1 < (unsigned int)ft_strlen(wildcard))
 		var->size = strchr_index_next(wildcard, '*', var->start);
@@ -46,7 +45,7 @@ void	reset_modified_chars(char **matrix, char c)
 	{
 		while (matrix[i][++j])
 		{
-			if (matrix[i][j] == EXPANSION_MARKER && c == '$')
+			if (matrix[i][j] == DOLLAR_MARKER && c == '$')
 				matrix[i][j] = c;
 			else if (matrix[i][j] == EXPANSION_MARKER && c == '*')
 				matrix[i][j] = c;
@@ -59,22 +58,30 @@ void	reset_modified_chars(char **matrix, char c)
 	}
 }
 
-char	**command_with_asterisk(char **matrix, bool *is_solo)
+bool	edge_case(t_wildcard *list, const char *wildcard)
 {
-	char	**solo_matrix;
+	char	*card;
 
-	solo_matrix = NULL;
-	if (have_char(matrix[0], '*'))
+	card = NULL;
+	if (count_char(wildcard, '*') == 2 && wildcard[0] == '*'
+			&& wildcard[ft_strlen(wildcard) - 1] == '*')
 	{
-		solo_matrix = (char **)malloc(2 * sizeof(char *));
-		solo_matrix[0] = ft_strdup(matrix[0]);
-		solo_matrix[1] = NULL;
-		free_matrix(matrix);
-		*is_solo = true;
-		return (solo_matrix);
+		card = ft_substr(wildcard, 1, ft_strlen(wildcard) - 2);
+		if (ft_strstr(list->file_dir, card))
+		{
+			free(card);
+			return (true);
+		}
+		else
+		{
+			free(card);
+			list->match = false;
+			return (true);
+		}
 	}
-	*is_solo = false;
-	return (matrix);
+	if (card)
+		free(card);
+	return (false);
 }
 
 bool	is_hidden_file(char *str)
