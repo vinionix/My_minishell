@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:19:27 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/06/29 16:21:14 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/05 04:17:41 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ t_redir	*creator_node_redir(t_token tokens)
 	redir->next = NULL;
 	redir->file = NULL;
 	if ((tokens).type == TK_EOF)
-		redir->eof = (tokens).value;
+		redir->eof = ft_strdup((tokens).value);
 	else if ((tokens).type >= TK_FILE_IN && (tokens).type <= TK_FILE_APP)
-		redir->file = (tokens).value;
+		redir->file = ft_strdup((tokens).value);
 	return (redir);
 }
 
@@ -55,59 +55,64 @@ void	redir_add_back(t_redir **redirects, t_redir *node)
 	return ;
 }
 
-static t_redir *creat_list_redir(int id, t_token *tokens)
+static t_redir *creat_list_redir(int id, t_token **tokens)
 {
 	t_redir	*redirects;
 	int		i;
 
 	i = 0;
 	redirects = NULL;
-	while ((tokens)[i].id != id)
+	while ((*tokens)[i].id != id)
 		i++;
-	while ((tokens)[i].id >= 0 && ((tokens)[i].type != TK_COMMAND 
-		&& (!((tokens)[i].type >= TK_PIPE && (tokens)[i].type <= TK_OR))))
+	while ((*tokens)[i].id > 0 && (!((*tokens)[i].type >= TK_PIPE && (*tokens)[i].type <= TK_OR)))
 		i--;
 	i++;
-	while ((tokens)[i].value && ((tokens)[i].type != TK_COMMAND 
-		&& (!((tokens)[i].type >= TK_PIPE && (tokens)[i].type <= TK_OR))))
+	while ((*tokens)[i].value && (!((*tokens)[i].type >= TK_PIPE && (*tokens)[i].type <= TK_OR)))
 	{
-		if ((tokens)[i].type >= TK_FILE_IN && (tokens)[i].type <= TK_EOF)
-			redir_add_back(&redirects, creator_node_redir((tokens)[i]));
+		if ((*tokens)[i].type >= TK_FILE_IN && (*tokens)[i].type <= TK_EOF)
+		{
+			(*tokens)[i - 1].passed = 1;
+			redir_add_back(&redirects, creator_node_redir((*tokens)[i]));
+		}
 		i++;
 	}
 	return (redirects);
 }
 
-t_tree	*node_creator(t_token *tokens, int id)
+t_tree	*node_creator(t_token **tokens, int id)
 {
 	int	i;
 	t_tree	*node;
 
 	i = 0;
-	while ((tokens)[i].value && (tokens)[i].id != id)
+	while ((*tokens)[i].value && (*tokens)[i].id != id)
 		i++; 
-	if ((tokens)[i].value == NULL)
+	if ((*tokens)[i].value == NULL)
 		return (NULL);
 	node = (t_tree *)ft_calloc(1, sizeof(t_tree));
 	node->n_builtin = -1;
-	node->type = (tokens)[i].type;
+	node->type = (*tokens)[i].type;
 	node->id_tree = id;
 	node->left = NULL;
 	node->right = NULL;
 	node->subtree = NULL;
 	node->prev = NULL;
 	node->main = 0;
-	if ((tokens)[i].type == TK_COMMAND)
+	if ((*tokens)[i].type == TK_COMMAND || ((*tokens)[i].type >= TK_REDIR_IN && (*tokens)[i].type <= TK_HEREDOC))
 	{
-		node->n_builtin = 0; //is_bultin(tokens);
-		node->u_define.command.cmd = creat_command(id, tokens);
+		node->n_builtin = 0; //is_bultin(*tokens);
+		if ((*tokens)[i].type == TK_COMMAND)
+			node->u_define.command.cmd = creat_command(id, (*tokens));
 		node->u_define.command.list_redir = creat_list_redir(id, tokens);
+		if (node->type == TK_COMMAND)
+			creat_here_command(&node);
+		else if (node->type != TK_COMMAND)
+			here_verify(node->u_define.command.list_redir, 0);
 	}
-	else if ((tokens)[i].type == TK_PIPE)
-		pipe(node->u_define.pipe.pipefd);
+	else if ((*tokens)[i].type == TK_PIPE)
+		node->u_define.pipe.std_in = -1;
 	return(node);
 }
-
 int	search_left(t_token **tokens, int id)
 {
 	int	i;
@@ -120,7 +125,7 @@ int	search_left(t_token **tokens, int id)
 	while ((*tokens)[i].value != NULL && (*tokens)[i].id != id)
 		i++;
 	i--;
-	while (i >= 0 && (*tokens)[i].passed == -1)
+	while (i >= 0 && (*tokens)[i].passed != 1)
 	{
 		if ((((*tokens)[i].type == TK_AND || (*tokens)[i].type == TK_OR) && flag != 1))
 		{
@@ -137,6 +142,11 @@ int	search_left(t_token **tokens, int id)
 			flag = 3;
 			receiver = i;
 		}
+		else if ((*tokens)[i].type >= TK_REDIR_IN && (*tokens)[i].type <= TK_HEREDOC && flag != 1 && flag != 2 && flag != 3 && flag != 4)
+		{
+			flag = 4;
+			receiver = i;
+		}
 		i--;
 	}
 	if ((*tokens)[receiver].passed == 1)
@@ -145,19 +155,11 @@ int	search_left(t_token **tokens, int id)
 	return ((*tokens)[receiver].id);
 }
 
-int	search_right(t_token **tokens, int id)
+static int	find_next_r(t_token **tokens, int start, int receiver, int flag)
 {
 	int	i;
-	int	flag;
-	int	receiver;
-	
-	i = 0;
-	flag = -1;
-	receiver = 0;
-	while ((*tokens)[i].value && (*tokens)[i].id != id)
-		i++;
-	if ((*tokens)[i + 1].value != NULL)
-		i++;
+
+	i = start;
 	while ((*tokens)[i].value != NULL && (*tokens)[i].passed == -1)
 	{
 		if ((*tokens)[i].type == TK_PIPE && flag != 2)
@@ -170,13 +172,34 @@ int	search_right(t_token **tokens, int id)
 			flag = 3;
 			receiver = i;
 		}
+		else if ((*tokens)[i].type >= TK_REDIR_IN && (*tokens)[i].type <= TK_HEREDOC && flag != 2 && flag != 3 && flag != 4)
+		{
+			flag = 4;
+			receiver = i;
+		}
 		i++;
 	}
-	if ((*tokens)[receiver].passed == 1)
+	return (receiver);
+}
+
+
+int	search_right(t_token **tokens, int id)
+{
+	int	i;
+	int	receiver;
+
+	i = 0;
+	while ((*tokens)[i].value && (*tokens)[i].id != id)
+		i++;
+	if ((*tokens)[i + 1].value != NULL)
+		i++;
+	receiver = find_next_r(tokens, i, -1, -1);
+	if (receiver == -1 || (*tokens)[receiver].passed == 1)
 		return (-1);
 	(*tokens)[receiver].passed = 1;
 	return ((*tokens)[receiver].id);
 }
+
 
 t_tree	*search_for_bigger(t_token **tokens)
 {
@@ -199,15 +222,20 @@ t_tree	*search_for_bigger(t_token **tokens)
 			flag = 2;
 			receiver = i;
 		}
-			else if ((*tokens)[i].type == TK_COMMAND && flag != 1 && flag != 2 && flag != 3)
+		else if ((*tokens)[i].type == TK_COMMAND && flag != 1 && flag != 2 && flag != 3)
 		{
 			flag = 3;
+			receiver = i;
+		}
+		else if ((*tokens)[i].type >= TK_REDIR_IN && (*tokens)[i].type <= TK_HEREDOC && flag != 1 && flag != 2 && flag != 3 && flag != 4)
+		{
+			flag = 4;
 			receiver = i;
 		}
 		i--;
 	}
 	(*tokens)[receiver].passed = 1;
-	return (node_creator((*tokens), (*tokens)[receiver].id));
+	return (node_creator(tokens, (*tokens)[receiver].id));
 }
 
 void	tree_creator(t_token **tokens, t_tree **tree, int id)
@@ -226,16 +254,16 @@ void	tree_creator(t_token **tokens, t_tree **tree, int id)
 	id_right_creat = search_right(tokens, id);
 	if (id_left_creat != -1)
 	{
-		(*tree)->left = node_creator((*tokens), id_left_creat);
+		(*tree)->left = node_creator(tokens, id_left_creat);
 		printf("left: %d\n", (*tree)->left->id_tree);
 		(*tree)->left->prev = *tree;
 		tree_creator(&(*tokens), &(*tree)->left, id_left_creat);
 	}
 	if (id_right_creat != -1)
 	{
-		(*tree)->right = node_creator((*tokens), id_right_creat);
+		(*tree)->right = node_creator(tokens, id_right_creat);
 		printf("rigth: %d\n", (*tree)->right->id_tree);
 		(*tree)->right->prev = *tree;
-		tree_creator(&(*tokens), &(*tree)->right, id_right_creat);
+		tree_creator(tokens, &(*tree)->right, id_right_creat);
 	}
 }

@@ -47,6 +47,7 @@ static bool	only_numbers(char *str)
 	return (true);
 }
 
+
 static bool	long_check(char *str)
 {
 	unsigned long long	max;

@@ -36,8 +36,11 @@ FUNCTIONS = Tester/debug.c \
 			Wildcard/len_except.c \
 			Tree_struct/tree_utils.c \
 			Tree_struct/tree_create.c \
+     	Tree_struct/free_tree.c \
 			Exorcise/execution.c \
-			Exorcise/pipe.c
+			Exorcise/pipe.c \
+			Exorcise/find_path.c \
+			Exorcise/heredoc.c
 
 OBJS = $(FUNCTIONS:.c=.o)
 

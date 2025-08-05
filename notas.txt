@@ -1,4 +1,1 @@
-06/21/2025
 
-Tratar $? na expansão
-difficulty: Easy

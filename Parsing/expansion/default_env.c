@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:58:08 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/15 22:05:44 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/07/14 20:32:42 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ t_env	*get_env_vars(const char **env)
 	while (*env)
 	{
 		i = strchr_index(*env, '=');
+		temp->full = (char *)(*env);
 		temp->key = (char *)malloc(sizeof(char) * (i + 1));
 		temp->key[i] = '\0';
 		while (--i >= 0)

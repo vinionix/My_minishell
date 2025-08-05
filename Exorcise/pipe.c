@@ -6,30 +6,11 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:32 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/06 16:11:07 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/05 04:28:26 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void    first_iteration(t_process **process, t_tree *current_node)
-{
-	t_process	*temp;
-
-    process_add_back(process, node_process_creator(current_node->left));
-    temp = (*process);
-    while (temp->id_tree != current_node->left->id_tree)
-		temp = temp->next;
-    temp->pid = fork();
-    if (temp->pid == 0)
-    	exorcise(current_node->left, 0);
-    else
-    {
-        dup2(current_node->u_define.pipe.pipefd[0], STDIN_FILENO);
-        close(current_node->u_define.pipe.pipefd[0]);
-        close(current_node->u_define.pipe.pipefd[1]);
-    }
-}
 
 t_process	*search_process(t_process **process, t_tree *current_node)
 {
@@ -42,7 +23,7 @@ t_process	*search_process(t_process **process, t_tree *current_node)
 	return (temp);
 }
 
-void	wait_free_processs(t_process **process, int saved_stdin)
+void	wait_free_process(t_process **process)
 {
 	t_process	*temp;
 	int			status;
@@ -60,71 +41,124 @@ void	wait_free_processs(t_process **process, int saved_stdin)
 		(*process) = (*process)->next;
 		free(temp);
 	}
-	dup2(saved_stdin, STDIN_FILENO);
-	close(saved_stdin);
 }
 
-void	last_iteration(t_process **process, t_tree *current_node)
+void	solo_redirect(t_tree *tree, int *stdin_fd)
 {
-	t_process	*temp;
-	
-	process_add_back(process, node_process_creator(current_node->right));
-	temp = search_process(process, current_node->right);
-	if (temp->pid == 0)
-		exorcise(current_node->right, 2);
-}
-void	tk_pipe_left(t_tree **current_node, t_process **process)
-{
-	t_process	*temp;
-	
-	if ((*current_node)->left && (*current_node)->left->type == TK_COMMAND)
-		first_iteration(&(*process), (*current_node));
-	if ((*current_node)->right && (*current_node)->right->type == TK_COMMAND)
+	if (*stdin_fd != -1)
 	{
-		process_add_back(&(*process), node_process_creator((*current_node)->right));
-		temp = search_process(&(*process), (*current_node)->right);
+		close(*stdin_fd);
+		*stdin_fd = -1;
+	}
+	creat_solo_redirect(tree->u_define.command.list_redir);
+}
+
+void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd, int l_or_r)
+{
+	int	pipe_temp[2];
+	t_process	*temp;
+
+	if ((*tree)->left->type >= TK_REDIR_IN && (*tree)->left->type <= TK_APPEND)
+		solo_redirect((*tree)->left, stdin_fd);
+	else if ((*tree)->left->type == TK_COMMAND)
+	{	
+		pipe(pipe_temp);
+		process_add_back(process, node_process_creator((*tree)->left));
+		temp = search_process(process, (*tree)->left);
 		if (temp->pid == 0)
-		exorcise((*current_node)->right, 1);
-		else if ((*current_node)->prev && (*current_node)->prev->type == TK_PIPE)
 		{
-			dup2((*current_node)->prev->u_define.pipe.pipefd[0], STDIN_FILENO);
-			close((*current_node)->prev->u_define.pipe.pipefd[0]);
-			close((*current_node)->prev->u_define.pipe.pipefd[1]);
+			if (*stdin_fd != -1)
+			{
+				dup2(*stdin_fd, STDIN_FILENO);
+				close(*stdin_fd);
+			}
+			dup2(pipe_temp[1], STDOUT_FILENO);
+			close(pipe_temp[0]);
+			close(pipe_temp[1]);
+			exorcise((*tree)->left, -1);
 		}
+		else
+		{
+			if (*stdin_fd != -1)
+				close(*stdin_fd);
+			close(pipe_temp[1]);
+			*stdin_fd = pipe_temp[0];
+		}
+	}
+	if ((*tree)->right->type >= TK_REDIR_IN && (*tree)->right->type <= TK_APPEND)
+		solo_redirect((*tree)->right, stdin_fd);
+	else if ((*tree)->right->type == TK_COMMAND)
+	{
+		pipe(pipe_temp);
+		process_add_back(process, node_process_creator((*tree)->right));
+		temp = search_process(process, (*tree)->right);
+		if (temp->pid == 0)
+		{
+			if (*stdin_fd != -1)
+			{
+				dup2(*stdin_fd, STDIN_FILENO);
+				close(*stdin_fd);
+			}
+			if ((*tree)->main != 1 && (*tree)->prev->type == TK_PIPE && l_or_r == 1)
+				dup2(pipe_temp[1], STDOUT_FILENO);
+			close(pipe_temp[0]);
+			close(pipe_temp[1]);
+			exorcise((*tree)->right, -1);
+		}
+		else
+		{
+			if (*stdin_fd != -1)
+				close(*stdin_fd);
+			close(pipe_temp[1]);
+			*stdin_fd = pipe_temp[0];
+		}
+	}
+	if ((*tree)->main == 1)
+	{
+		if (*stdin_fd != -1)
+			close(*stdin_fd);
+		*stdin_fd = -1;
 	}
 }
 
-void	tk_pipe_right(t_tree *current_node)
+void	ft_pipe(t_tree **tree, int left_or_rigth)
 {
-	int			saved_stdin;
+	int			stdin_fd;
+	t_tree		*current;
 	t_process	*process;
-	t_process	*temp;
-	
+
+	current = (*tree);
 	process = NULL;
-	saved_stdin = dup(STDIN_FILENO);
-	if (current_node->left->type == TK_COMMAND)
-		first_iteration(&process, current_node);
-	while (current_node->type == TK_PIPE)
+	stdin_fd = -1;
+	if (left_or_rigth == 1)
 	{
-		if (current_node->right->type == TK_COMMAND)
-		{
-			last_iteration(&process, current_node);
-			break ;
-		}
-		if (current_node->left->type == TK_COMMAND)
-		{
-			process_add_back(&process, node_process_creator(current_node->left));
-			temp = search_process(&process, current_node->left);
-			if (temp->pid == 0)
-				exorcise(current_node->left, 2);
-			else if (current_node->right && current_node->right->type == TK_PIPE)
-			{
-				dup2(current_node->right->u_define.pipe.pipefd[0], STDIN_FILENO);
-				close(current_node->right->u_define.pipe.pipefd[0]);
-				close(current_node->right->u_define.pipe.pipefd[1]);
-			}
-		}
-		current_node = current_node->right;
+		first_iteration(tree, &process, &stdin_fd, 1);
+		if ((*tree)->main != 1)
+			(*tree) = (*tree)->prev;
 	}
-	wait_free_processs(&process, saved_stdin);
+	if (stdin_fd == -1 && left_or_rigth == 1)
+	{
+		if (process)
+			wait_free_process(&process);
+		return ;
+	}
+	while ((*tree)->type == TK_PIPE)
+	{
+		if (left_or_rigth == 1)
+		{
+			first_iteration(tree, &process, &stdin_fd, 1);
+			if ((*tree)->main == 1)
+				break ;
+			(*tree) = (*tree)->prev;
+		}
+		if (left_or_rigth == 0)
+		{
+			first_iteration(tree, &process, &stdin_fd, 0);
+			(*tree) = (*tree)->right;
+		}
+	}
+	if (left_or_rigth == 0)
+		(*tree) = current;
+	if (process)
+		wait_free_process(&process);
 }
