@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:07:31 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/05 00:26:12 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/05 07:45:21 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,7 +279,8 @@ void	parse_edge_case(char **matrix)
 			}
 			if (matrix[i][j] && matrix[i][j] == '$' && (matrix[i][j + 1] == ' '
 				|| matrix[i][j + 1] == SINGLE_QUOTE_MARKER
-					|| matrix[i][j + 1] == '\0'))
+					|| matrix[i][j + 1] == '\0'
+						||  matrix[i][j + 1] == '\"'))
 				matrix[i][j] = DOLLAR_MARKER;
 		}
 		j = -1;

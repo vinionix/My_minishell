@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/05 05:59:59 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/05 06:54:26 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ void	exorcise(t_tree *current_node, int flag)
 	}
 	path = get_path(get_data()->env);
 	env_exe = env_execv(get_data()->env);
+	current_node->u_define.command.cmd = expand_and_wildcard(current_node->u_define.command.cmd, get_data()->env);
 	valid_path(current_node->u_define.command.cmd, path);
 	execve(current_node->u_define.command.cmd[0], current_node->u_define.command.cmd, env_exe);
 	exit(1);
@@ -184,16 +185,11 @@ void	tk_or(t_tree **current_node)
 	{
 		pid = fork();
 		if (pid == 0)
-		{
-			signal(SIGINT, SIG_DFL);
 			exorcise((*current_node)->left, -1);
-		}
 		else
 		{
 			waitpid(pid, &status, 0);
 			get_data()->exit_code = WEXITSTATUS(status);
-			if (get_data()->exit_code == SIGINT)
-				printf("aaaaameu deusss\n");
 		}
 	}
 	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC)

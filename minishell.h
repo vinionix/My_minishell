@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/05 04:17:03 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/05 06:57:48 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,6 @@ void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
 void					creat_solo_redirect(t_redir *redir);
 void					here(char *eof, int is_command, int *pipefd);
 void					free_matrix(char **matrix);
-void					unset_env_if(t_env **env, const char *target_key);
 void					expand_variables(char **matrix, t_env *env_lst);
 void					creat_here_command(t_tree **tree);
 int						here_verify(t_redir *redir, int is_command);
@@ -189,8 +188,6 @@ int						unset_env_if(t_env **env, const char *target_key);
 int						strchr_index(const char *str, char stop);
 int						check_flag(char **matrix);
 int						ft_export(char **matrix, t_env **envs);
-int						jump_to_smt_else(char *str, char c, int i);
-long					ft_atol(char *str, bool *overflow);
 t_data					*get_data(void);
 t_env					*env_new(void);
 t_env					*get_env_vars(const char **env);
@@ -207,5 +204,6 @@ void					change_env_var(t_env *envs, char *env_to_change, char *value);
 void					create_default_env(t_env **envs);
 int						exec_builtin(char **matrix, t_env **envs, t_tree *tree);
 int						jump_to(const char *str, char c, int i);
+bool					have_char(char *str, char c);
 
 #endif
