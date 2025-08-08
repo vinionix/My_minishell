@@ -23,6 +23,8 @@ int	exec_builtin(char **matrix, t_env **envs, t_tree *tree)
 		return (ft_env(*envs, matrix));
 	else if (!ft_strcmp(command, "cd"))
 		return (ft_cd(matrix, *envs));
+	else if (!ft_strcmp(command, "export") && !matrix[1])
+		return (export_no_args(*envs));
 	else if (!ft_strcmp(command, "export"))
 		return (ft_export(matrix, envs));
 	else if (!ft_strcmp(command, "echo") && matrix[1] && !ft_strcmp(matrix[1], "-n"))

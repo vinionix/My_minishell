@@ -12,6 +12,7 @@ FUNCTIONS = Tester/debug.c \
 						Builtins/cd_utils.c \
 						Builtins/exec_builtin.c \
 						Builtins/unset.c \
+						Builtins/export_no_args.c \
 						Parsing/expansion/default_env.c \
 						Parsing/expansion/env_utils.c \
 						Parsing/expansion/new_var_parsing.c \

@@ -62,6 +62,7 @@ typedef struct s_env
 	char				*key;
 	char				*value;
 	char				*full;
+	bool				printed;
 	struct s_env		*next;
 }						t_env;
 
@@ -188,6 +189,7 @@ int						unset_env_if(t_env **env, const char *target_key);
 int						strchr_index(const char *str, char stop);
 int						check_flag(char **matrix);
 int						ft_export(char **matrix, t_env **envs);
+int						export_no_args(t_env *envs);
 t_data					*get_data(void);
 t_env					*env_new(void);
 t_env					*get_env_vars(const char **env);

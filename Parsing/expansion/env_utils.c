@@ -35,6 +35,7 @@ t_env	*env_new(void)
 	new_node->key = (NULL);
 	new_node->value = (NULL);
 	new_node->full = (NULL);
+	new_node->printed = false;
 	new_node->next = (NULL);
 	return (new_node);
 }
