@@ -83,6 +83,7 @@ t_env	*export_new_env(char *key, char *value)
 		return (NULL);
 	new_node->key = key;
 	new_node->value = value;
+	new_node->printed = false;
 	new_node->next = (NULL);
 	return (new_node);
 }

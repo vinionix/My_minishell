@@ -12,13 +12,14 @@
 
 #include "../minishell.h"
 
-/*void	free_tree(t_tree *node)
+void	free_tree(t_tree *node)
 {
 	if (node == NULL)
 		return ;
 	free_tree(node->left);
 	free_tree(node->right);
-	if (node->type == TK_COMMAND)
+	if (node->type == TK_COMMAND || (node->type >= TK_REDIR_IN
+			&& node->type <= TK_HEREDOC))
 	{
 		if (node->u_define.command.cmd)
 			free_matrix(node->u_define.command.cmd);
@@ -26,11 +27,5 @@
 		free(node);
 		return ;
 	}
-	else if (node->type == TK_HEREDOC)
-	{
-		if (node->u_define.here.eof)
-			free(node->u_define.here.eof);
-		return ;
-	}
 	free(node);
-}*/
+}

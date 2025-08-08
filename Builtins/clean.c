@@ -32,8 +32,6 @@ void	ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code)
 	if (env)
 		free_env_list(env);
 	if (tree)
-	{
-		//free_tree(tree);
-	}
+		free_tree(tree);
 	exit(exit_code);
 }

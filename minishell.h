@@ -96,13 +96,6 @@ typedef struct s_pipe
 	int					std_in;
 }						t_pipe;
 
-typedef struct s_data
-{
-	int					exit_code;
-	t_env				*env;
-}						t_data;
-
-
 typedef struct s_tree
 {
 	t_token_type		type;
@@ -119,6 +112,13 @@ typedef struct s_tree
 	struct s_tree		*prev;
 	struct s_tree		*subtree;
 }						t_tree;
+
+typedef struct s_data
+{
+	int					exit_code;
+	t_env				*env;
+	t_tree				*head;
+}						t_data;
 
 typedef struct s_arg_main
 {
