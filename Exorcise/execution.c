@@ -183,6 +183,8 @@ void	tk_or(t_tree **current_node)
 
 	if ((*current_node)->left->type == TK_COMMAND)
 	{
+		(*current_node)->left->u_define.command.cmd = expand_and_wildcard(
+			(*current_node)->left->u_define.command.cmd, get_data()->env);
 		get_data()->exit_code = exec_builtin((*current_node)->left->u_define.command.cmd,
 			&get_data()->env, get_data()->head);
 		if (get_data()->exit_code == 1337)
@@ -204,6 +206,8 @@ void	tk_or(t_tree **current_node)
 	if ((*current_node)->right->type == TK_COMMAND
 		&& get_data()->exit_code != 0)
 	{
+		(*current_node)->right->u_define.command.cmd = expand_and_wildcard(
+			(*current_node)->right->u_define.command.cmd, get_data()->env);
 		get_data()->exit_code = exec_builtin((*current_node)->right->u_define.command.cmd,
 			&get_data()->env, get_data()->head);
 		if (get_data()->exit_code == 1337)
@@ -229,6 +233,8 @@ void tk_and(t_tree **current_node)
 
 	if ((*current_node)->left->type == TK_COMMAND)
 	{
+		(*current_node)->left->u_define.command.cmd = expand_and_wildcard(
+			(*current_node)->left->u_define.command.cmd, get_data()->env);
 		get_data()->exit_code = exec_builtin((*current_node)->left->u_define.command.cmd,
 			&get_data()->env, get_data()->head);
 		if (get_data()->exit_code == 1337)
@@ -250,6 +256,8 @@ void tk_and(t_tree **current_node)
 	else if ((*current_node)->right->type == TK_COMMAND
 		&& get_data()->exit_code == 0)
 	{
+		(*current_node)->right->u_define.command.cmd = expand_and_wildcard(
+			(*current_node)->right->u_define.command.cmd, get_data()->env);
 		get_data()->exit_code = exec_builtin((*current_node)->right->u_define.command.cmd,
 			&get_data()->env, get_data()->head);
 		if (get_data()->exit_code == 1337)
@@ -288,6 +296,8 @@ void exorcise_manager(t_tree **tree)
 			creat_solo_redirect(current_node->u_define.command.list_redir);
 		if (current_node->type == TK_COMMAND)
 		{
+			current_node->u_define.command.cmd = expand_and_wildcard(
+				current_node->u_define.command.cmd, get_data()->env);
 			get_data()->exit_code = exec_builtin(current_node->u_define.command.cmd, &get_data()->env, *tree);
 			if (get_data()->exit_code == 1337)
 			{

@@ -1,1 +1,1 @@
-
+tentar comando (no [0] da matrix) que não existe está dando um erro no valgrind!
