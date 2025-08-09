@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:19:27 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/05 04:17:41 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/09 06:25:42 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,7 +246,6 @@ void	tree_creator(t_token **tokens, t_tree **tree, int id)
 	if (id == -1)
 	{
 		(*tree) = search_for_bigger(tokens);
-		printf("main: %d\n", (*tree)->id_tree);
 		(*tree)->main = 1;
 		id = (*tree)->id_tree;
 	}
@@ -255,14 +254,12 @@ void	tree_creator(t_token **tokens, t_tree **tree, int id)
 	if (id_left_creat != -1)
 	{
 		(*tree)->left = node_creator(tokens, id_left_creat);
-		printf("left: %d\n", (*tree)->left->id_tree);
 		(*tree)->left->prev = *tree;
 		tree_creator(&(*tokens), &(*tree)->left, id_left_creat);
 	}
 	if (id_right_creat != -1)
 	{
 		(*tree)->right = node_creator(tokens, id_right_creat);
-		printf("rigth: %d\n", (*tree)->right->id_tree);
 		(*tree)->right->prev = *tree;
 		tree_creator(tokens, &(*tree)->right, id_right_creat);
 	}

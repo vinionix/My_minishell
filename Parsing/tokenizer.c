@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/09 02:59:50 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/09 05:42:29 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ int	tokenizer(t_arg_main *args)
 		free(args->temp);
 	ft_lexer(&args->tokens);
 	if (sintaxe_error(&args->tokens) == 1)
+	{
+		free_tokens(args->matrix, args->tokens);
 		return (1);
+	}
 	while (args->tokens[++i].value != NULL)
 	{
 		if ((args->tokens[i + 1].value == NULL

@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 21:06:12 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/05 00:49:42 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/09 05:32:16 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,12 @@ void free_list(t_env *env)
 	while (temp)
 	{
 		temp = env->next;
+		if (env->value)
 		free(env->value);
-		free(env->key);
-		free(env);
+		if (env->key)
+			free(env->key);
+		if (env)
+			free(env);
 		env = temp;
 	}
 }
@@ -47,7 +50,8 @@ static void	aux_main(void)
 		if (!args.rdline)
 		{
 			printf("exit\n");
-			free_list(get_data()->env);
+			if (get_data()->env)
+				free_list(get_data()->env);
 			break ;
 		}
 		if (args.rdline)

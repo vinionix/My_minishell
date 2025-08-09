@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/05 06:54:26 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/09 05:57:51 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,10 @@ void process_add_back(t_process **main, t_process *node)
 static char	**env_execv(t_env *env)
 {
 	
-	t_env	*temp;	
-	int		i;
+	char	*full_join;
 	char	**env_exe;
+	t_env	*temp;
+	int		i;
 
 	i = 0;
 	temp = env;
@@ -65,13 +66,14 @@ static char	**env_execv(t_env *env)
 		i++;
 		temp = temp->next;
 	}
-	env_exe = malloc(sizeof(char *) * (i + 1));
-	env_exe[i] = NULL;
+	env_exe = ft_calloc(i + 1, sizeof(char *));
 	i = 0;
 	while(env)
 	{
-		env_exe[i] = env->full;
+		full_join = ft_strjoin(env->key, "=");
+		env_exe[i] = ft_strjoin(full_join, env->value);
 		i++;
+		free(full_join);
 		env = env->next;
 	}
 	return (env_exe);
@@ -176,110 +178,61 @@ void	creat_solo_redirect(t_redir *redir)
 	}
 }
 
-void	tk_or(t_tree **current_node)
+void	exec_command_solo(t_tree **current_node)
 {
-	pid_t pid;
-	int status;
+	int	status;
+	pid_t	pid;
 
-	if ((*current_node)->left->type == TK_COMMAND)
+	status = 0;
+	(*current_node)->u_define.command.cmd = expand_and_wildcard(
+		(*current_node)->u_define.command.cmd, get_data()->env);
+	get_data()->exit_code = exec_builtin((*current_node)->u_define.command.cmd,
+		&get_data()->env, get_data()->head);
+	if (get_data()->exit_code == 1337)
 	{
-		(*current_node)->left->u_define.command.cmd = expand_and_wildcard(
-			(*current_node)->left->u_define.command.cmd, get_data()->env);
-		get_data()->exit_code = exec_builtin((*current_node)->left->u_define.command.cmd,
-			&get_data()->env, get_data()->head);
-		if (get_data()->exit_code == 1337)
+		pid = fork();
+		if (pid == 0)
+			exorcise((*current_node), -1);
+		else
 		{
-			pid = fork();
-			if (pid == 0)
-				exorcise((*current_node)->left, -1);
-			else
-			{
-				waitpid(pid, &status, 0);
-				get_data()->exit_code = WEXITSTATUS(status);
-			}
+			waitpid(pid, &status, 0);
+			get_data()->exit_code = WEXITSTATUS(status);
 		}
 	}
+}
+
+void	tk_or(t_tree **current_node)
+{
+	if ((*current_node)->left->type == TK_COMMAND)
+		exec_command_solo(&(*current_node)->left);
 	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC)
 		creat_solo_redirect((*current_node)->left->u_define.command.list_redir);
 	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code != 0)
 		ft_pipe(&(*current_node)->right, 0);
 	if ((*current_node)->right->type == TK_COMMAND
 		&& get_data()->exit_code != 0)
-	{
-		(*current_node)->right->u_define.command.cmd = expand_and_wildcard(
-			(*current_node)->right->u_define.command.cmd, get_data()->env);
-		get_data()->exit_code = exec_builtin((*current_node)->right->u_define.command.cmd,
-			&get_data()->env, get_data()->head);
-		if (get_data()->exit_code == 1337)
-		{
-			pid = fork();
-			if (pid == 0)
-				exorcise((*current_node)->right, -1);
-			else
-			{
-				waitpid(pid, &status, 0);
-				get_data()->exit_code = WEXITSTATUS(status);
-			}
-		}
-	}
+		exec_command_solo(&(*current_node)->right);
 	else if ((*current_node)->right->type >= TK_REDIR_IN && (*current_node)->right->type <= TK_HEREDOC && get_data()->exit_code != 0)
 		creat_solo_redirect((*current_node)->right->u_define.command.list_redir);
 }
 
-void tk_and(t_tree **current_node)
+void	tk_and(t_tree **current_node)
 {
-	pid_t pid;
-	int status;
-
 	if ((*current_node)->left->type == TK_COMMAND)
-	{
-		(*current_node)->left->u_define.command.cmd = expand_and_wildcard(
-			(*current_node)->left->u_define.command.cmd, get_data()->env);
-		get_data()->exit_code = exec_builtin((*current_node)->left->u_define.command.cmd,
-			&get_data()->env, get_data()->head);
-		if (get_data()->exit_code == 1337)
-		{
-			pid = fork();
-			if (pid == 0)
-				exorcise((*current_node)->left, -1);
-			else
-			{
-				waitpid(pid, &status, 0);
-				get_data()->exit_code = WEXITSTATUS(status);
-			}
-		}
-	}
+		exec_command_solo(&(*current_node)->left);
 	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC)
 		creat_solo_redirect((*current_node)->left->u_define.command.list_redir);
 	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code == 0)
 		ft_pipe(&(*current_node)->right, 0);
 	else if ((*current_node)->right->type == TK_COMMAND
 		&& get_data()->exit_code == 0)
-	{
-		(*current_node)->right->u_define.command.cmd = expand_and_wildcard(
-			(*current_node)->right->u_define.command.cmd, get_data()->env);
-		get_data()->exit_code = exec_builtin((*current_node)->right->u_define.command.cmd,
-			&get_data()->env, get_data()->head);
-		if (get_data()->exit_code == 1337)
-		{
-			pid = fork();
-			if (pid == 0)
-				exorcise((*current_node)->right, -1);
-			else
-			{
-				waitpid(pid, &status, 0);
-				get_data()->exit_code = WEXITSTATUS(status);
-			}
-		}
-	}
+		exec_command_solo(&(*current_node)->right);
 	else if ((*current_node)->right->type >= TK_REDIR_IN && (*current_node)->right->type <= TK_HEREDOC && get_data()->exit_code == 0)
 		creat_solo_redirect((*current_node)->right->u_define.command.list_redir);
 }
 void exorcise_manager(t_tree **tree)
 {
 	t_tree		*current_node;
-	int			pid;
-	int			status;
 
 	get_data()->exit_code = -1;
 	get_data()->head = *tree;
@@ -295,22 +248,7 @@ void exorcise_manager(t_tree **tree)
 		if (current_node->type >= TK_REDIR_IN && current_node->type <= TK_HEREDOC)
 			creat_solo_redirect(current_node->u_define.command.list_redir);
 		if (current_node->type == TK_COMMAND)
-		{
-			current_node->u_define.command.cmd = expand_and_wildcard(
-				current_node->u_define.command.cmd, get_data()->env);
-			get_data()->exit_code = exec_builtin(current_node->u_define.command.cmd, &get_data()->env, *tree);
-			if (get_data()->exit_code == 1337)
-			{
-				pid = fork();
-				if (pid == 0)
-					exorcise(current_node, -1);
-				else
-				{
-					waitpid(pid, &status, 0);
-					get_data()->exit_code = WEXITSTATUS(status);
-				}
-			}
-		}
+			exec_command_solo(&current_node);
 		free_tree(*tree);
 		return ;
 	}

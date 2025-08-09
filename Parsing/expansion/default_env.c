@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:58:08 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/07/14 20:32:42 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/09 05:22:57 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,10 @@ t_env	*get_env_vars(const char **env)
 	while (*env)
 	{
 		i = strchr_index(*env, '=');
-		temp->full = (char *)(*env);
 		temp->key = (char *)malloc(sizeof(char) * (i + 1));
 		temp->key[i] = '\0';
 		while (--i >= 0)
-			temp->key[i] = (*env)[i];
+		temp->key[i] = (*env)[i];
 		i = strchr_index(*env, '=');
 		i++;
 		temp->value = ft_strdup(*env + i);

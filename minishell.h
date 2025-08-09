@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/09 03:00:33 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/09 05:34:54 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ typedef struct s_env
 {
 	char				*key;
 	char				*value;
-	char				*full;
 	bool				printed;
 	struct s_env		*next;
 }						t_env;
