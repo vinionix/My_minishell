@@ -76,5 +76,6 @@ int	main(int ac, char **av, const char **env)
 
 	envs = get_env_vars(env);
 	get_data()->env = envs;
+	create_default_env(&envs);
 	aux_main();
 }
