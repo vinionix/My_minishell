@@ -19,6 +19,7 @@ FUNCTIONS = Tester/debug.c \
 			Parsing/ft_error.c \
 			Parsing/ft_lexer.c \
 			Parsing/tokenizer.c \
+			Parsing/format_input.c \
 			Parsing/expansion_and_quotes_validation.c \
 			Parsing/expansion/export_utils.c \
 			Parsing/expansion/expansion_utils.c \
@@ -36,7 +37,7 @@ FUNCTIONS = Tester/debug.c \
 			Wildcard/len_except.c \
 			Tree_struct/tree_utils.c \
 			Tree_struct/tree_create.c \
-     	Tree_struct/free_tree.c \
+     		Tree_struct/free_tree.c \
 			Exorcise/execution.c \
 			Exorcise/pipe.c \
 			Exorcise/find_path.c \

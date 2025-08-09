@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/05 06:57:48 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/09 03:00:33 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ typedef	struct s_process
 }						t_process;
 
 char					**ft_split(char const *s, char c);
+char					*format_input(char *input);
 char					**creat_command(int id_command, t_token *tokens);
 char					*built_pwd(void);
 char					**get_path(t_env *env);
