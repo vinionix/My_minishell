@@ -16,8 +16,8 @@ static void	ft_word_command_env(t_token **tokens)
 {
 	int	i;
 	
-	i = 0;
-	while ((*tokens)[i].value != NULL)
+	i = -1;
+	while ((*tokens)[++i].value != NULL)
 	{
 		if ((*tokens)[i].type == 0)
 		{
@@ -27,17 +27,16 @@ static void	ft_word_command_env(t_token **tokens)
 		}
 		if ((*tokens)[i].type == TK_COMMAND)
 		{
-			while ((*tokens)[i].value && (!((*tokens)[i].type >= TK_PIPE
+			while ((*tokens)[++i].value && (!((*tokens)[i].type >= TK_PIPE
 				&& (*tokens)[i].type <= TK_OR)))
 			{
 				if ((*tokens)[i].type == 0)
 					(*tokens)[i].type = TK_CMD_ARG;
-				i++;
 			}
+			i--;
 		}
-		i++; 
-		}
-} 
+	}
+}
 
 static void	ft_eof(t_token **tokens)
 {

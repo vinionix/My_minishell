@@ -21,17 +21,33 @@ static void	initialize_args_main(t_arg_main *args)
 	args->tokens = NULL;
 }
 
+void free_list(t_env *env)
+{
+	t_env *temp;
+
+	temp = env;
+	while (temp)
+	{
+		temp = env->next;
+		free(env->value);
+		free(env->key);
+		free(env);
+		env = temp;
+	}
+}
+
 static void	aux_main(void)
 {
 	t_arg_main	args;
 
-	while ("!exit")
+	while (42)
 	{
 		initialize_args_main(&args);
 		args.rdline = readline("minishell$ ");
 		if (!args.rdline)
 		{
 			printf("exit\n");
+			free_list(get_data()->env);
 			break ;
 		}
 		if (args.rdline)
@@ -42,6 +58,7 @@ static void	aux_main(void)
 				{
 					free_tokens(args.matrix, args.tokens);
 					exorcise_manager(&args.tree);
+					args.tree = NULL;
 				}
 			}
 			add_history(args.rdline);
@@ -59,5 +76,6 @@ int	main(int ac, char **av, const char **env)
 
 	envs = get_env_vars(env);
 	get_data()->env = envs;
+	create_default_env(&envs);
 	aux_main();
 }
