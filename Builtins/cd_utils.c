@@ -40,5 +40,8 @@ void	parse_home(char **matrix, int home, t_env *env_list)
 		temp = *matrix;
 		*matrix = ft_strdup(find_env("HOME=", env_list)->value);
 		free(temp);
+		free(home_path);
 	}
+	else
+		free(home_path);
 }

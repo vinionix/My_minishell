@@ -79,6 +79,15 @@ static t_redir *creat_list_redir(int id, t_token **tokens)
 	return (redirects);
 }
 
+void	init_node(t_tree *node)
+{
+	node->left = NULL;
+	node->right = NULL;
+	node->subtree = NULL;
+	node->prev = NULL;
+	node->main = 0;
+}
+
 t_tree	*node_creator(t_token **tokens, int id)
 {
 	int	i;
@@ -90,17 +99,12 @@ t_tree	*node_creator(t_token **tokens, int id)
 	if ((*tokens)[i].value == NULL)
 		return (NULL);
 	node = (t_tree *)ft_calloc(1, sizeof(t_tree));
-	node->n_builtin = -1;
 	node->type = (*tokens)[i].type;
 	node->id_tree = id;
-	node->left = NULL;
-	node->right = NULL;
-	node->subtree = NULL;
-	node->prev = NULL;
-	node->main = 0;
-	if ((*tokens)[i].type == TK_COMMAND || ((*tokens)[i].type >= TK_REDIR_IN && (*tokens)[i].type <= TK_HEREDOC))
+	init_node(node);
+	if ((*tokens)[i].type == TK_COMMAND || ((*tokens)[i].type >= TK_REDIR_IN
+		&& (*tokens)[i].type <= TK_HEREDOC))
 	{
-		node->n_builtin = 0; //is_bultin(*tokens);
 		if ((*tokens)[i].type == TK_COMMAND)
 			node->u_define.command.cmd = creat_command(id, (*tokens));
 		node->u_define.command.list_redir = creat_list_redir(id, tokens);

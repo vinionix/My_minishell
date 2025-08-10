@@ -98,7 +98,6 @@ typedef struct s_pipe
 typedef struct s_tree
 {
 	t_token_type		type;
-	int					n_builtin;
 	int					id_tree;
 	int					main;
 	union
