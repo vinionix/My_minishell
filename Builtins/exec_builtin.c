@@ -12,28 +12,35 @@
 
 #include "../minishell.h"
 
-int	exec_builtin(char **matrix, t_env **envs, t_tree *tree)
+bool	is_builtin(char *command)
 {
-	char	*command;
+	return (!ft_strcmp(command, "exit") || !ft_strcmp(command, "env")
+		|| !ft_strcmp(command, "cd") || !ft_strcmp(command, "export")
+			|| !ft_strcmp(command, "echo") || !ft_strcmp(command, "unset")
+				|| !ft_strcmp(command, "pwd"));
+}
 
-	command = matrix[0];
-	if (!ft_strcmp(command, "exit"))
-		return (ft_exit(matrix, tree, *envs));
-	else if (!ft_strcmp(command, "env"))
-		return (ft_env(*envs, matrix));
-	else if (!ft_strcmp(command, "cd"))
-		return (ft_cd(matrix, *envs));
-	else if (!ft_strcmp(command, "export") && !matrix[1])
+int	exec_builtin(char ***matrix, t_env **envs, t_tree *tree)
+{
+	if (is_builtin((*matrix)[0]))
+		(*matrix) = expand_and_wildcard((*matrix), get_data()->env);
+	if (!ft_strcmp((*matrix)[0], "exit"))
+		return (ft_exit((*matrix), tree, *envs));
+	else if (!ft_strcmp((*matrix)[0], "env"))
+		return (ft_env(*envs, (*matrix)));
+	else if (!ft_strcmp((*matrix)[0], "cd"))
+		return (ft_cd((*matrix), *envs));
+	else if (!ft_strcmp((*matrix)[0], "export") && !(*matrix)[1])
 		return (export_no_args(*envs));
-	else if (!ft_strcmp(command, "export"))
-		return (ft_export(matrix, envs));
-	else if (!ft_strcmp(command, "echo") && matrix[1] && !ft_strcmp(matrix[1], "-n"))
-		return (ft_echo_n(matrix));
-	else if (!ft_strcmp(command, "echo"))
-		return (ft_echo(matrix));
-	else if (!ft_strcmp(command, "unset"))
-		return (ft_unset(matrix, envs));
-	else if (!ft_strcmp(command, "pwd"))
-		return (ft_pwd(matrix));
+	else if (!ft_strcmp((*matrix)[0], "export"))
+		return (ft_export((*matrix), envs));
+	else if (!ft_strcmp((*matrix)[0], "echo") && (*matrix)[1] && !ft_strcmp((*matrix)[1], "-n"))
+		return (ft_echo_n((*matrix)));
+	else if (!ft_strcmp((*matrix)[0], "echo"))
+		return (ft_echo((*matrix)));
+	else if (!ft_strcmp((*matrix)[0], "unset"))
+		return (ft_unset((*matrix), envs));
+	else if (!ft_strcmp((*matrix)[0], "pwd"))
+		return (ft_pwd((*matrix)));
 	return (1337);
 }

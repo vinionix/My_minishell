@@ -184,9 +184,7 @@ void	exec_command_solo(t_tree **current_node)
 	pid_t	pid;
 
 	status = 0;
-	(*current_node)->u_define.command.cmd = expand_and_wildcard(
-		(*current_node)->u_define.command.cmd, get_data()->env);
-	get_data()->exit_code = exec_builtin((*current_node)->u_define.command.cmd,
+	get_data()->exit_code = exec_builtin(&(*current_node)->u_define.command.cmd,
 		&get_data()->env, get_data()->head);
 	if (get_data()->exit_code == 1337)
 	{

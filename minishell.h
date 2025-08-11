@@ -203,8 +203,15 @@ unsigned long long		ft_atol(char *str, int *sign);
 int						jump_to_smt_else(const char *str, char c, int i);
 void					change_env_var(t_env *envs, char *env_to_change, char *value);
 void					create_default_env(t_env **envs);
-int						exec_builtin(char **matrix, t_env **envs, t_tree *tree);
+int						exec_builtin(char ***matrix, t_env **envs, t_tree *tree);
 int						jump_to(const char *str, char c, int i);
 bool					have_char(char *str, char c);
+void					check_priority(t_token **tokens, int i, int *receiver, int *flag);
+int						find_next_r(t_token **tokens, int start, int receiver, int flag);
+int						search_left(t_token **tokens, int id);
+int						search_right(t_token **tokens, int id);
+t_tree					*search_for_bigger(t_token **tokens);
+t_tree					*node_creator(t_token **tokens, int id);
+t_redir					*creat_list_redir(int id, t_token **tokens);
 
 #endif

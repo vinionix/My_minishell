@@ -93,7 +93,6 @@ int	ft_pwd(char **matrix)
 	if (flag)
 	{
 		printf("minishell: pwd: %c%c: invalid option\n", (*matrix)[0], (*matrix)[1]);
-		free_matrix(matrix);
 		return (2);
 	}
 	pwd = get_pwd();

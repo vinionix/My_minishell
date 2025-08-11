@@ -39,6 +39,9 @@ FUNCTIONS = Tester/debug.c \
 			Tree_struct/tree_utils.c \
 			Tree_struct/tree_create.c \
      		Tree_struct/free_tree.c \
+     		Tree_struct/check_priority.c \
+     		Tree_struct/search.c \
+     		Tree_struct/node_creator.c \
 			Exorcise/execution.c \
 			Exorcise/pipe.c \
 			Exorcise/find_path.c \
