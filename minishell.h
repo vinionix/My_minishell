@@ -216,5 +216,7 @@ t_tree					*node_creator(t_token **tokens, int id);
 t_redir					*creat_list_redir(int id, t_token **tokens);
 bool					is_builtin(char *command);
 void					free_list_redir(t_redir *list);
+void					handle_sigint(int sig);
+void					set_signal(void);
 
 #endif

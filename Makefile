@@ -42,6 +42,7 @@ FUNCTIONS = Tester/debug.c \
      		Tree_struct/check_priority.c \
      		Tree_struct/search.c \
      		Tree_struct/node_creator.c \
+			Signal/signal.c \
 			Exorcise/execution.c \
 			Exorcise/pipe.c \
 			Exorcise/find_path.c \
