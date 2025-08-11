@@ -78,29 +78,31 @@ static char	**env_execv(t_env *env)
 	}
 	return (env_exe);
 }
+
 void	exorcise(t_tree *current_node, int flag)
 {
 	char	**path;
 	char	**env_exe;
 	int		current_fd;
+	t_redir * temp;
 
 	path = NULL;
 	(void)flag;
 	env_exe = NULL;
 	current_fd = 0;
-
-	if (current_node->u_define.command.list_redir)
+	temp = current_node->u_define.command.list_redir;
+	if (temp)
 	{
-		while(current_node->u_define.command.list_redir)
+		while(temp)
 		{
-			if (current_node->u_define.command.list_redir->type == TK_EOF)
+			if (temp->type == TK_EOF)
 			{
-				dup2(current_node->u_define.command.list_redir->fd_heredoc, STDIN_FILENO);
-				close(current_node->u_define.command.list_redir->fd_heredoc);
+				dup2(temp->fd_heredoc, STDIN_FILENO);
+				close(temp->fd_heredoc);
 			}
-			else if (current_node->u_define.command.list_redir->type == TK_FILE_APP)
+			else if (temp->type == TK_FILE_APP)
 			{
-				current_fd = open(current_node->u_define.command.list_redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
+				current_fd = open(temp->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
 				if (current_fd == -1)
 					perror("minishell$");
 				else
@@ -109,9 +111,9 @@ void	exorcise(t_tree *current_node, int flag)
 					close(current_fd);
 				}
 			}
-			else if (current_node->u_define.command.list_redir->type == TK_FILE_OUT)
+			else if (temp->type == TK_FILE_OUT)
 			{
-				current_fd = open(current_node->u_define.command.list_redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				current_fd = open(temp->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
 				if (current_fd == -1)
 					perror("minishell$");
@@ -121,9 +123,9 @@ void	exorcise(t_tree *current_node, int flag)
 					close(current_fd);
 				}
 			}
-			else if (current_node->u_define.command.list_redir->type == TK_FILE_IN)
+			else if (temp->type == TK_FILE_IN)
 			{
-				current_fd = open(current_node->u_define.command.list_redir->file, O_RDONLY);
+				current_fd = open(temp->file, O_RDONLY);
 				if (current_fd == -1)
 					perror("minishell$");
 				else
@@ -132,15 +134,25 @@ void	exorcise(t_tree *current_node, int flag)
 					close(current_fd);
 				}
 			}
-			current_node->u_define.command.list_redir = current_node->u_define.command.list_redir->next;
+			temp = temp->next;
 		}
 	}
-	path = get_path(get_data()->env);
-	env_exe = env_execv(get_data()->env);
-	current_node->u_define.command.cmd = expand_and_wildcard(current_node->u_define.command.cmd, get_data()->env);
-	valid_path(current_node->u_define.command.cmd, path);
-	execve(current_node->u_define.command.cmd[0], current_node->u_define.command.cmd, env_exe);
-	exit(1);
+	get_data()->exit_code = exec_builtin(&current_node->u_define.command.cmd,
+		&get_data()->env, get_data()->head);
+	if (get_data()->exit_code == 1337)
+	{
+		path = get_path(get_data()->env);
+		env_exe = env_execv(get_data()->env);
+		current_node->u_define.command.cmd = expand_and_wildcard(current_node->u_define.command.cmd, get_data()->env);
+		valid_path(current_node->u_define.command.cmd, path);
+		execve(current_node->u_define.command.cmd[0], current_node->u_define.command.cmd, env_exe);
+	}
+	/* teoricamente não muda nada esses frees */
+	free_tree(get_data()->head);
+	free_list(get_data()->env);
+	get_data()->head = NULL;
+	get_data()->env = NULL;
+	exit(get_data()->exit_code);
 }
 
 t_data *get_data(void)
@@ -184,9 +196,8 @@ void	exec_command_solo(t_tree **current_node)
 	pid_t	pid;
 
 	status = 0;
-	get_data()->exit_code = exec_builtin(&(*current_node)->u_define.command.cmd,
-		&get_data()->env, get_data()->head);
-	if (get_data()->exit_code == 1337)
+	if ((*current_node)->u_define.command.list_redir
+		|| !is_builtin((*current_node)->u_define.command.cmd[0]))
 	{
 		pid = fork();
 		if (pid == 0)
@@ -195,7 +206,14 @@ void	exec_command_solo(t_tree **current_node)
 		{
 			waitpid(pid, &status, 0);
 			get_data()->exit_code = WEXITSTATUS(status);
+			change_env_var(get_data()->env, "?=", ft_itoa(get_data()->exit_code));
 		}
+	}
+	else
+	{
+		get_data()->exit_code = exec_builtin(&(*current_node)->u_define.command.cmd,
+			&get_data()->env, get_data()->head);
+		change_env_var(get_data()->env, "?=", ft_itoa(get_data()->exit_code));
 	}
 }
 
@@ -228,6 +246,8 @@ void	tk_and(t_tree **current_node)
 	else if ((*current_node)->right->type >= TK_REDIR_IN && (*current_node)->right->type <= TK_HEREDOC && get_data()->exit_code == 0)
 		creat_solo_redirect((*current_node)->right->u_define.command.list_redir);
 }
+
+
 void exorcise_manager(t_tree **tree)
 {
 	t_tree		*current_node;
@@ -237,7 +257,8 @@ void exorcise_manager(t_tree **tree)
 	current_node = last_left((*tree));
 	if (current_node->main == 1)
 	{
-		if (current_node->type == TK_AND && (get_data()->exit_code == 0 || get_data()->exit_code == -1))
+		if (current_node->type == TK_AND && (get_data()->exit_code == 0
+			|| get_data()->exit_code == -1))
 			tk_and(&current_node);
 		else if (current_node->type == TK_OR && get_data()->exit_code != 0)
 			tk_or(&current_node);

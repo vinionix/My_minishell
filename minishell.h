@@ -138,6 +138,7 @@ typedef	struct s_process
 }						t_process;
 
 char					**ft_split(char const *s, char c);
+void					free_list(t_env *env);
 char					*format_input(char *input);
 char					**creat_command(int id_command, t_token *tokens);
 char					*built_pwd(void);
@@ -213,5 +214,7 @@ int						search_right(t_token **tokens, int id);
 t_tree					*search_for_bigger(t_token **tokens);
 t_tree					*node_creator(t_token **tokens, int id);
 t_redir					*creat_list_redir(int id, t_token **tokens);
+bool					is_builtin(char *command);
+void					free_list_redir(t_redir *list);
 
 #endif

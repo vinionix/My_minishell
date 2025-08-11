@@ -12,11 +12,28 @@
 
 #include "../minishell.h"
 
+void free_list_redir(t_redir *list)
+{
+	t_redir *temp;
+
+	temp = list;
+	while (temp)
+	{
+		temp = list->next;
+		if (list->eof)
+			free(list->eof);
+		if (list->file)
+			free(list->file);
+		free(list);
+		list = temp;
+	}
+}
+
 t_redir	*creator_node_redir(t_token tokens)
 {
 	t_redir	*redir;
 
-	redir = malloc(sizeof(t_redir));
+	redir = (t_redir *)malloc(sizeof(t_redir));
 	redir->type = (tokens).type;
 	redir->eof = NULL;
 	redir->next = NULL;

@@ -21,11 +21,11 @@ void	free_tree(t_tree *node)
 	if (node->type == TK_COMMAND || (node->type >= TK_REDIR_IN
 			&& node->type <= TK_HEREDOC))
 	{
+		if (node->u_define.command.list_redir)
+			free_list_redir(node->u_define.command.list_redir);
 		if (node->u_define.command.cmd)
-		{
 			free_matrix(node->u_define.command.cmd);
-			free(node);
-		}
+		free(node);
 		return ;
 	}
 	free(node);

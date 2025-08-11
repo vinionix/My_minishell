@@ -21,6 +21,7 @@ void    change_env_var(t_env *envs, char *env_to_change, char *value)
     env = find_env(env_to_change, envs);
     free(env->value);
     env->value = ft_strdup(value);
+	free(value);
 }
 
 void	create_default_env(t_env **envs)
