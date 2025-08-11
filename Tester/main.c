@@ -83,4 +83,5 @@ int	main(int ac, char **av, const char **env)
 	create_default_env(&envs);
 	set_signal();
 	aux_main();
+	return (0);
 }
