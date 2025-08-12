@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 03:51:03 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/12 18:18:22 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/12 19:02:34 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,12 @@ void	handle_sigint(int sig)
 	(void)sig;
 	write(1, "\n", 1);
 	signal_v++;
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if (rl_readline_state & RL_STATE_READCMD)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
 int handle_sigint_in_fork(int status, pid_t pid)
@@ -37,7 +40,6 @@ int handle_sigint_in_fork(int status, pid_t pid)
 		if (WTERMSIG(status) == SIGINT)
 		{
 			get_data()->exited_in_fork = true;
-			get_data()->should_redisplay = false;
 			kill(SIGINT, pid);
 			return (1);
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/09 05:57:51 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/12 19:13:36 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,8 @@ void	exorcise(t_tree *current_node, int flag)
 		current_node->u_define.command.cmd = expand_and_wildcard(current_node->u_define.command.cmd, get_data()->env);
 		valid_path(current_node->u_define.command.cmd, path);
 		execve(current_node->u_define.command.cmd[0], current_node->u_define.command.cmd, env_exe);
-		exit(EXIT_FAILURE);
+		printf("%s: command not found\n", current_node->u_define.command.cmd[0]);
+		exit(127);
 	}
 	/* teoricamente não muda nada esses frees */
 	free_tree(get_data()->head);
