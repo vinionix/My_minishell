@@ -21,6 +21,24 @@ static void	initialize_args_main(t_arg_main *args)
 	args->tokens = NULL;
 }
 
+void	handle_sigint_code(void)
+{
+	int save_code;
+
+	save_code = get_data()->exit_code;
+	if (signal_v)
+	{
+		get_data()->exit_code = 130;
+		change_env_var(get_data()->env, "?=", ft_strdup("130"));
+		signal_v = 0;
+	}
+	if (get_data()->exited_in_fork)
+	{
+		change_env_var(get_data()->env, "?=", ft_itoa(save_code));
+		get_data()->exited_in_fork = false;
+	}
+}
+
 void free_list(t_env *env)
 {
 	t_env *temp;
@@ -43,10 +61,12 @@ static void	aux_main(void)
 {
 	t_arg_main	args;
 
+	get_data()->exit_code = 0;
 	while (42)
 	{
 		initialize_args_main(&args);
 		args.rdline = readline("minishell$ ");
+		handle_sigint_code();
 		if (!args.rdline)
 		{
 			printf("exit\n");
@@ -82,6 +102,8 @@ int	main(int ac, char **av, const char **env)
 	get_data()->env = envs;
 	create_default_env(&envs);
 	set_signal();
+	get_data()->exited_in_fork = false;
+	get_data()->should_redisplay = true;
 	aux_main();
 	return (0);
 }

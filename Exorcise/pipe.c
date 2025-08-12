@@ -32,7 +32,8 @@ void	wait_free_process(t_process **process)
 	while (temp != NULL)
 	{
 		waitpid(temp->pid, &status, 0);
-		get_data()->exit_code  = WEXITSTATUS(status);
+		handle_sigint_in_fork(status, temp->pid);
+		get_data()->exit_code = WEXITSTATUS(status);
 		temp = temp->next;
 	}
 	while ((*process))
@@ -41,6 +42,7 @@ void	wait_free_process(t_process **process)
 		(*process) = (*process)->next;
 		free(temp);
 	}
+	change_env_var(get_data()->env, "?=", ft_itoa(get_data()->exit_code));
 }
 
 void	solo_redirect(t_tree *tree, int *stdin_fd)

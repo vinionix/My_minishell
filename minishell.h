@@ -38,6 +38,8 @@ void					logd(double x);
 void					logc(char x);
 void					logs(const char *x);
 
+extern volatile sig_atomic_t signal_v;
+
 typedef enum e_token_type
 {
 	TK_REDIR_IN = 1,
@@ -116,6 +118,8 @@ typedef struct s_data
 	int					exit_code;
 	t_env				*env;
 	t_tree				*head;
+	bool				exited_in_fork;
+	bool				should_redisplay;
 }						t_data;
 
 typedef struct s_arg_main
@@ -218,5 +222,6 @@ bool					is_builtin(char *command);
 void					free_list_redir(t_redir *list);
 void					handle_sigint(int sig);
 void					set_signal(void);
+int						handle_sigint_in_fork(int status, pid_t pid);
 
 #endif

@@ -12,6 +12,8 @@
 
 #include "../minishell.h"
 
+volatile sig_atomic_t signal_v = 0;
+
 void set_signal(void)
 {
 	signal(SIGQUIT, SIG_IGN);
@@ -21,26 +23,24 @@ void set_signal(void)
 void	handle_sigint(int sig)
 {
 	(void)sig;
-	change_env_var(get_data()->env, "?=", ft_itoa(130));
 	write(1, "\n", 1);
+	signal_v = 1;
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
 
-/*int handle_sigint_in_fork(int status, int pid)
+int handle_sigint_in_fork(int status, pid_t pid)
 {
-	if (WIFEXITED(status))
-		get_data()->exit_code = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
+	if (WIFSIGNALED(status))
 	{
-		get_data()->exit_code = 128 + WTERMSIG(status);
-		printf("\n%d\n", get_data()->exit_code);
 		if (WTERMSIG(status) == SIGINT)
 		{
+			get_data()->exited_in_fork = true;
+			get_data()->should_redisplay = false;
 			kill(SIGINT, pid);
 			return (1);
 		}
 	}
 	return (0);
-}*/
+}

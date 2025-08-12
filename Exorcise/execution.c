@@ -146,6 +146,7 @@ void	exorcise(t_tree *current_node, int flag)
 		current_node->u_define.command.cmd = expand_and_wildcard(current_node->u_define.command.cmd, get_data()->env);
 		valid_path(current_node->u_define.command.cmd, path);
 		execve(current_node->u_define.command.cmd[0], current_node->u_define.command.cmd, env_exe);
+		exit(EXIT_FAILURE);
 	}
 	/* teoricamente não muda nada esses frees */
 	free_tree(get_data()->head);
