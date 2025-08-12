@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 03:51:03 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/26 13:13:32 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:18:24 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	handle_sigint(int sig)
 {
 	(void)sig;
 	write(1, "\n", 1);
-	signal_v = 1;
+	signal_v++;
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
