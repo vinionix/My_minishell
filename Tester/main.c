@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 21:06:12 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/12 16:31:57 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/12 18:16:52 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,17 @@ void	handle_sigint_code(void)
 	int save_code;
 
 	save_code = get_data()->exit_code;
-	if (signal_v >= 3)
+	if (signal_v >= 2)
 	{
 		get_data()->exit_code = 130;
 		change_env_var(get_data()->env, "?=", ft_strdup("130"));
 		signal_v = 0;
 	}
-	else if (signal_v >= 1 && get_data()->exited_in_fork)
+	else if (signal_v == 1 && get_data()->exited_in_fork)
 	{
 		change_env_var(get_data()->env, "?=", ft_itoa(save_code));
 		get_data()->exited_in_fork = false;
-		signal_v = 2;
+		signal_v = 0;
 	}
 	else if (signal_v == 1 && !get_data()->exited_in_fork)
 	{
