@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/12 19:08:57 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/12 20:43:20 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,5 +222,6 @@ void					free_list_redir(t_redir *list);
 void					handle_sigint(int sig);
 void					set_signal(void);
 int						handle_sigint_in_fork(int status, pid_t pid);
+void					handle_sigkill(int sig);
 
 #endif

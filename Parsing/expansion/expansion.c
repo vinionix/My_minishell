@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:07:31 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/05 07:45:21 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/12 22:27:32 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,20 @@ char	**create_possible_envs(char **matrix, char *str, char *copy)
 	return (matrix);
 }
 
+bool	check_meta(char c)
+{
+	return (c && c != ' ' && c != '$' && c != DOLLAR_MARKER
+		&& c != SINGLE_QUOTE_MARKER && c != DOUBLE_QUOTE_MARKER
+		&& c != '\'' && c != '\"' && c != '*'
+		&& c != '/' && c != ',' && c != EXPANSION_MARKER
+		&& c != '!' && c != '?' && c != '@' && c != '%'
+		&& c != '&' && c != '+' && c != '-'
+		&& c != '[' && c != ']' && c != '{'
+		&& c != '}' && c != ';' && c != '.'
+		&& c != '<' && c != '>' && c != '/'
+		&& c != '~' && c != '|' && c != '=');
+}
+
 static char	*mark_expansions(char *str)
 {
 	int		i;
@@ -226,10 +240,7 @@ static char	*mark_expansions(char *str)
 			i = jump_to(copy, '$', i);
 			continue ;
 		}
-		while (copy[i] && copy[i] != ' ' && copy[i] != '$' && copy[i] != DOLLAR_MARKER
-			&& copy[i] != SINGLE_QUOTE_MARKER && copy[i] != DOUBLE_QUOTE_MARKER
-				&& copy[i] != '\'' && copy[i] != '\"' && copy[i] != '*'
-					&& copy[i] != '/' && copy[i] != ',' && copy[i] != EXPANSION_MARKER)
+		while (check_meta(copy[i]))
 			copy[i++] = POSSIBLE_ENV_MARKER;
 		i = jump_to(copy, '$', i);
 	}
@@ -272,16 +283,18 @@ void	parse_edge_case(char **matrix)
 	{
 		while (matrix[i][++j])
 		{
-			if (matrix[i][j] && matrix[i][j] == '$' && matrix[i][j + 1] == '$')
+			if (matrix[i][j] == '$' && matrix[i][j + 1] == '$')
 			{
 				j++;
 				continue ;
 			}
-			if (matrix[i][j] && matrix[i][j] == '$' && (matrix[i][j + 1] == ' '
+			if (matrix[i][j] == '$' && (matrix[i][j + 1] == ' '
 				|| matrix[i][j + 1] == SINGLE_QUOTE_MARKER
-					|| matrix[i][j + 1] == '\0'
-						||  matrix[i][j + 1] == '\"'))
+				|| matrix[i][j + 1] == '\0' ||  matrix[i][j + 1] == '\"'
+				|| matrix[i][j + 1] == '+' || matrix[i][j + 1] == '%'))
 				matrix[i][j] = DOLLAR_MARKER;
+			if (matrix[i][j] == '$' && matrix[i][j + 1] == '*')
+				matrix[i][j + 1] = '1';
 		}
 		j = -1;
 	}

@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 03:51:03 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/12 19:02:34 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/12 20:45:55 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ void	handle_sigint(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+}
+
+void	handle_sigkill(int sig)
+{
+	(void)sig;
+	exit(130);
 }
 
 int handle_sigint_in_fork(int status, pid_t pid)

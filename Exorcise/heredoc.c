@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 20:58:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/05 02:14:13 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/12 20:59:08 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,31 +54,44 @@ int	here_verify(t_redir *redir, int is_command)
 void	here(char *eof, int is_command, int *pipefd)
 {
 	char	*readl;
+	pid_t	pid;
+	int		status;
 
-	while (1)
+	status = 0;
+	pid = fork();
+	if (pid == 0)
 	{
-		readl = readline("> ");
-		if (ft_strcmp(readl, eof) == 0)
+		signal(SIGINT, handle_sigkill);
+		while (1)
 		{
-			free(readl);
-			break;
-		}
-		if (!readl)
-		{
+			readl = readline("> ");
+			if (ft_strcmp(readl, eof) == 0)
+			{
+				free(readl);
+				exit(0);
+				break;
+			}
+			if (!readl)
+			{
+				if (is_command == 1)
+					close(pipefd[1]);
+				exit(0);
+				break;
+			}
 			if (is_command == 1)
-				close(pipefd[1]);
-			break;
+			{
+				write(pipefd[1], readl, ft_strlen(readl));
+				write(pipefd[1], "\n", 1);
+			}
+			free(readl);
 		}
-		if (is_command == 1)
-		{
-			write(pipefd[1], readl, ft_strlen(readl));
-			write(pipefd[1], "\n", 1);
-		}
-		free(readl);
 	}
-	if (is_command == 1)
+	else
 	{
-		close(pipefd[1]);
+		if (is_command == 1)
+			close(pipefd[1]);
+		waitpid(pid, &status, 0);
+		handle_sigint_in_fork(status, pid);
 	}
 }
 
