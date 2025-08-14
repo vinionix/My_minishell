@@ -57,9 +57,11 @@ void	solo_redirect(t_tree *tree, int *stdin_fd)
 
 void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd, int l_or_r)
 {
-	int	pipe_temp[2];
+	int			pipe_temp[2];
 	t_process	*temp;
+	int			std_out;
 
+	std_out = dup(1);
 	if ((*tree)->left->type >= TK_REDIR_IN && (*tree)->left->type <= TK_APPEND)
 		solo_redirect((*tree)->left, stdin_fd);
 	else if ((*tree)->left->type == TK_COMMAND)
@@ -77,7 +79,7 @@ void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd, int l_or
 			dup2(pipe_temp[1], STDOUT_FILENO);
 			close(pipe_temp[0]);
 			close(pipe_temp[1]);
-			exorcise((*tree)->left, -1);
+			exorcise((*tree)->left, -1, std_out);
 		}
 		else
 		{
@@ -105,7 +107,7 @@ void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd, int l_or
 				dup2(pipe_temp[1], STDOUT_FILENO);
 			close(pipe_temp[0]);
 			close(pipe_temp[1]);
-			exorcise((*tree)->right, -1);
+			exorcise((*tree)->right, -1, std_out);
 		}
 		else
 		{
@@ -121,6 +123,7 @@ void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd, int l_or
 			close(*stdin_fd);
 		*stdin_fd = -1;
 	}
+	close(std_out);
 }
 
 void	ft_pipe(t_tree **tree, int left_or_rigth)

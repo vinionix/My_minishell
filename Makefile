@@ -24,6 +24,9 @@ FUNCTIONS = Tester/debug.c \
 			Parsing/expansion_and_quotes_validation.c \
 			Parsing/expansion/export_utils.c \
 			Parsing/expansion/expansion_utils.c \
+			Parsing/expansion/expansion_utils2.c \
+			Parsing/expansion/expansion_utils3.c \
+			Parsing/expansion/expansion_utils4.c \
 			Parsing/expansion/expansion.c \
 			Parsing/expansion/change_env_variable.c \
 			Wildcard/wildcard.c \
@@ -33,6 +36,7 @@ FUNCTIONS = Tester/debug.c \
 			Wildcard/quotes_handler.c \
 			Wildcard/quotes_utils.c \
 			Wildcard/wildcard_utils2.c \
+			Wildcard/wildcard_utils3.c \
 			Wildcard/read_cd.c \
 			Wildcard/verify_utils.c \
 			Wildcard/len_except.c \

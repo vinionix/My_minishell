@@ -64,7 +64,7 @@ bool	edge_case(t_wildcard *list, const char *wildcard)
 
 	card = NULL;
 	if (count_char(wildcard, '*') == 2 && wildcard[0] == '*'
-			&& wildcard[ft_strlen(wildcard) - 1] == '*')
+		&& wildcard[ft_strlen(wildcard) - 1] == '*')
 	{
 		card = ft_substr(wildcard, 1, ft_strlen(wildcard) - 2);
 		if (ft_strstr(list->file_dir, card))

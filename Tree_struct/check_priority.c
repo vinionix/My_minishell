@@ -14,7 +14,8 @@
 
 void	check_priority(t_token **tokens, int i, int *receiver, int *flag)
 {
-	if ((((*tokens)[i].type == TK_AND || (*tokens)[i].type == TK_OR) && *flag != 1))
+	if ((((*tokens)[i].type == TK_AND || (*tokens)[i].type == TK_OR)
+		&& *flag != 1))
 	{
 		*flag = 1;
 		*receiver = i;
@@ -24,7 +25,8 @@ void	check_priority(t_token **tokens, int i, int *receiver, int *flag)
 		*flag = 2;
 		*receiver = i;
 	}
-	else if ((*tokens)[i].type == TK_COMMAND && *flag != 1 && *flag != 2 && *flag != 3)
+	else if ((*tokens)[i].type == TK_COMMAND && *flag != 1 && *flag != 2
+		&& *flag != 3)
 	{
 		*flag = 3;
 		*receiver = i;

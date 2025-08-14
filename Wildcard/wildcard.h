@@ -62,5 +62,8 @@ char			*compress_wildcards(char *str);
 int				len_except(const char *str, char exception);
 bool			double_wildcard(const char *str);
 void			reduce(const char *str, char *new);
+void			not_found(char **matrix, char *old_temp, int i);
+void			update(t_var *var, const char **temp, int *i,
+					const char *wildcard);
 
 #endif

@@ -12,9 +12,9 @@
 
 #include "../minishell.h"
 
-void free_env_list(t_env *list)
+void	free_env_list(t_env *list)
 {
-	t_env *temp;
+	t_env	*temp;
 
 	temp = list;
 	while (temp)

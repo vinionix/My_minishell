@@ -37,5 +37,15 @@ int		change_env(const char *target_key, t_env *envs);
 void	create_env(const char *str, t_env **envs);
 void	expand_variables(char **matrix, t_env *env_lst);
 void	reset_modified_chars(char **matrix, char c);
+void	remove_key_len(char *copy, t_vars *var);
+bool	check_meta(char c);
+int		find_size(char *copy);
+void	fix_pid_and_status(int *i, char **matrix, int *j, char *str);
+void	parse_edge_case(char **matrix);
+void	create_envs(char *copy, char *str, int i, char **matrix);
+char	*mark_expansions(char *str);
+bool	jump_dollar(t_vars *var);
+void	copy(t_vars *var, int *pos);
+int		create_string(char **possibles, bool *matches, t_env *env, t_vars *var);
 
 #endif

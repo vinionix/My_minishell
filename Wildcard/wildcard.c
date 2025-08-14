@@ -36,12 +36,7 @@ static void	later_matches(t_wildcard *list, const char *wildcard, t_var *var)
 				return ;
 			}
 		}
-		i = strchr_index_next(wildcard, '*', i);
-		temp = ft_strstr(temp, var->current_card);
-		temp += ft_strlen(var->current_card);
-		free(var->current_card);
-		var->current_card = NULL;
-		var->current_card = update_vars(wildcard, var);
+		update(var, &temp, &i, wildcard);
 	}
 }
 
@@ -58,7 +53,7 @@ static void	is_match(t_wildcard *list, const char *wildcard, t_var *var)
 		return ;
 	}
 	if (count_char(wildcard, '*') == 1
-			&& wildcard[strchr_index(wildcard, '*') + 1] == '\0')
+		&& wildcard[strchr_index(wildcard, '*') + 1] == '\0')
 		return ;
 	if (check_sufix(list, wildcard))
 		return ;
@@ -104,9 +99,7 @@ static char	**wildcard_aux(char **matrix, t_wildcard *list,
 			matches = list_to_matrix(list, show_hidden);
 			if (!matches)
 			{
-				free(matrix[i]);
-				matrix[i] = ft_strdup(old_temp);
-				free(old_temp);
+				not_found(matrix, old_temp, i);
 				continue ;
 			}
 			free(old_temp);

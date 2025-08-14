@@ -12,6 +12,13 @@
 
 #include "../minishell.h"
 
+static int	is_unprintable(const char *key)
+{
+	if (!ft_strcmp(key, "?") || !ft_strcmp(key, "$"))
+		return (1);
+	return (0);
+}
+
 static void	reset_prints(t_env *envs)
 {
 	while (envs)
@@ -45,7 +52,7 @@ int	export_no_args(t_env *envs)
 		while (temp)
 		{
 			if ((!to_print || ft_strcmp(temp->key, to_print->key) < 0)
-				&& !temp->printed)
+				&& !temp->printed && !is_unprintable(temp->key))
 			{
 				to_print = temp;
 				all_printed = false;

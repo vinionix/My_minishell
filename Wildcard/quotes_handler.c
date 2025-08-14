@@ -41,7 +41,7 @@ int	count_quotes_left(char *str, int i, char c)
 	return (size);
 }
 
-static void turn_into_meta(char *str, char quote_type, int *i)
+static void	turn_into_meta(char *str, char quote_type, int *i)
 {
 	(*i)++;
 	while (str[*i] && str[*i] != quote_type)
@@ -67,10 +67,12 @@ static void	do_not_expand(char **matrix)
 	{
 		while (matrix[i][j])
 		{
-			if (matrix[i][j] == '$' && count_quotes_right(matrix[i] + j, '\'') % 2 != 0
+			if (matrix[i][j] == '$'
+				&& count_quotes_right(matrix[i] + j, '\'') % 2 != 0
 				&& count_quotes_left(matrix[i], j, '\'') % 2 != 0)
 				matrix[i][j] = DOLLAR_MARKER;
-			else if (matrix[i][j] == '*' && ((count_quotes_right(matrix[i] + j, '\'') % 2 != 0
+			else if (matrix[i][j] == '*'
+				&& ((count_quotes_right(matrix[i] + j, '\'') % 2 != 0
 				&& count_quotes_left(matrix[i], j, '\'') % 2 != 0)
 					|| (count_quotes_right(matrix[i] + j, '\"') % 2 != 0
 						&& count_quotes_left(matrix[i], j, '\"') % 2 != 0)))
@@ -81,7 +83,7 @@ static void	do_not_expand(char **matrix)
 	}
 }
 
-void parse_quotes(char **matrix)
+void	parse_quotes(char **matrix)
 {
 	int		i;
 	int		j;

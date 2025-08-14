@@ -16,8 +16,8 @@ bool	is_builtin(char *command)
 {
 	return (!ft_strcmp(command, "exit") || !ft_strcmp(command, "env")
 		|| !ft_strcmp(command, "cd") || !ft_strcmp(command, "export")
-			|| !ft_strcmp(command, "echo") || !ft_strcmp(command, "unset")
-				|| !ft_strcmp(command, "pwd"));
+		|| !ft_strcmp(command, "echo") || !ft_strcmp(command, "unset")
+		|| !ft_strcmp(command, "pwd"));
 }
 
 int	exec_builtin(char ***matrix, t_env **envs, t_tree *tree)
@@ -34,7 +34,8 @@ int	exec_builtin(char ***matrix, t_env **envs, t_tree *tree)
 		return (export_no_args(*envs));
 	else if (!ft_strcmp((*matrix)[0], "export"))
 		return (ft_export((*matrix), envs));
-	else if (!ft_strcmp((*matrix)[0], "echo") && (*matrix)[1] && !ft_strcmp((*matrix)[1], "-n"))
+	else if (!ft_strcmp((*matrix)[0], "echo") && (*matrix)[1]
+		&& !ft_strcmp((*matrix)[1], "-n"))
 		return (ft_echo_n((*matrix)));
 	else if (!ft_strcmp((*matrix)[0], "echo"))
 		return (ft_echo((*matrix)));

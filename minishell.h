@@ -38,7 +38,7 @@ void					logd(double x);
 void					logc(char x);
 void					logs(const char *x);
 
-extern volatile sig_atomic_t signal_v;
+extern volatile sig_atomic_t g_signal_v;
 
 typedef enum e_token_type
 {
@@ -161,7 +161,7 @@ void					free_tokens(char **matrix, t_token *tokens);
 void					envadd_back(t_env **lst, t_env *new);
 void					ft_pipe(t_tree **tree, int left_or_rigth);
 void					exorcise_manager(t_tree **tree);
-void					exorcise(t_tree *current_node, int flag);
+void					exorcise(t_tree *current_node, int flag, int std_out);
 void					wait_free_process(t_process **process);
 void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
 void					creat_solo_redirect(t_redir *redir);
@@ -179,7 +179,7 @@ int						env_lstsize(t_env *lst);
 int						valid_path(char **cmd, char **path);
 int						ft_cd(char **matrix, t_env *env_list);
 int						check_home(char *str);
-void					parse_home(char **matrix, int home, t_env *env_list);
+void					parse_home(char **matrix, t_env *env_list);
 int						ft_echo(char **matrix);
 int						ft_echo_n(char **matrix);
 int						new_var_parsing(char **matrix, t_env **envs);
@@ -223,5 +223,6 @@ void					handle_sigint(int sig);
 void					set_signal(void);
 int						handle_sigint_in_fork(int status, pid_t pid);
 void					handle_sigkill(int sig);
+void					handle_sigint_code(void);
 
 #endif

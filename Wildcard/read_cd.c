@@ -14,7 +14,7 @@
 
 static void	replace_asterisk(t_wildcard *list)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (list)

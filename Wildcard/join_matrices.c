@@ -12,7 +12,7 @@
 
 #include "wildcard.h"
 
-char **join_matrices(char **matrix1, char **matrix2, int copy_until)
+char	**join_matrices(char **matrix1, char **matrix2, int copy_until)
 {
 	int		new_size;
 	char	**new_matrix;

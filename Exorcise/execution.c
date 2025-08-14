@@ -12,8 +12,6 @@
 
 #include "../minishell.h"
 
-int exit_status = -1;
-
 t_tree *last_left(t_tree *tree)
 {
 	while (tree->left && tree->left->type != TK_COMMAND 
@@ -79,7 +77,7 @@ static char	**env_execv(t_env *env)
 	return (env_exe);
 }
 
-void	exorcise(t_tree *current_node, int flag)
+void	exorcise(t_tree *current_node, int flag, int std_out)
 {
 	char	**path;
 	char	**env_exe;
@@ -146,6 +144,7 @@ void	exorcise(t_tree *current_node, int flag)
 		current_node->u_define.command.cmd = expand_and_wildcard(current_node->u_define.command.cmd, get_data()->env);
 		valid_path(current_node->u_define.command.cmd, path);
 		execve(current_node->u_define.command.cmd[0], current_node->u_define.command.cmd, env_exe);
+		dup2(std_out, STDOUT_FILENO);
 		printf("%s: command not found\n", current_node->u_define.command.cmd[0]);
 		exit(127);
 	}
@@ -203,7 +202,7 @@ void	exec_command_solo(t_tree **current_node)
 	{
 		pid = fork();
 		if (pid == 0)
-			exorcise((*current_node), -1);
+			exorcise((*current_node), -1, 1);
 		else
 		{
 			waitpid(pid, &status, 0);

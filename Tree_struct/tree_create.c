@@ -14,7 +14,7 @@
 
 static void	fill_command_array(char **command, t_token *tokens, int j)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	j++;
@@ -32,9 +32,9 @@ static void	fill_command_array(char **command, t_token *tokens, int j)
 
 char	**creat_command(int id_command, t_token *tokens)
 {
-	int	count_words;
-	int i;
-	int	j;
+	int		count_words;
+	int		i;
+	int		j;
 	char	**command;
 
 	count_words = 1;

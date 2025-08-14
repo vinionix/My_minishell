@@ -27,7 +27,7 @@ int	check_following_chars(char *variable, char c)
 	if (!ft_isalnum((int)c) && c != '_')
 	{
 		printf("minishell: export: `%s': not a valid identifier\n",
-				variable);
+			variable);
 		return (1);
 	}
 	return (0);

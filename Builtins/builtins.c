@@ -14,8 +14,6 @@
 
 int	ft_cd(char **matrix, t_env *env_list)
 {
-	int		home;
-
 	if (ft_len_matrix(matrix) > 2)
 	{
 		printf("Too many args for cd command\n");
@@ -31,8 +29,7 @@ int	ft_cd(char **matrix, t_env *env_list)
 		change_cwd(env_list);
 		return (0);
 	}
-	home = check_home(*(++matrix));
-	parse_home(matrix, home, env_list);
+	parse_home(++matrix, env_list);
 	if (chdir(*matrix))
 	{
 		printf("minishell: cd: %s: No such file or directory\n", *matrix);
@@ -92,7 +89,8 @@ int	ft_pwd(char **matrix)
 	flag = check_flag(matrix);
 	if (flag)
 	{
-		printf("minishell: pwd: %c%c: invalid option\n", (*matrix)[0], (*matrix)[1]);
+		printf("minishell: pwd: %c%c: invalid option\n",
+			(*matrix)[0], (*matrix)[1]);
 		return (2);
 	}
 	pwd = get_pwd();

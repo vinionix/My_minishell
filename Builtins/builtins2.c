@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins2.c                                         :+:      :+:    :+:   */
+/*   builtins2.c                                         :+:      :+:    :+:  */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -47,7 +47,6 @@ static bool	only_numbers(char *str)
 	return (true);
 }
 
-
 static bool	long_check(char *str)
 {
 	unsigned long long	max;
@@ -67,7 +66,7 @@ static bool	long_check(char *str)
 	return (true);
 }
 
-static unsigned char get_exit_code(char *str)
+static unsigned char	get_exit_code(char *str)
 {
 	unsigned char	exit_code;
 	int				sign;

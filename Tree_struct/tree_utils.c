@@ -12,9 +12,9 @@
 
 #include "../minishell.h"
 
-void free_list_redir(t_redir *list)
+void	free_list_redir(t_redir *list)
 {
-	t_redir *temp;
+	t_redir	*temp;
 
 	temp = list;
 	while (temp)
@@ -62,7 +62,7 @@ static void	redir_add_back(t_redir **redirects, t_redir *node)
 	return ;
 }
 
-t_redir *creat_list_redir(int id, t_token **tokens)
+t_redir	*creat_list_redir(int id, t_token **tokens)
 {
 	t_redir	*redirects;
 	int		i;
@@ -71,10 +71,12 @@ t_redir *creat_list_redir(int id, t_token **tokens)
 	redirects = NULL;
 	while ((*tokens)[i].id != id)
 		i++;
-	while ((*tokens)[i].id > 0 && (!((*tokens)[i].type >= TK_PIPE && (*tokens)[i].type <= TK_OR)))
+	while ((*tokens)[i].id > 0 && (!((*tokens)[i].type >= TK_PIPE
+		&& (*tokens)[i].type <= TK_OR)))
 		i--;
 	i++;
-	while ((*tokens)[i].value && (!((*tokens)[i].type >= TK_PIPE && (*tokens)[i].type <= TK_OR)))
+	while ((*tokens)[i].value && (!((*tokens)[i].type >= TK_PIPE
+		&& (*tokens)[i].type <= TK_OR)))
 	{
 		if ((*tokens)[i].type >= TK_FILE_IN && (*tokens)[i].type <= TK_EOF)
 		{

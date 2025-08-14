@@ -39,7 +39,9 @@ int	find_next_r(t_token **tokens, int start, int receiver, int flag)
 			flag = 3;
 			receiver = i;
 		}
-		else if ((*tokens)[i].type >= TK_REDIR_IN && (*tokens)[i].type <= TK_HEREDOC && flag != 2 && flag != 3 && flag != 4)
+		else if ((*tokens)[i].type >= TK_REDIR_IN
+			&& (*tokens)[i].type <= TK_HEREDOC
+			&& flag != 2 && flag != 3 && flag != 4)
 		{
 			flag = 4;
 			receiver = i;
@@ -54,7 +56,7 @@ int	search_left(t_token **tokens, int id)
 	int	i;
 	int	flag;
 	int	receiver;
-	
+
 	i = 0;
 	flag = -1;
 	receiver = 0;

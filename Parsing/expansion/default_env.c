@@ -52,7 +52,7 @@ t_env	*get_env_vars(const char **env)
 		temp->key = (char *)malloc(sizeof(char) * (i + 1));
 		temp->key[i] = '\0';
 		while (--i >= 0)
-		temp->key[i] = (*env)[i];
+			temp->key[i] = (*env)[i];
 		i = strchr_index(*env, '=');
 		i++;
 		temp->value = ft_strdup(*env + i);
@@ -61,15 +61,3 @@ t_env	*get_env_vars(const char **env)
 	}
 	return (head);
 }
-
-/*int main(int ac, char *av[], char *env[])
-{
-    t_env	*env_lst;
-	t_env	*temp;
-
-    (void)ac;
-    (void)av;
-    env_lst = NULL;
-
-    env_lst = get_env_vars((const char **)env);
-}*/
