@@ -14,8 +14,8 @@
 
 t_tree *last_left(t_tree *tree)
 {
-	while (tree->left && tree->left->type != TK_COMMAND 
-			&& !(tree->left->type >= TK_REDIR_IN && tree->left->type <= TK_HEREDOC))
+	while (tree->left && tree->left->type != TK_COMMAND
+		&& !(tree->left->type >= TK_REDIR_IN && tree->left->type <= TK_HEREDOC))
 		tree = tree->left;
 	return (tree);
 }
@@ -51,7 +51,6 @@ void process_add_back(t_process **main, t_process *node)
 
 static char	**env_execv(t_env *env)
 {
-	
 	char	*full_join;
 	char	**env_exe;
 	t_env	*temp;
@@ -82,7 +81,7 @@ void	exorcise(t_tree *current_node, int flag, int std_out)
 	char	**path;
 	char	**env_exe;
 	int		current_fd;
-	t_redir * temp;
+	t_redir	*temp;
 
 	path = NULL;
 	(void)flag;
@@ -95,6 +94,11 @@ void	exorcise(t_tree *current_node, int flag, int std_out)
 		{
 			if (temp->type == TK_EOF)
 			{
+				if (temp->fd_heredoc == -1)
+				{
+					close(temp->fd_heredoc);
+					exit(130);
+				}
 				dup2(temp->fd_heredoc, STDIN_FILENO);
 				close(temp->fd_heredoc);
 			}
@@ -202,7 +206,9 @@ void	exec_command_solo(t_tree **current_node)
 	{
 		pid = fork();
 		if (pid == 0)
+		{
 			exorcise((*current_node), -1, 1);
+		}
 		else
 		{
 			waitpid(pid, &status, 0);

@@ -23,8 +23,14 @@ void	creat_here_command(t_tree **tree)
 		if (temp->type == TK_EOF)
 		{
 			pipe(pipefd);
-			here(temp->eof, 1, pipefd);
-			temp->fd_heredoc = pipefd[0];
+			if (here(temp->eof, 1, pipefd))
+				temp->fd_heredoc = pipefd[0];
+			else
+			{
+				temp->fd_heredoc = -1;
+				close(pipefd[0]);
+				close(pipefd[1]);
+			}
 		}
 		temp = temp->next;
 	}
@@ -50,7 +56,7 @@ int	here_verify(t_redir *redir, int is_command)
 	return (0);
 }
 
-void	here(char *eof, int is_command, int *pipefd)
+int	here(char *eof, int is_command, int *pipefd)
 {
 	pid_t	pid;
 	int		status;
@@ -89,10 +95,12 @@ void	here(char *eof, int is_command, int *pipefd)
 	}
 	else
 	{
+		waitpid(pid, &status, 0);
 		if (is_command == 1)
 			close(pipefd[1]);
-		waitpid(pid, &status, 0);
-		handle_sigint_in_fork(status, pid);
+		if (handle_sigint_in_heredoc(status, pid))
+			return (0);
+		return (1);
 	}
 }
 

@@ -165,10 +165,10 @@ void					exorcise(t_tree *current_node, int flag, int std_out);
 void					wait_free_process(t_process **process);
 void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
 void					creat_solo_redirect(t_redir *redir);
-void					here(char *eof, int is_command, int *pipefd);
 void					free_matrix(char **matrix);
 void					expand_variables(char **matrix, t_env *env_lst);
 void					creat_here_command(t_tree **tree);
+int						here(char *eof, int is_command, int *pipefd);
 int						here_verify(t_redir *redir, int is_command);
 int						sintaxe_error(t_token **tokens);
 int						ft_len_matrix(char **matrix);
@@ -224,5 +224,6 @@ void					set_signal(void);
 int						handle_sigint_in_fork(int status, pid_t pid);
 void					handle_sigkill(int sig);
 void					handle_sigint_code(void);
+int						handle_sigint_in_heredoc(int status, pid_t pid);
 
 #endif
