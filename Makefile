@@ -21,6 +21,7 @@ FUNCTIONS = Tester/debug.c \
 			Parsing/ft_lexer.c \
 			Parsing/tokenizer.c \
 			Parsing/format_input.c \
+			Parsing/subshell.c \
 			Parsing/expansion_and_quotes_validation.c \
 			Parsing/expansion/export_utils.c \
 			Parsing/expansion/expansion_utils.c \

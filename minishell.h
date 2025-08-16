@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/12 20:43:20 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/16 05:17:52 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_token
 	int					id;
 	int					passed;
 	char				*value;
+	struct s_token		sub_tokens;
 }						t_token;
 
 typedef struct s_redir
@@ -168,6 +169,7 @@ void					creat_solo_redirect(t_redir *redir);
 void					free_matrix(char **matrix);
 void					expand_variables(char **matrix, t_env *env_lst);
 void					creat_here_command(t_tree **tree);
+void					creat_subshell(t_token **tokens);
 int						here(char *eof, int is_command, int *pipefd);
 int						here_verify(t_redir *redir, int is_command);
 int						sintaxe_error(t_token **tokens);

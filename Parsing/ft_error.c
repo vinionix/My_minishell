@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 03:51:03 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/09 07:02:45 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:09:58 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,23 @@ static int	check_final_paren(t_token **tokens, int i, int *count_final_paren,
 	return (0);
 }
 
+int	check_operators_final(t_token **tokens)
+{
+	int	i;
+
+	i = 0;
+	while ((*tokens)[++i].value != NULL)
+	{
+		if (((*tokens)[i + 1].value == NULL
+				&& (*tokens)[i].type >= TK_PIPE && (*tokens)[i].type <= TK_OR))
+		{
+			printf("Error\n");
+			return (1);
+		}
+	}
+	return (0);
+}
+
 int	sintaxe_error(t_token **tokens)
 {
 	int	i;
@@ -104,5 +121,5 @@ int	sintaxe_error(t_token **tokens)
 		printf("Error\n");
 		return (1);
 	}
-	return (0);
+	return (check_operators_final(tokens));
 }

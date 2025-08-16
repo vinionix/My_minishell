@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/09 05:42:29 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:21:44 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,7 @@ int	tokenizer(t_arg_main *args)
 		free_tokens(args->matrix, args->tokens);
 		return (1);
 	}
-	while (args->tokens[++i].value != NULL)
-	{
-		if ((args->tokens[i + 1].value == NULL
-				&& args->tokens[i].type >= TK_PIPE && args->tokens[i].type <= TK_OR))
-		{
-			printf("Error\n");
-			free_tokens(args->matrix, args->tokens);
-			return (1);
-		}
-	}
+	creat_subshell(&args->tokens);
 	tree_creator(&args->tokens, &args->tree, -1);
 	return (0);
 }

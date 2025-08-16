@@ -1,9 +1,18 @@
-O que falta?
+#include <stdio.h>
 
-1 - Refatorar e deixar tudo na norma ().
-//2 - Erro e free em caso de comando inexistente ().
-3 - Erro no valid_path ().
-//4 - Control c e Control \(X).
-//5 - Colocar exit code na variavel de ambiente(X).
-//6 - Colocar Bultins na execução dos pipes(X).
-7 - Subshell ().
+int fatorial(int fat)
+{
+    int red = fat;
+    if (fat > 1)
+    {
+        fat--;
+        printf("%d\n", red);
+        red = red * fatorial(fat);
+    }
+    return (red);
+}
+
+int main()
+{
+    printf("%d", fatorial(5));
+}
