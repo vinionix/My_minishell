@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/16 05:17:52 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/20 17:51:07 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void					logs(const char *x);
 
 extern volatile sig_atomic_t g_signal_v;
 
+
 typedef enum e_token_type
 {
 	TK_REDIR_IN = 1,
@@ -56,7 +57,8 @@ typedef enum e_token_type
 	TK_FILE_APP,
 	TK_EOF,
 	TK_CMD_ARG,
-	TK_COMMAND 
+	TK_COMMAND,
+	TK_SUBSHELL
 }						t_token_type;
 
 typedef struct s_env
@@ -67,14 +69,7 @@ typedef struct s_env
 	struct s_env		*next;
 }						t_env;
 
-typedef struct s_token
-{
-	t_token_type		type;
-	int					id;
-	int					passed;
-	char				*value;
-	struct s_token		sub_tokens;
-}						t_token;
+
 
 typedef struct s_redir
 {
@@ -113,6 +108,22 @@ typedef struct s_tree
 	struct s_tree		*prev;
 	struct s_tree		*subtree;
 }						t_tree;
+
+typedef struct s_subshell // tokens vai ter uma linked list e esses nós da linked list vão ter árvores
+{
+	t_tree				*tree;
+	struct s_subshell	*next;
+	struct s_subshell	*prev;
+}						t_subshell;
+
+typedef struct s_token
+{
+	t_token_type		type;
+	int					id;
+	int					passed;
+	char				*value;
+	struct t_subshell	*list;
+}						t_token;
 
 typedef struct s_data
 {
@@ -227,5 +238,7 @@ int						handle_sigint_in_fork(int status, pid_t pid);
 void					handle_sigkill(int sig);
 void					handle_sigint_code(void);
 int						handle_sigint_in_heredoc(int status, pid_t pid);
+t_subshell				*subshell_new(t_token *tokens);
+void					subshelladd_back(t_subshell **lst, t_subshell *new);
 
 #endif
