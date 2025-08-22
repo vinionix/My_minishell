@@ -21,7 +21,6 @@ FUNCTIONS = Tester/debug.c \
 			Parsing/ft_lexer.c \
 			Parsing/tokenizer.c \
 			Parsing/format_input.c \
-			Parsing/subshell/subshell.c \
 			Parsing/expansion_and_quotes_validation.c \
 			Parsing/expansion/export_utils.c \
 			Parsing/expansion/expansion_utils.c \
@@ -30,6 +29,9 @@ FUNCTIONS = Tester/debug.c \
 			Parsing/expansion/expansion_utils4.c \
 			Parsing/expansion/expansion.c \
 			Parsing/expansion/change_env_variable.c \
+			Parsing/subshell/subshell.c \
+			Parsing/subshell/subshell_utils.c \
+			Parsing/subshell/copy_tokens.c \
 			Wildcard/wildcard.c \
 			Wildcard/wildcard_utils.c \
 			Wildcard/list_to_matrix.c \

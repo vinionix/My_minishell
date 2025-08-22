@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/20 15:20:50 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/22 18:57:29 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,22 @@ static t_token	*create_tokens(char **matrix)
 		i++;
 	}
 	tokens[i].value = NULL;
+	tokens[i].type = -1;
 	return (tokens);
 }
+
+// DEBUG -- REMOVER PARA ENTREGAR ---- //
+void print_subshells(t_token *tokens)
+{
+	if (!tokens || (tokens->value == NULL && tokens->type != TK_SUBSHELL))
+		return ;
+	if (tokens->type == TK_SUBSHELL && tokens->subshell)
+		print_subshells(tokens->subshell);
+	else if (tokens->value)
+		printf("%s ", tokens->value);
+	print_subshells(tokens + 1);
+}
+// ----------------------------------- //
 
 int	tokenizer(t_arg_main *args)
 {
@@ -48,6 +62,8 @@ int	tokenizer(t_arg_main *args)
 		return (1);
 	}
 	creat_subshell(&args->tokens);
+	//print_subshells(args->tokens);
+	exit(1);
 	tree_creator(&args->tokens, &args->tree, -1);
 	return (0);
 }

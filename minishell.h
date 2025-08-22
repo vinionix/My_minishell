@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/20 17:51:07 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/22 18:46:55 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,5 +229,14 @@ int						handle_sigint_in_fork(int status, pid_t pid);
 void					handle_sigkill(int sig);
 void					handle_sigint_code(void);
 int						handle_sigint_in_heredoc(int status, pid_t pid);
+void					copy_token(t_token *new, t_token *tokens);
+void					copy_children(t_token *tokens, t_token *new, int i, int size);
+void					assign_subshell_token(t_token *new, t_token *tokens);
+t_token					*size_new_tokens(t_token *tokens);
+int						get_subshell_size(t_token *tokens, int i);
+void					free_old_tokens(t_token *tokens);
+bool					verify_paren(t_token *tokens);
+void					skip_paren(t_token *tokens, int *i, int *final_size);
+
 
 #endif
