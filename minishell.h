@@ -69,8 +69,6 @@ typedef struct s_env
 	struct s_env		*next;
 }						t_env;
 
-
-
 typedef struct s_redir
 {
 	t_token_type		type;
@@ -109,20 +107,13 @@ typedef struct s_tree
 	struct s_tree		*subtree;
 }						t_tree;
 
-typedef struct s_subshell // tokens vai ter uma linked list e esses nós da linked list vão ter árvores
-{
-	t_tree				*tree;
-	struct s_subshell	*next;
-	struct s_subshell	*prev;
-}						t_subshell;
-
 typedef struct s_token
 {
 	t_token_type		type;
 	int					id;
 	int					passed;
 	char				*value;
-	struct t_subshell	*list;
+	struct s_token		*subshell;
 }						t_token;
 
 typedef struct s_data
@@ -238,7 +229,5 @@ int						handle_sigint_in_fork(int status, pid_t pid);
 void					handle_sigkill(int sig);
 void					handle_sigint_code(void);
 int						handle_sigint_in_heredoc(int status, pid_t pid);
-t_subshell				*subshell_new(t_token *tokens);
-void					subshelladd_back(t_subshell **lst, t_subshell *new);
 
 #endif

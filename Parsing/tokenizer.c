@@ -34,9 +34,6 @@ static t_token	*create_tokens(char **matrix)
 
 int	tokenizer(t_arg_main *args)
 {
-	int	i;
-
-	i = -1;
 	args->temp = format_input(args->rdline);
 	if (args->temp == NULL)
 		return (1);
