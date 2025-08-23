@@ -61,9 +61,9 @@ int	tokenizer(t_arg_main *args)
 		free_tokens(args->matrix, args->tokens);
 		return (1);
 	}
-	creat_subshell(&args->tokens);
+	//creat_subshell(&args->tokens);
 	//print_subshells(args->tokens);
-	exit(1);
+	//exit(1);
 	tree_creator(&args->tokens, &args->tree, -1);
 	return (0);
 }

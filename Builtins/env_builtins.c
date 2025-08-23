@@ -31,6 +31,8 @@ int	unset_env_if(t_env **envs, const char *target_key)
 	if (!(ft_strcmp(target_key, (const char *)(*envs)->key)))
 	{
 		*envs = temp->next;
+		free(temp->key);
+		free(temp->value);
 		free(temp);
 		unset_env_if(envs, target_key);
 	}

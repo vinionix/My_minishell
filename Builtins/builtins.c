@@ -19,22 +19,22 @@ int	ft_cd(char **matrix, t_env *env_list)
 		printf("Too many args for cd command\n");
 		return (1);
 	}
-	else if (ft_len_matrix(matrix) == 1)
+	else if (ft_len_matrix(matrix) == 1 && find_env("HOME=", env_list))
 	{
 		if (chdir(find_env("HOME=", env_list)->value))
-		{
-			printf("minishell: cd: HOME not set\n");
 			return (1);
-		}
 		change_cwd(env_list);
 		return (0);
 	}
-	parse_home(++matrix, env_list);
-	if (chdir(*matrix))
+	else if (ft_len_matrix(matrix) == 1 && !find_env("HOME=", env_list))
 	{
-		printf("minishell: cd: %s: No such file or directory\n", *matrix);
+		printf("minishell: cd: HOME not set\n");
 		return (1);
 	}
+	if (parse_home(++matrix, env_list))
+		return (1);
+	if (change_dir(*matrix))
+		return (1);
 	change_cwd(env_list);
 	return (0);
 }

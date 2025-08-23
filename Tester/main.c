@@ -33,8 +33,7 @@ void free_list(t_env *env)
 			free(env->value);
 		if (env->key)
 			free(env->key);
-		if (env)
-			free(env);
+		free(env);
 		env = temp;
 	}
 }

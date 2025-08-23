@@ -12,6 +12,16 @@
 
 #include "../minishell.h"
 
+int	change_dir(char *str)
+{
+	if (chdir(str))
+	{
+		printf("minishell: cd: %s: No such file or directory\n", str);
+		return (1);
+	}
+	return (0);
+}
+
 int	check_home(char *str)
 {
 	if (str[0] && str[0] == '~' && !str[1])
@@ -21,29 +31,40 @@ int	check_home(char *str)
 	return (0);
 }
 
-void	parse_home(char **matrix, t_env *env_list)
+static int	home_set(t_env *env_list, int home)
+{
+	if (!find_env("HOME=", env_list) && (home == 1 || home == 2))
+	{
+		printf("minishell: cd: HOME not set\n");
+		return (0);
+	}
+	return (1);
+}
+
+int	parse_home(char **matrix, t_env *env_list)
 {
 	char	*temp;
 	char	*home_path;
 	int		home;
 
-	temp = NULL;
 	home = check_home(*matrix);
+	if (!home_set(env_list, home))
+		return (1);
+	if (home == 0)
+		return (0);
 	home_path = ft_strjoin(find_env("HOME=", env_list)->value, "/");
 	if (home == 2)
 	{
 		temp = *matrix;
 		*matrix = ft_strjoin(home_path, *matrix + 2);
 		free(temp);
-		free(home_path);
 	}
 	else if (home == 1)
 	{
 		temp = *matrix;
 		*matrix = ft_strdup(find_env("HOME=", env_list)->value);
 		free(temp);
-		free(home_path);
 	}
-	else
-		free(home_path);
+	free(home_path);
+	return (0);
 }
