@@ -23,9 +23,6 @@ void	copy_token(t_token *new, t_token *tokens)
 
 void	copy_children(t_token *tokens, t_token *new, int i, int size)
 {
-	int	pos;
-
-	pos = 0;
 	i++;
 	while (size--)
 		copy_token(new++, tokens + i++);
