@@ -220,7 +220,7 @@ int						find_next_r(t_token **tokens, int start, int receiver, int flag);
 int						search_left(t_token **tokens, int id);
 int						search_right(t_token **tokens, int id);
 t_tree					*search_for_bigger(t_token **tokens);
-t_tree					*node_creator(t_token **tokens, int id);
+t_tree					*node_creator(t_token **tokens, int id, int i);
 t_redir					*creat_list_redir(int id, t_token **tokens);
 bool					is_builtin(char *command);
 void					free_list_redir(t_redir *list);

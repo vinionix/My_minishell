@@ -71,7 +71,7 @@ t_redir	*creat_list_redir(int id, t_token **tokens)
 	redirects = NULL;
 	while ((*tokens)[i].id != id)
 		i++;
-	while ((*tokens)[i].id > 0 && (!((*tokens)[i].type >= TK_PIPE
+	while (i > 0 && (*tokens)[i].id > 0 && (!((*tokens)[i].type >= TK_PIPE
 		&& (*tokens)[i].type <= TK_OR)))
 		i--;
 	i++;
@@ -93,9 +93,13 @@ void	tree_creator(t_token **tokens, t_tree **tree, int id)
 	int		id_left_creat;
 	int		id_right_creat;
 
+	if (!tokens || !*tokens)
+		return ;
 	if (id == -1)
 	{
 		(*tree) = search_for_bigger(tokens);
+		if (*tree == NULL)
+			return ;
 		(*tree)->main = 1;
 		id = (*tree)->id_tree;
 	}
@@ -103,14 +107,14 @@ void	tree_creator(t_token **tokens, t_tree **tree, int id)
 	id_right_creat = search_right(tokens, id);
 	if (id_left_creat != -1)
 	{
-		(*tree)->left = node_creator(tokens, id_left_creat);
+		(*tree)->left = node_creator(tokens, id_left_creat, 0);
 		(*tree)->left->prev = *tree;
 		tree_creator(&(*tokens), &(*tree)->left, id_left_creat);
 	}
 	if (id_right_creat != -1)
 	{
-		(*tree)->right = node_creator(tokens, id_right_creat);
+		(*tree)->right = node_creator(tokens, id_right_creat, 0);
 		(*tree)->right->prev = *tree;
-		tree_creator(tokens, &(*tree)->right, id_right_creat);
+		tree_creator(&(*tokens), &(*tree)->right, id_right_creat);
 	}
 }

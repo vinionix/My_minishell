@@ -12,9 +12,10 @@
 
 #include "../minishell.h"
 
-static void	init_node(t_tree *node, int id)
+static void	init_node(t_tree *node, int id, int type)
 {
 	node->id_tree = id;
+	node->type = type;
 	node->left = NULL;
 	node->right = NULL;
 	node->subtree = NULL;
@@ -22,19 +23,17 @@ static void	init_node(t_tree *node, int id)
 	node->main = 0;
 }
 
-t_tree	*node_creator(t_token **tokens, int id)
+t_tree	*node_creator(t_token **tokens, int id, int i)
 {
-	int		i;
 	t_tree	*node;
 
-	i = 0;
-	while ((*tokens)[i].value && (*tokens)[i].id != id)
+	while (((*tokens)[i].value || (*tokens)[i].type == TK_SUBSHELL)
+		&& (*tokens)[i].id != id)
 		i++;
-	if ((*tokens)[i].value == NULL)
+	if ((*tokens)[i].value == NULL && (*tokens)[i].type != TK_SUBSHELL)
 		return (NULL);
 	node = (t_tree *)ft_calloc(1, sizeof(t_tree));
-	node->type = (*tokens)[i].type;
-	init_node(node, id);
+	init_node(node, id, (*tokens)[i].type);
 	if ((*tokens)[i].type == TK_COMMAND || ((*tokens)[i].type >= TK_REDIR_IN
 		&& (*tokens)[i].type <= TK_HEREDOC))
 	{
@@ -48,5 +47,7 @@ t_tree	*node_creator(t_token **tokens, int id)
 	}
 	else if ((*tokens)[i].type == TK_PIPE)
 		node->u_define.pipe.std_in = -1;
+	else if ((*tokens)[i].type == TK_SUBSHELL)
+		tree_creator(&(*tokens)[i].subshell, &node->subtree, -1);
 	return (node);
 }

@@ -23,13 +23,17 @@ static t_token	*create_tokens(char **matrix)
 	tokens = malloc(sizeof(t_token) * (ft_len_matrix(matrix) + 1));
 	while (matrix[i])
 	{
-		tokens[i].value = matrix[i];
+		tokens[i].value = matrix[i]; // FT_STRDUP AQUI DEPOIS PFVR
 		tokens[i].id = i;
 		tokens[i].passed = -1;
+		tokens[i].subshell = NULL;
 		i++;
 	}
 	tokens[i].value = NULL;
+	tokens[i].id = 0;
+	tokens[i].passed = 0;
 	tokens[i].type = -1;
+	tokens[i].subshell = NULL;
 	return (tokens);
 }
 
@@ -46,6 +50,27 @@ void print_subshells(t_token *tokens)
 }
 // ----------------------------------- //
 
+static void print_indent(int depth)
+{
+    while (depth--)
+	{
+		putchar(' '), putchar(' ');
+	}
+}
+void print_tree_pretty(const t_tree *t, int depth) {
+    if (!t) return;
+	if (t->subtree)
+	{
+		printf("subtree of node id %d: \n\n", t->id_tree);
+		print_tree_pretty(t->subtree, 1);
+		printf("\n\n");
+	}
+    print_indent(depth);
+    printf("type=%d\n", t->type);
+    print_tree_pretty(t->left,  depth + 1);
+    print_tree_pretty(t->right, depth + 1);
+}
+// ----------------------------------- //
 int	tokenizer(t_arg_main *args)
 {
 	args->temp = format_input(args->rdline);
@@ -61,9 +86,11 @@ int	tokenizer(t_arg_main *args)
 		free_tokens(args->matrix, args->tokens);
 		return (1);
 	}
-	//creat_subshell(&args->tokens);
-	//print_subshells(args->tokens);
-	//exit(1);
+	creat_subshell(&args->tokens);
+	print_subshells(args->tokens);
 	tree_creator(&args->tokens, &args->tree, -1);
+	print_tree_pretty(args->tree, 1);
+	exit(EXIT_FAILURE);
+	exit(1);
 	return (0);
 }

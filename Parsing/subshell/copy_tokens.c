@@ -33,4 +33,5 @@ void	assign_subshell_token(t_token *new, t_token *tokens)
 	new->id = tokens->id;
 	new->type = TK_SUBSHELL;
 	new->value = NULL;
+	new->passed = tokens->passed;
 }

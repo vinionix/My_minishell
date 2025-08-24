@@ -12,6 +12,15 @@
 
 #include "../../minishell.h"
 
+static void	redo_ids(t_token *tokens)
+{
+	int	i;
+
+	i = -1;
+	while (tokens[++i].value || tokens[i].type == TK_SUBSHELL)
+		tokens[i].id = i;
+}
+
 static t_token	*remove_outter_paren(t_token *tokens, int i)
 {
 	t_token	*new;
@@ -63,5 +72,6 @@ void	creat_subshell(t_token **tokens)
 	}
 	free_old_tokens(*tokens);
 	*tokens = new_tokens;
-	r_creat_subshell(&new_tokens);
+	redo_ids(*tokens);
+	r_creat_subshell(&new_tokens); /* recursive */
 }

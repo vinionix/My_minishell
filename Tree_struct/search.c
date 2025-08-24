@@ -17,7 +17,7 @@ static int	final_pos_tokens(t_token *tokens)
 	int	i;
 
 	i = 0;
-	while (tokens[i + 1].value != NULL)
+	while (tokens[i + 1].value != NULL || tokens[i + 1].type == TK_SUBSHELL)
 		i++;
 	return (i);
 }
@@ -27,23 +27,31 @@ int	find_next_r(t_token **tokens, int start, int receiver, int flag)
 	int	i;
 
 	i = start;
-	while ((*tokens)[i].value != NULL && (*tokens)[i].passed == -1)
+	while (((*tokens)[i].value || (*tokens)[i].type == TK_SUBSHELL)
+		&& (*tokens)[i].passed == -1)
 	{
-		if ((*tokens)[i].type == TK_PIPE && flag != 2)
+		if ((*tokens)[i].type == TK_SUBSHELL && flag != 2)
 		{
 			flag = 2;
 			receiver = i;
 		}
-		else if ((*tokens)[i].type == TK_COMMAND && flag != 2 && flag != 3)
+		else if ((*tokens)[i].type == TK_PIPE && flag != 2 && flag != 3)
 		{
 			flag = 3;
 			receiver = i;
 		}
-		else if ((*tokens)[i].type >= TK_REDIR_IN
-			&& (*tokens)[i].type <= TK_HEREDOC
-			&& flag != 2 && flag != 3 && flag != 4)
+		else if ((*tokens)[i].type == TK_COMMAND && flag != 2 && flag != 3
+			&& flag != 4)
 		{
 			flag = 4;
+			receiver = i;
+		}
+		else if ((*tokens)[i].type >= TK_REDIR_IN
+			&& (*tokens)[i].type <= TK_HEREDOC
+			&& flag != 2 && flag != 3 && flag != 4
+			&& flag != 5)
+		{
+			flag = 5;
 			receiver = i;
 		}
 		i++;
@@ -60,7 +68,8 @@ int	search_left(t_token **tokens, int id)
 	i = 0;
 	flag = -1;
 	receiver = 0;
-	while ((*tokens)[i].value != NULL && (*tokens)[i].id != id)
+	while (((*tokens)[i].value || (*tokens)[i].type == TK_SUBSHELL)
+		&& (*tokens)[i].id != id)
 		i++;
 	i--;
 	while (i >= 0 && (*tokens)[i].passed != 1)
@@ -80,9 +89,10 @@ int	search_right(t_token **tokens, int id)
 	int	receiver;
 
 	i = 0;
-	while ((*tokens)[i].value && (*tokens)[i].id != id)
+	while (((*tokens)[i].value || (*tokens)[i].type == TK_SUBSHELL)
+		&& (*tokens)[i].id != id)
 		i++;
-	if ((*tokens)[i + 1].value != NULL)
+	if ((*tokens)[i + 1].value != NULL || (*tokens)[i + 1].type == TK_SUBSHELL)
 		i++;
 	receiver = find_next_r(tokens, i, -1, -1);
 	if (receiver == -1 || (*tokens)[receiver].passed == 1)
@@ -97,6 +107,8 @@ t_tree	*search_for_bigger(t_token **tokens)
 	int	flag;
 	int	receiver;
 
+	if (!tokens || !*tokens)
+		return (NULL);
 	i = final_pos_tokens((*tokens));
 	flag = 0;
 	receiver = 0;
@@ -106,5 +118,5 @@ t_tree	*search_for_bigger(t_token **tokens)
 		i--;
 	}
 	(*tokens)[receiver].passed = 1;
-	return (node_creator(tokens, (*tokens)[receiver].id));
+	return (node_creator(tokens, (*tokens)[receiver].id, 0));
 }

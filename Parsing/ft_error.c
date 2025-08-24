@@ -52,14 +52,18 @@ static int	check_init_paren(t_token **tokens, int i, int *count_init_paren)
 	if ((*tokens)[i].type == TK_INIT_PAREN)
 	{
 		(*count_init_paren)++;
-		if ((i > 0 && (*tokens)[i + 1].value == NULL && (*tokens)[i
-			- 1].type >= TK_FILE_IN) || ((*tokens)[i
-				- 1].type >= TK_REDIR_IN && (*tokens)[i - 1].type <= TK_HEREDOC)
-			|| ((*tokens)[i + 1].type == TK_FINAL_PAREN))
+		if (i > 0)
 		{
-			printf("minishell: syntax error near unexpected token `%s'\n",
-				(*tokens)[i + 1].value);
-			return (1);
+			if (((*tokens)[i + 1].value == NULL
+				&& (*tokens)[i - 1].type >= TK_FILE_IN)
+				|| ((*tokens)[i - 1].type >= TK_REDIR_IN
+				&& (*tokens)[i - 1].type <= TK_HEREDOC)
+				|| ((*tokens)[i + 1].type == TK_FINAL_PAREN))
+			{
+				printf("minishell: syntax error near unexpected token `%s'\n", // ESSE PRINT TA ESQUISITO
+					(*tokens)[i + 1].value);
+				return (1);
+			}
 		}
 	}
 	return (0);
