@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/22 18:46:55 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/26 13:33:37 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,7 +240,7 @@ int						get_subshell_size(t_token *tokens, int i);
 void					free_old_tokens(t_token *tokens);
 bool					verify_paren(t_token *tokens);
 void					skip_paren(t_token *tokens, int *i, int *final_size);
-void					if_redirect(t_redir *list);
+int						if_redirect(t_redir *list);
 void					free_tree_and_env(void);
 void					tk_and(t_tree *current_node);
 void					tk_or(t_tree *current_node);

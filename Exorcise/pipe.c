@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:32 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/05 04:28:26 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/26 14:55:07 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,12 @@ void	wait_free_process(t_process **process)
 		get_data()->exit_code = WEXITSTATUS(status);
 		temp = temp->next;
 	}
-	while ((*process))
+	temp = *process;
+	while (temp)
 	{
-		temp = (*process);
-		(*process) = (*process)->next;
-		free(temp);
+		temp = (*process)->next;
+		free(*process);
+		(*process) = temp;
 	}
 	change_env_var(get_data()->env, "?=", ft_itoa(get_data()->exit_code));
 }

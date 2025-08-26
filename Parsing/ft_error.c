@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 03:51:03 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/14 18:09:58 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/26 16:36:08 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,19 @@ static int	check_consecutive_operators(t_token **tokens, int i)
 			(*tokens)[i].value);
 		return (1);
 	}
+	else if ((*tokens)[i].type == TK_INIT_PAREN && (*tokens)[i + 1].type == TK_FINAL_PAREN)
+	{
+		printf("minishell: syntax error near unexpected token `%s'\n",
+			(*tokens)[i + 1].value);
+		return (1);
+	}
+	else if((((*tokens)[i].type >= TK_REDIR_IN && (*tokens)[i].type <= TK_PIPE) 
+		|| (*tokens)[i].type == TK_COMMAND)&& (*tokens)[i + 1].type == TK_INIT_PAREN)
+	{
+		printf("minishell: syntax error near unexpected token `%s'\n",
+			(*tokens)[i + 1].value);
+		return (1);
+	}
 	return (0);
 }
 
@@ -60,7 +73,7 @@ static int	check_init_paren(t_token **tokens, int i, int *count_init_paren)
 				&& (*tokens)[i - 1].type <= TK_HEREDOC)
 				|| ((*tokens)[i + 1].type == TK_FINAL_PAREN))
 			{
-				printf("minishell: syntax error near unexpected token `%s'\n", // ESSE PRINT TA ESQUISITO
+				printf("minishell: syntax error near unexpected token `%s'\n",
 					(*tokens)[i + 1].value);
 				return (1);
 			}

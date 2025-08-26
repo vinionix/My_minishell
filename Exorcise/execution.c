@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/12 19:13:36 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/26 14:18:26 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,11 @@ static void	exec_bin(t_tree *current_node, int std_out)
 
 void	exorcise(t_tree *current_node, int std_out)
 {
-	if_redirect(current_node->u_define.command.list_redir);
+	if (if_redirect(current_node->u_define.command.list_redir) == -1)
+	{
+		free_tree_and_env();
+		exit (1);
+	}
 	get_data()->exit_code = exec_builtin(&current_node->u_define.command.cmd,
 		&get_data()->env, get_data()->head);
 	if (get_data()->exit_code == 1337)

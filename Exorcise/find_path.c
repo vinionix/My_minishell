@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:12:24 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/15 04:13:03 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/26 15:07:24 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ static char	*ft_strjoin_pipex(char const *s1, char const *s2)
 	j = 0;
 	i = -1;
 	len = ft_strlen(s1) + ft_strlen(s2);
-	while (s2[j] == ' ' || s2[j] == '\t')
-		j++;
 	if (s1 == NULL || s2 == NULL || s2[j] == '\0')
 		return (NULL);
 	receptor = (char *)malloc(sizeof(char) * (len + 2));
@@ -32,11 +30,7 @@ static char	*ft_strjoin_pipex(char const *s1, char const *s2)
 	if (s2[j] != '/')
 		receptor[i++] = '/';
 	while (s2[j] != '\0')
-	{
 		receptor[i++] = s2[j++];
-		if (s2[j] == ' ' || s2[j] == '\t')
-			break ;
-	}
 	receptor[i] = '\0';
 	return (receptor);
 }
@@ -98,7 +92,7 @@ int	valid_path(char **cmd, char **path)
 		str = ft_strjoin_pipex(path[j], cmd[0]);
 		if (str != NULL)
         {
-            if (access(str, X_OK | F_OK) == 0)
+            if (aux_valid_path(path, &str) == 0)
 			{
 				free(cmd[0]);
 				cmd[0] = str;
