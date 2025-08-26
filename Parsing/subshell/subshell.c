@@ -73,5 +73,5 @@ void	creat_subshell(t_token **tokens)
 	free_old_tokens(*tokens);
 	*tokens = new_tokens;
 	redo_ids(*tokens);
-	r_creat_subshell(&new_tokens); /* recursive */
+	r_creat_subshell(&new_tokens);
 }
