@@ -1,0 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   solo_redirect.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
+/*   Updated: 2025/05/15 22:18:08 by vfidelis         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../minishell.h"
+
+void	creat_solo_redirect(t_redir *redir)
+{
+	int	current_fd;
+
+	current_fd = -2;
+	while (redir)
+	{
+		if (redir->type == TK_FILE_APP)
+			current_fd = open(redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		else if (redir->type == TK_FILE_OUT)
+			current_fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		else if (redir->type == TK_FILE_IN)
+			current_fd = open(redir->file, O_RDONLY);
+		if (current_fd == -1)
+		{
+			get_data()->exit_code = 1;
+			perror("minishell: fail to open file");
+		}
+		else
+		{
+			get_data()->exit_code = 0;
+			if (current_fd >= 0)
+				close(current_fd);
+		}
+		redir = redir->next;
+	}
+}

@@ -54,7 +54,13 @@ FUNCTIONS = Tester/debug.c \
 			Exorcise/execution.c \
 			Exorcise/pipe.c \
 			Exorcise/find_path.c \
-			Exorcise/heredoc.c
+			Exorcise/heredoc.c \
+			Exorcise/if_redirect.c \
+			Exorcise/and_or.c \
+			Exorcise/solo_redirect.c \
+			Exorcise/process.c \
+			Exorcise/execution_utils.c \
+			Exorcise/exec.c
 
 OBJS = $(FUNCTIONS:.c=.o)
 

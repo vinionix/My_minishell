@@ -79,7 +79,7 @@ void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd, int l_or
 			dup2(pipe_temp[1], STDOUT_FILENO);
 			close(pipe_temp[0]);
 			close(pipe_temp[1]);
-			exorcise((*tree)->left, -1, std_out);
+			exorcise((*tree)->left, std_out);
 		}
 		else
 		{
@@ -107,7 +107,7 @@ void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd, int l_or
 				dup2(pipe_temp[1], STDOUT_FILENO);
 			close(pipe_temp[0]);
 			close(pipe_temp[1]);
-			exorcise((*tree)->right, -1, std_out);
+			exorcise((*tree)->right, std_out);
 		}
 		else
 		{

@@ -165,7 +165,7 @@ void					free_tokens(t_token *tokens);
 void					envadd_back(t_env **lst, t_env *new);
 void					ft_pipe(t_tree **tree, int left_or_rigth);
 void					exorcise_manager(t_tree **tree, int is_subshell);
-void					exorcise(t_tree *current_node, int flag, int std_out);
+void					exorcise(t_tree *current_node, int std_out);
 void					wait_free_process(t_process **process);
 void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);
 void					creat_solo_redirect(t_redir *redir);
@@ -234,11 +234,24 @@ int						handle_sigint_in_heredoc(int status, pid_t pid);
 void					copy_token(t_token *new, t_token *tokens);
 void					copy_children(t_token *tokens, t_token *new, int i, int size);
 void					assign_subshell_token(t_token *new, t_token *tokens);
+t_data					*get_data(void);
 t_token					*size_new_tokens(t_token *tokens);
 int						get_subshell_size(t_token *tokens, int i);
 void					free_old_tokens(t_token *tokens);
 bool					verify_paren(t_token *tokens);
 void					skip_paren(t_token *tokens, int *i, int *final_size);
+void					if_redirect(t_redir *list);
+void					free_tree_and_env(void);
+void					tk_and(t_tree *current_node);
+void					tk_or(t_tree *current_node);
+void					exec_command_solo(t_tree *current_node);
+void					exec_subshell(t_tree *subtree);
+void					creat_solo_redirect(t_redir *redir);
+t_process				*node_process_creator(t_tree *node);
+void					process_add_back(t_process **main, t_process *node);
+void					free_tree_and_env(void);
+t_tree					*last_left(t_tree *tree);
+char					**env_execv(t_env *env);
 
 
 #endif
