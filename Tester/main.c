@@ -61,8 +61,9 @@ static void	aux_main(void)
 			{
 				if (tokenizer(&args) == 0)
 				{
-					free_tokens(args.matrix, args.tokens);
-					exorcise_manager(&args.tree);
+					free_tokens(args.tokens);
+					free_split(args.matrix);
+					exorcise_manager(&args.tree, 0);
 					args.tree = NULL;
 				}
 			}
@@ -84,6 +85,7 @@ int	main(int ac, char **av, const char **env)
 	create_default_env(&envs);
 	set_signal();
 	get_data()->exited_in_fork = false;
+	get_data()->is_subshell = 0;
 	aux_main();
 	return (0);
 }

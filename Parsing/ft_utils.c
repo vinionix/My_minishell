@@ -69,8 +69,18 @@ void	free_split(char **input)
 	free(input);
 }
 
-void	free_tokens(char **matrix, t_token *tokens)
+void	free_tokens(t_token *tokens)
 {
+	int	i;
+
+	i = 0;
+	while (tokens[i].value || tokens[i].type == TK_SUBSHELL)
+	{
+		if (tokens[i].type == TK_SUBSHELL)
+			free_tokens(tokens[i].subshell);
+		else
+			free(tokens[i].value);
+		i++;
+	}
 	free(tokens);
-	free_split(matrix);
 }

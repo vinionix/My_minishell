@@ -14,7 +14,10 @@
 
 t_tree *last_left(t_tree *tree)
 {
+	if (!tree)
+		return (NULL);
 	while (tree->left && tree->left->type != TK_COMMAND
+		&& tree->left->type != TK_SUBSHELL
 		&& !(tree->left->type >= TK_REDIR_IN && tree->left->type <= TK_HEREDOC))
 		tree = tree->left;
 	return (tree);
@@ -197,7 +200,7 @@ void	creat_solo_redirect(t_redir *redir)
 
 void	exec_command_solo(t_tree **current_node)
 {
-	int	status;
+	int		status;
 	pid_t	pid;
 
 	status = 0;
@@ -206,9 +209,7 @@ void	exec_command_solo(t_tree **current_node)
 	{
 		pid = fork();
 		if (pid == 0)
-		{
 			exorcise((*current_node), -1, 1);
-		}
 		else
 		{
 			waitpid(pid, &status, 0);
@@ -224,44 +225,76 @@ void	exec_command_solo(t_tree **current_node)
 	}
 }
 
+void	exec_subshell(t_tree *subtree)
+{
+	pid_t	pid;
+	int		status;
+
+	status = 0;
+	pid = fork();
+	if (pid == 0)
+	{
+		get_data()->is_subshell = 1;
+		exorcise_manager(&subtree, 1);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		get_data()->exit_code = WEXITSTATUS(status);
+		change_env_var(get_data()->env, "?=", ft_itoa(get_data()->exit_code));
+	}
+}
+
 void	tk_or(t_tree **current_node)
 {
-	if ((*current_node)->left->type == TK_COMMAND)
+	if ((*current_node)->left->type == TK_SUBSHELL)
+		exec_subshell((*current_node)->left->subtree);
+	else if ((*current_node)->left->type == TK_COMMAND)
 		exec_command_solo(&(*current_node)->left);
-	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC)
+	else if ((*current_node)->left->type >= TK_REDIR_IN
+		&& (*current_node)->left->type <= TK_HEREDOC)
 		creat_solo_redirect((*current_node)->left->u_define.command.list_redir);
-	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code != 0)
+	if ((*current_node)->right->type == TK_SUBSHELL && get_data()->exit_code != 0)
+		exec_subshell((*current_node)->right->subtree);
+	else if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code != 0)
 		ft_pipe(&(*current_node)->right, 0);
-	if ((*current_node)->right->type == TK_COMMAND
+	else if ((*current_node)->right->type == TK_COMMAND
 		&& get_data()->exit_code != 0)
 		exec_command_solo(&(*current_node)->right);
-	else if ((*current_node)->right->type >= TK_REDIR_IN && (*current_node)->right->type <= TK_HEREDOC && get_data()->exit_code != 0)
+	else if ((*current_node)->right->type >= TK_REDIR_IN
+		&& (*current_node)->right->type <= TK_HEREDOC && get_data()->exit_code != 0)
 		creat_solo_redirect((*current_node)->right->u_define.command.list_redir);
 }
 
 void	tk_and(t_tree **current_node)
 {
-	if ((*current_node)->left->type == TK_COMMAND)
+	if ((*current_node)->left->type == TK_SUBSHELL)
+		exec_subshell((*current_node)->left->subtree);
+	else if ((*current_node)->left->type == TK_COMMAND)
 		exec_command_solo(&(*current_node)->left);
-	else if ((*current_node)->left->type >= TK_REDIR_IN && (*current_node)->left->type <= TK_HEREDOC)
+	else if ((*current_node)->left->type >= TK_REDIR_IN
+		&& (*current_node)->left->type <= TK_HEREDOC)
 		creat_solo_redirect((*current_node)->left->u_define.command.list_redir);
-	if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code == 0)
+	if ((*current_node)->right->type == TK_SUBSHELL && get_data()->exit_code == 0)
+		exec_subshell((*current_node)->right->subtree);
+	else if ((*current_node)->right->type == TK_PIPE && get_data()->exit_code == 0)
 		ft_pipe(&(*current_node)->right, 0);
 	else if ((*current_node)->right->type == TK_COMMAND
 		&& get_data()->exit_code == 0)
 		exec_command_solo(&(*current_node)->right);
-	else if ((*current_node)->right->type >= TK_REDIR_IN && (*current_node)->right->type <= TK_HEREDOC && get_data()->exit_code == 0)
+	else if ((*current_node)->right->type >= TK_REDIR_IN
+		&& (*current_node)->right->type <= TK_HEREDOC && get_data()->exit_code == 0)
 		creat_solo_redirect((*current_node)->right->u_define.command.list_redir);
 }
 
-
-void exorcise_manager(t_tree **tree)
+void exorcise_manager(t_tree **tree, int is_subshell)
 {
-	t_tree		*current_node;
+	t_tree	*current_node;
 
 	get_data()->exit_code = -1;
-	get_data()->head = *tree;
-	current_node = last_left((*tree));
+	current_node = last_left(*tree);
+	if (!current_node)
+		return ;
 	if (current_node->main == 1)
 	{
 		if (current_node->type == TK_AND && (get_data()->exit_code == 0
@@ -269,25 +302,33 @@ void exorcise_manager(t_tree **tree)
 			tk_and(&current_node);
 		else if (current_node->type == TK_OR && get_data()->exit_code != 0)
 			tk_or(&current_node);
-		if (current_node->type == TK_PIPE)
+		else if (current_node->type == TK_PIPE)
 			ft_pipe(&current_node, 1);
-		if (current_node->type >= TK_REDIR_IN && current_node->type <= TK_HEREDOC)
+		else if (current_node->type >= TK_REDIR_IN && current_node->type <= TK_HEREDOC)
 			creat_solo_redirect(current_node->u_define.command.list_redir);
-		if (current_node->type == TK_COMMAND)
+		else if (current_node->type == TK_COMMAND)
 			exec_command_solo(&current_node);
+		else if (current_node->type == TK_SUBSHELL)
+			exec_subshell(current_node->subtree);
 		free_tree(*tree);
+		if (is_subshell)
+			exit(get_data()->exit_code);
 		return ;
 	}
 	while (current_node)
 	{
-		if (current_node && current_node->type == TK_PIPE)
+		if (current_node->type == TK_PIPE)
 			ft_pipe(&current_node, 1);
-		if (current_node && current_node->type == TK_AND && (get_data()->exit_code == 0
-				|| get_data()->exit_code == -1))
+		else if (current_node->type == TK_AND && (get_data()->exit_code == 0
+			|| get_data()->exit_code == -1))
 			tk_and(&current_node);
-		else if (current_node && current_node->type == TK_OR && get_data()->exit_code != 0)
+		else if (current_node->type == TK_OR && get_data()->exit_code != 0)
 			tk_or(&current_node);
+		else if (current_node->type == TK_SUBSHELL)
+			exec_subshell(current_node);
 		current_node = current_node->prev;
 	}
 	free_tree(*tree);
+	if (is_subshell)
+		exit(get_data()->exit_code);
 }

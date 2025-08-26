@@ -47,6 +47,12 @@ int	handle_sigint_in_fork(int status, pid_t pid)
 		if (WTERMSIG(status) == SIGINT)
 		{
 			get_data()->exited_in_fork = true;
+			if (get_data()->is_subshell)
+			{
+				free_tree(get_data()->head);
+				free_list(get_data()->env);
+				exit(130);
+			}
 			kill(SIGINT, pid);
 			return (1);
 		}

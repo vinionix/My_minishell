@@ -23,7 +23,7 @@ static t_token	*create_tokens(char **matrix)
 	tokens = malloc(sizeof(t_token) * (ft_len_matrix(matrix) + 1));
 	while (matrix[i])
 	{
-		tokens[i].value = matrix[i]; // FT_STRDUP AQUI DEPOIS PFVR
+		tokens[i].value = ft_strdup(matrix[i]); // FT_STRDUP AQUI DEPOIS PFVR
 		tokens[i].id = i;
 		tokens[i].passed = -1;
 		tokens[i].subshell = NULL;
@@ -83,14 +83,12 @@ int	tokenizer(t_arg_main *args)
 	ft_lexer(&args->tokens);
 	if (sintaxe_error(&args->tokens) == 1)
 	{
-		free_tokens(args->matrix, args->tokens);
+		free_tokens(args->tokens);
+		free_split(args->matrix);
 		return (1);
 	}
 	creat_subshell(&args->tokens);
-	print_subshells(args->tokens);
 	tree_creator(&args->tokens, &args->tree, -1);
-	print_tree_pretty(args->tree, 1);
-	exit(EXIT_FAILURE);
-	exit(1);
+	get_data()->head = args->tree;
 	return (0);
 }

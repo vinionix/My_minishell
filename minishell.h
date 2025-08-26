@@ -122,6 +122,7 @@ typedef struct s_data
 	t_env				*env;
 	t_tree				*head;
 	bool				exited_in_fork;
+	int					is_subshell;
 }						t_data;
 
 typedef struct s_arg_main
@@ -160,10 +161,10 @@ void					ft_lexer(t_token **tokens);
 void					free_split(char **input);
 void					process_add_back(t_process **main, t_process *node);
 void					change_cwd(t_env *env_list);
-void					free_tokens(char **matrix, t_token *tokens);
+void					free_tokens(t_token *tokens);
 void					envadd_back(t_env **lst, t_env *new);
 void					ft_pipe(t_tree **tree, int left_or_rigth);
-void					exorcise_manager(t_tree **tree);
+void					exorcise_manager(t_tree **tree, int is_subshell);
 void					exorcise(t_tree *current_node, int flag, int std_out);
 void					wait_free_process(t_process **process);
 void					ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code);

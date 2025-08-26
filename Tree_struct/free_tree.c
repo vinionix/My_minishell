@@ -19,7 +19,7 @@ void	free_tree(t_tree *node)
 	free_tree(node->left);
 	free_tree(node->right);
 	if (node->type == TK_COMMAND || (node->type >= TK_REDIR_IN
-			&& node->type <= TK_HEREDOC))
+		&& node->type <= TK_HEREDOC))
 	{
 		if (node->u_define.command.list_redir)
 			free_list_redir(node->u_define.command.list_redir);
@@ -28,5 +28,7 @@ void	free_tree(t_tree *node)
 		free(node);
 		return ;
 	}
+	if (node->type == TK_SUBSHELL)
+		free_tree(node->subtree);
 	free(node);
 }
