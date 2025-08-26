@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/26 13:33:37 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/26 17:17:48 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,6 +252,7 @@ void					process_add_back(t_process **main, t_process *node);
 void					free_tree_and_env(void);
 t_tree					*last_left(t_tree *tree);
 char					**env_execv(t_env *env);
+void					print_error(char *error_message, char *token);
 
 
 #endif

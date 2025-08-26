@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins2.c                                         :+:      :+:    :+:  */
+/*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:41 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/15 22:17:31 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/26 17:02:01 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,16 @@ unsigned char	ft_exit(char **matrix, t_tree *tree, t_env *env)
 		ft_clean_and_exit(env, tree, return_value);
 	else if (!only_numbers(matrix[1]) || !long_check(matrix[1]))
 	{
-		printf("exit\n");
-		printf("minishell: exit: %s: numeric argument required\n", matrix[1]);
+		write(2, "exit\n", 5);
+		write(2, "minishell: exit: ", 18);
+		write(2, matrix[1], ft_strlen(matrix[1]));
+		write(2, ": numeric argument required\n", 28);
 		ft_clean_and_exit(env, tree, 2);
 	}
 	else if (ft_len_matrix(matrix) > 2)
 	{
-		printf("exit\n");
-		printf("minishell: exit: too many arguments\n");
+		write(2, "exit\n", 5);
+		print_error("minishell: exit: too many arguments", NULL);
 		return_value = 1;
 	}
 	else

@@ -17,6 +17,7 @@ FUNCTIONS = Tester/debug.c \
 						Parsing/expansion/env_utils.c \
 						Parsing/expansion/new_var_parsing.c \
 			Parsing/ft_utils.c \
+			Parsing/print_error.c \
 			Parsing/ft_error.c \
 			Parsing/ft_lexer.c \
 			Parsing/tokenizer.c \

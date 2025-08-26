@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:01:44 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/15 22:01:44 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/26 17:08:20 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ int	check_first_char(char *variable)
 {
 	if (!ft_isalpha((int)variable[0]) && variable[0] != '_')
 	{
-		printf("minishell: export: `%s': not a valid identifier\n", variable);
+		write(2, "minishell: export: `", 21);
+		write(2, variable, ft_strlen(variable));
+		write(2, "': not a valid identifier\n", 27);
 		return (1);
 	}
 	return (0);
@@ -26,8 +28,9 @@ int	check_following_chars(char *variable, char c)
 {
 	if (!ft_isalnum((int)c) && c != '_')
 	{
-		printf("minishell: export: `%s': not a valid identifier\n",
-			variable);
+		write(2, "minishell: export: `", 21);
+		write(2, variable, ft_strlen(variable));
+		write(2, "': not a valid identifier\n", 27);
 		return (1);
 	}
 	return (0);
