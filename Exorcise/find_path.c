@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:12:24 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 15:07:24 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/26 17:48:34 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ static char	*ft_strjoin_pipex(char const *s1, char const *s2)
 char	**get_path(t_env *env)
 {
 	char	**path;
-    t_env   *temp;
+	t_env	*temp;
 
-    temp = find_env("PATH=", env);
+	temp = find_env("PATH=", env);
 	path = NULL;
 	path = ft_split(temp->value, ':');
 	return (path);
@@ -64,7 +64,7 @@ static int	ft_strcmp_path(const char *s1, const char *s2)
 
 static int	aux_valid_path(char **path, char **cmd)
 {
-	int		j;
+	int	j;
 
 	j = 0;
 	while (path[j])
@@ -91,15 +91,15 @@ int	valid_path(char **cmd, char **path)
 	{
 		str = ft_strjoin_pipex(path[j], cmd[0]);
 		if (str != NULL)
-        {
-            if (aux_valid_path(path, &str) == 0)
+		{
+			if (aux_valid_path(path, &str) == 0)
 			{
 				free(cmd[0]);
 				cmd[0] = str;
-            	return (0);
+				return (0);
 			}
-            free(str);
-        }
+			free(str);
+		}
 		j++;
 	}
 	return (-1);

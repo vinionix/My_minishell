@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lexer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:49:33 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/22 16:17:07 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/26 19:22:39 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,22 @@
 static void	ft_word_command_env(t_token **tokens)
 {
 	int	i;
-	
+
 	i = -1;
 	while ((*tokens)[++i].value != NULL)
 	{
 		if ((*tokens)[i].type == 0)
 		{
-			if ((*tokens)[i].id == 0 || ((*tokens)[i - 1].type >= TK_PIPE && (*tokens)[i - 1].type <= TK_OR) 
-				|| ((*tokens)[i - 1].type >= TK_FILE_IN && (*tokens)[i - 1].type <= TK_EOF)
+			if ((*tokens)[i].id == 0 || ((*tokens)[i - 1].type >= TK_PIPE
+					&& (*tokens)[i - 1].type <= TK_OR) || ((*tokens)[i
+					- 1].type >= TK_FILE_IN && (*tokens)[i - 1].type <= TK_EOF)
 				|| (*tokens)[i - 1].type == TK_INIT_PAREN)
 				(*tokens)[i].type = TK_COMMAND;
 		}
 		if ((*tokens)[i].type == TK_COMMAND)
 		{
 			while ((*tokens)[++i].value && (!((*tokens)[i].type >= TK_PIPE
-				&& (*tokens)[i].type <= TK_OR)))
+						&& (*tokens)[i].type <= TK_OR)))
 			{
 				if ((*tokens)[i].type == 0)
 					(*tokens)[i].type = TK_CMD_ARG;
@@ -93,24 +94,7 @@ static void	ft_operators(t_token **tokens)
 		if (ft_strlen((*tokens)[i].value) <= 2)
 		{
 			receiver = chr_separator((*tokens)[i].value, 0);
-			if (receiver == 1)
-				(*tokens)[i].type = TK_AND;
-			else if (receiver == 2)
-				(*tokens)[i].type = TK_OR;
-			else if (receiver == 3)
-				(*tokens)[i].type = TK_APPEND;
-			else if (receiver == 4)
-				(*tokens)[i].type = TK_HEREDOC;
-			else if (receiver == 5)
-				(*tokens)[i].type = TK_PIPE;
-			else if (receiver == 6)
-				(*tokens)[i].type = TK_REDIR_OUT;
-			else if (receiver == 7)
-				(*tokens)[i].type = TK_REDIR_IN;
-			else if (receiver == 8)
-				(*tokens)[i].type = TK_INIT_PAREN;
-			else if (receiver == 9)
-			(*tokens)[i].type = TK_FINAL_PAREN;
+			assign_value(tokens, i, receiver);
 		}
 	}
 }

@@ -1,28 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_error.c                                      :+:      :+:    :+:   */
+/*   ft_split_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/26 16:19:40 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/26 18:37:09 by vfidelis         ###   ########.fr       */
+/*   Created: 2025/08/26 19:00:00 by vfidelis          #+#    #+#             */
+/*   Updated: 2025/08/26 19:06:34 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "../minishell.h"
 
-void	print_error(char *error_message, char *token)
+void	jump_index(int *index, size_t *size, const char *str)
 {
-	if (token)
+	char	chr_jump;
+
+	chr_jump = jump_char(str[*index]);
+	if (chr_jump == 2 || chr_jump == 3)
 	{
-		ft_putstr_fd(error_message, 2);
-		ft_putstr_fd(" ´", 2);
-		ft_putstr_fd(token, 2);
-		ft_putstr_fd("'", 2);
-		ft_putstr_fd("\n", 2);
-		return ;
+		(*index)++;
+		(*size)++;
+		while (str[*index] && chr_jump != jump_char(str[*index]))
+		{
+			(*index)++;
+			(*size)++;
+		}
 	}
-	ft_putstr_fd(error_message, 2);
-	ft_putstr_fd("\n", 2);
+}
+
+void	handle_jump(const char *s, int *i, char chr_jump)
+{
+	(*i)++;
+	while (s[*i] && jump_char(s[*i]) != chr_jump)
+		(*i)++;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:41 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/26 17:08:56 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/26 17:21:33 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	ft_pwd(char **matrix)
 		write(2, "minishell: pwd: ", 17);
 		write(2, &(*matrix)[0], 1);
 		write(2, &(*matrix)[1], 1);
-		write(2, ": invalid option\n", 18); 
+		write(2, ": invalid option\n", 18);
 		return (2);
 	}
 	pwd = get_pwd();

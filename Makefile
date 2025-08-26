@@ -3,7 +3,7 @@ FLAGS = -g -Wall -Wextra -Werror
 
 LIBFT = libft/libft.a
 
-FUNCTIONS = Tester/debug.c \
+FUNCTIONS = Main/debug.c \
             Builtins/builtins.c \
 						Builtins/env_builtins.c \
 						Builtins/builtins_utils.c \
@@ -17,8 +17,10 @@ FUNCTIONS = Tester/debug.c \
 						Parsing/expansion/env_utils.c \
 						Parsing/expansion/new_var_parsing.c \
 			Parsing/ft_utils.c \
+			Parsing/ft_utils2.c \
 			Parsing/print_error.c \
 			Parsing/ft_error.c \
+			Parsing/ft_error2.c \
 			Parsing/ft_lexer.c \
 			Parsing/tokenizer.c \
 			Parsing/format_input.c \
@@ -78,7 +80,7 @@ $(NAME_LIB): $(OBJS) $(LIBFT)
 	ar rcs $@ $(OBJS)
 
 $(NAME): $(OBJS) $(LIBFT) $(NAME_LIB)
-	$(CC) $(FLAGS) Tester/main.c $(OBJS) -Llibft -lft -lreadline -o $(NAME)
+	$(CC) $(FLAGS) Main/main.c $(OBJS) -Llibft -lft -lreadline -o $(NAME)
 
 $(LIBFT):
 	make -C libft

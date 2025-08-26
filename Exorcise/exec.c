@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/15 22:18:08 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/26 17:44:59 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void	exec_command_solo(t_tree *current_node)
 	}
 	else
 	{
-		get_data()->exit_code = exec_builtin(
-			&current_node->u_define.command.cmd,
-			&get_data()->env, get_data()->head);
+		status = exec_builtin(&current_node->u_define.command.cmd,
+				&get_data()->env, get_data()->head);
+		get_data()->exit_code = status;
 		change_env_var(get_data()->env, "?=", ft_itoa(get_data()->exit_code));
 	}
 }

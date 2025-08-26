@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/07/11 14:50:35 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/26 19:39:32 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,34 @@ static int	final_pos_tokens(t_token *tokens)
 	return (i);
 }
 
+void	verify_tokens_right(t_token **tokens, int i, int *flag, int *receiver)
+{
+	if ((*tokens)[i].type == TK_SUBSHELL && (*flag) != 2)
+	{
+		(*flag) = 2;
+		(*receiver) = i;
+	}
+	else if ((*tokens)[i].type == TK_PIPE && (*flag) != 2 && (*flag) != 3)
+	{
+		(*flag) = 3;
+		(*receiver) = i;
+	}
+	else if ((*tokens)[i].type == TK_COMMAND && (*flag) != 2 && (*flag) != 3
+		&& (*flag) != 4)
+	{
+		(*flag) = 4;
+		(*receiver) = i;
+	}
+	else if ((*tokens)[i].type >= TK_REDIR_IN
+		&& (*tokens)[i].type <= TK_HEREDOC
+		&& (*flag) != 2 && (*flag) != 3 && (*flag) != 4
+		&& (*flag) != 5)
+	{
+		(*flag) = 5;
+		(*receiver) = i;
+	}
+}
+
 int	find_next_r(t_token **tokens, int start, int receiver, int flag)
 {
 	int	i;
@@ -30,30 +58,7 @@ int	find_next_r(t_token **tokens, int start, int receiver, int flag)
 	while (((*tokens)[i].value || (*tokens)[i].type == TK_SUBSHELL)
 		&& (*tokens)[i].passed == -1)
 	{
-		if ((*tokens)[i].type == TK_SUBSHELL && flag != 2)
-		{
-			flag = 2;
-			receiver = i;
-		}
-		else if ((*tokens)[i].type == TK_PIPE && flag != 2 && flag != 3)
-		{
-			flag = 3;
-			receiver = i;
-		}
-		else if ((*tokens)[i].type == TK_COMMAND && flag != 2 && flag != 3
-			&& flag != 4)
-		{
-			flag = 4;
-			receiver = i;
-		}
-		else if ((*tokens)[i].type >= TK_REDIR_IN
-			&& (*tokens)[i].type <= TK_HEREDOC
-			&& flag != 2 && flag != 3 && flag != 4
-			&& flag != 5)
-		{
-			flag = 5;
-			receiver = i;
-		}
+		verify_tokens_right(tokens, i, &flag, &receiver);
 		i++;
 	}
 	return (receiver);

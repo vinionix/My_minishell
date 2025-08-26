@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 02:58:55 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/09 02:59:21 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/26 18:37:46 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static int	handle_quotes(char *input, char *temp, int *i, int j)
 
 static int	handle_sep_type1(char *input, char *temp, int *i, int j)
 {
-	if ((*i > 0) && jump_char(input[*i - 1]) != 1
-		&& chr_separator(input, *i - 1) == 0)
+	if ((*i > 0) && jump_char(input[*i - 1]) != 1 && chr_separator(input, *i
+			- 1) == 0)
 		temp[j++] = ' ';
 	if (input[*i + 1])
 	{
@@ -49,8 +49,8 @@ static int	handle_sep_type1(char *input, char *temp, int *i, int j)
 
 static int	handle_sep_type2(char *input, char *temp, int *i, int j)
 {
-	if ((*i > 0) && jump_char(input[*i - 1]) != 1
-		&& chr_separator(input, *i - 1) == 0)
+	if ((*i > 0) && jump_char(input[*i - 1]) != 1 && chr_separator(input, *i
+			- 1) == 0)
 		temp[j++] = ' ';
 	temp[j++] = input[(*i)++];
 	if (jump_char(input[*i]) != 1)

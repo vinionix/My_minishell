@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 14:18:26 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/26 17:47:40 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,17 @@ static void	exec_bin(t_tree *current_node, int std_out)
 
 void	exorcise(t_tree *current_node, int std_out)
 {
+	int	exit_code;
+
+	exit_code = 0;
 	if (if_redirect(current_node->u_define.command.list_redir) == -1)
 	{
 		free_tree_and_env();
 		exit (1);
 	}
-	get_data()->exit_code = exec_builtin(&current_node->u_define.command.cmd,
-		&get_data()->env, get_data()->head);
+	exit_code = exec_builtin(&current_node->u_define.command.cmd,
+			&get_data()->env, get_data()->head);
+	get_data()->exit_code = exit_code;
 	if (get_data()->exit_code == 1337)
 		exec_bin(current_node, std_out);
 	free_tree_and_env();

@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 22:40:32 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 14:55:07 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/26 18:40:17 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ void	solo_redirect(t_tree *tree, int *stdin_fd)
 	creat_solo_redirect(tree->u_define.command.list_redir);
 }
 
-void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd, int l_or_r)
+void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd,
+		int l_or_r)
 {
 	int			pipe_temp[2];
 	t_process	*temp;
@@ -66,7 +67,7 @@ void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd, int l_or
 	if ((*tree)->left->type >= TK_REDIR_IN && (*tree)->left->type <= TK_APPEND)
 		solo_redirect((*tree)->left, stdin_fd);
 	else if ((*tree)->left->type == TK_COMMAND)
-	{	
+	{
 		pipe(pipe_temp);
 		process_add_back(process, node_process_creator((*tree)->left));
 		temp = search_process(process, (*tree)->left);
@@ -90,7 +91,8 @@ void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd, int l_or
 			*stdin_fd = pipe_temp[0];
 		}
 	}
-	if ((*tree)->right->type >= TK_REDIR_IN && (*tree)->right->type <= TK_APPEND)
+	if ((*tree)->right->type >= TK_REDIR_IN
+		&& (*tree)->right->type <= TK_APPEND)
 		solo_redirect((*tree)->right, stdin_fd);
 	else if ((*tree)->right->type == TK_COMMAND)
 	{
@@ -104,7 +106,8 @@ void	first_iteration(t_tree **tree, t_process **process, int *stdin_fd, int l_or
 				dup2(*stdin_fd, STDIN_FILENO);
 				close(*stdin_fd);
 			}
-			if ((*tree)->main != 1 && (*tree)->prev->type == TK_PIPE && l_or_r == 1)
+			if ((*tree)->main != 1 && (*tree)->prev->type == TK_PIPE
+				&& l_or_r == 1)
 				dup2(pipe_temp[1], STDOUT_FILENO);
 			close(pipe_temp[0]);
 			close(pipe_temp[1]);

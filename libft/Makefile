@@ -40,6 +40,7 @@ FUNCTIONS = 	ft_strdup.c \
 		ft_bzero.c \
 		ft_strlcat.c \
 		ft_split.c \
+		ft_split_utils.c \
 		ft_striteri.c \
 		ft_strmapi.c \
 		ft_lstnew_bonus.c \

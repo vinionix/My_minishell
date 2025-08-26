@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 20:58:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 15:04:48 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/26 18:11:57 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	creat_here_command(t_tree **tree)
 {
 	t_redir	*temp;
 	int		pipefd[2];
-		
+
 	temp = (*tree)->u_define.command.list_redir;
 	while (temp)
 	{
@@ -43,7 +43,7 @@ int	here_verify(t_redir *redir, int is_command)
 	if (!redir)
 		return (0);
 	temp = redir;
-	while(temp)
+	while (temp)
 	{
 		if (temp->type == TK_EOF)
 			break ;
@@ -54,6 +54,35 @@ int	here_verify(t_redir *redir, int is_command)
 	else if (temp && temp->type == TK_EOF && is_command == 0)
 		here(temp->eof, 0, 0);
 	return (0);
+}
+
+static void	verify_break(char **rline, int is_command, int *pipefd, char *eof)
+{
+	if (ft_strcmp(rline[0], eof) == 0)
+	{
+		free(rline[0]);
+		free_tree_and_env();
+		exit(0);
+	}
+	if (!rline[0])
+	{
+		if (is_command == 1)
+			close(pipefd[1]);
+		free_tree_and_env();
+		exit(0);
+	}
+	if (is_command == 1)
+	{
+		write(pipefd[1], rline[0], ft_strlen(rline[0]));
+		write(pipefd[1], "\n", 1);
+	}
+}
+
+static void	wait_here(int pid, int is_command, int status, int *pipefd)
+{
+	waitpid(pid, &status, 0);
+	if (is_command == 1)
+		close(pipefd[1]);
 }
 
 int	here(char *eof, int is_command, int *pipefd)
@@ -72,35 +101,15 @@ int	here(char *eof, int is_command, int *pipefd)
 		{
 			rline[0] = readline("> ");
 			expand_variables(rline, get_data()->env);
-			if (ft_strcmp(rline[0], eof) == 0)
-			{
-				free(rline[0]);
-				exit(0);
-				break;
-			}
-			if (!rline[0])
-			{
-				if (is_command == 1)
-					close(pipefd[1]);
-				exit(0);
-				break;
-			}
-			if (is_command == 1)
-			{
-				write(pipefd[1], rline[0], ft_strlen(rline[0]));
-				write(pipefd[1], "\n", 1);
-			}
+			verify_break(rline, is_command, pipefd, eof);
 			free(rline[0]);
 		}
 	}
 	else
 	{
-		waitpid(pid, &status, 0);
-		if (is_command == 1)
-			close(pipefd[1]);
+		wait_here(pid, is_command, status, pipefd);
 		if (handle_sigint_in_heredoc(status, pid))
 			return (0);
 		return (1);
 	}
 }
-

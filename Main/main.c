@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 21:06:12 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/12 19:08:06 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/26 19:13:28 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,14 @@ static void	initialize_args_main(t_arg_main *args)
 	args->tokens = NULL;
 }
 
-void free_list(t_env *env)
+static void	tokenizer_and_exec(t_arg_main *args)
 {
-	t_env *temp;
-
-	temp = env;
-	while (temp)
+	if (tokenizer(args) == 0)
 	{
-		temp = env->next;
-		if (env->value)
-			free(env->value);
-		if (env->key)
-			free(env->key);
-		free(env);
-		env = temp;
+		free_tokens(args->tokens);
+		free_split(args->matrix);
+		exorcise_manager(&args->tree, 0);
+		args->tree = NULL;
 	}
 }
 
@@ -58,15 +52,7 @@ static void	aux_main(void)
 		if (args.rdline)
 		{
 			if (args.rdline[0] != '\0')
-			{
-				if (tokenizer(&args) == 0)
-				{
-					free_tokens(args.tokens);
-					free_split(args.matrix);
-					exorcise_manager(&args.tree, 0);
-					args.tree = NULL;
-				}
-			}
+				tokenizer_and_exec(&args);
 			add_history(args.rdline);
 		}
 		if (args.rdline)
@@ -76,10 +62,10 @@ static void	aux_main(void)
 
 int	main(int ac, char **av, const char **env)
 {
+	t_env	*envs;
+
 	(void)ac;
 	(void)av;
-	t_env *envs;
-
 	envs = get_env_vars(env);
 	get_data()->env = envs;
 	create_default_env(&envs);

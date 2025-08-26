@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 15:34:05 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/02 04:49:08 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/26 19:04:12 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void		*ft_memmove(void *dest, const void *src, size_t n);
 void		*ft_memchr(const void *s, int c, size_t n);
 void		ft_bzero(void *s, size_t n);
 char		*ft_itoa(int n);
+void		handle_jump(const char *s, int *i, char chr_jump);
+void		jump_index(int *index, size_t *size, const char *str);
 void		*ft_calloc(size_t num, size_t size);
 void		ft_striteri(char *s, void (*f)(unsigned int, char*));
 char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
