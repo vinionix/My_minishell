@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 19:39:32 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:24:16 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,14 @@ static int	final_pos_tokens(t_token *tokens)
 	int	i;
 
 	i = 0;
-	while (tokens[i + 1].value != NULL || tokens[i + 1].type == TK_SUBSHELL)
+	while (tokens[i + 1].value != NULL)
 		i++;
 	return (i);
 }
 
 void	verify_tokens_right(t_token **tokens, int i, int *flag, int *receiver)
 {
-	if ((*tokens)[i].type == TK_SUBSHELL && (*flag) != 2)
-	{
-		(*flag) = 2;
-		(*receiver) = i;
-	}
-	else if ((*tokens)[i].type == TK_PIPE && (*flag) != 2 && (*flag) != 3)
+	if ((*tokens)[i].type == TK_PIPE && (*flag) != 2 && (*flag) != 3)
 	{
 		(*flag) = 3;
 		(*receiver) = i;
@@ -55,7 +50,7 @@ int	find_next_r(t_token **tokens, int start, int receiver, int flag)
 	int	i;
 
 	i = start;
-	while (((*tokens)[i].value || (*tokens)[i].type == TK_SUBSHELL)
+	while (((*tokens)[i].value)
 		&& (*tokens)[i].passed == -1)
 	{
 		verify_tokens_right(tokens, i, &flag, &receiver);
@@ -73,7 +68,7 @@ int	search_left(t_token **tokens, int id)
 	i = 0;
 	flag = -1;
 	receiver = 0;
-	while (((*tokens)[i].value || (*tokens)[i].type == TK_SUBSHELL)
+	while (((*tokens)[i].value)
 		&& (*tokens)[i].id != id)
 		i++;
 	i--;
@@ -94,10 +89,10 @@ int	search_right(t_token **tokens, int id)
 	int	receiver;
 
 	i = 0;
-	while (((*tokens)[i].value || (*tokens)[i].type == TK_SUBSHELL)
+	while (((*tokens)[i].value)
 		&& (*tokens)[i].id != id)
 		i++;
-	if ((*tokens)[i + 1].value != NULL || (*tokens)[i + 1].type == TK_SUBSHELL)
+	if ((*tokens)[i + 1].value != NULL)
 		i++;
 	receiver = find_next_r(tokens, i, -1, -1);
 	if (receiver == -1 || (*tokens)[receiver].passed == 1)

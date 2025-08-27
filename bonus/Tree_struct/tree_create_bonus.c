@@ -1,0 +1,118 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tree_create_bonus.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/26 13:19:27 by vfidelis          #+#    #+#             */
+/*   Updated: 2025/08/27 15:50:10 by gada-sil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../minishell_bonus.h"
+
+void	free_list_redir(t_redir *list)
+{
+	t_redir	*temp;
+
+	temp = list;
+	while (temp)
+	{
+		temp = list->next;
+		if (list->eof)
+			free(list->eof);
+		if (list->file)
+			free(list->file);
+		free(list);
+		list = temp;
+	}
+}
+
+t_redir	*creator_node_redir(t_token tokens)
+{
+	t_redir	*redir;
+
+	redir = (t_redir *)malloc(sizeof(t_redir));
+	redir->type = (tokens).type;
+	redir->eof = NULL;
+	redir->next = NULL;
+	redir->file = NULL;
+	if ((tokens).type == TK_EOF)
+		redir->eof = ft_strdup((tokens).value);
+	else if ((tokens).type >= TK_FILE_IN && (tokens).type <= TK_FILE_APP)
+		redir->file = ft_strdup((tokens).value);
+	return (redir);
+}
+
+static void	redir_add_back(t_redir **redirects, t_redir *node)
+{
+	t_redir	*head;
+
+	if ((*redirects) == NULL)
+	{
+		(*redirects) = node;
+		return ;
+	}
+	head = (*redirects);
+	while ((*redirects)->next)
+		(*redirects) = (*redirects)->next;
+	(*redirects)->next = node;
+	(*redirects) = head;
+	return ;
+}
+
+t_redir	*creat_list_redir(int id, t_token **tokens)
+{
+	t_redir	*redirects;
+	int		i;
+
+	i = 0;
+	redirects = NULL;
+	while ((*tokens)[i].id != id)
+		i++;
+	while (i > 0 && (*tokens)[i].id > 0 && (!((*tokens)[i].type >= TK_PIPE
+		&& (*tokens)[i].type <= TK_OR)))
+		i--;
+	i++;
+	while ((*tokens)[i].value && (!((*tokens)[i].type >= TK_PIPE
+		&& (*tokens)[i].type <= TK_OR)))
+	{
+		if ((*tokens)[i].type >= TK_FILE_IN && (*tokens)[i].type <= TK_EOF)
+		{
+			(*tokens)[i - 1].passed = 1;
+			redir_add_back(&redirects, creator_node_redir((*tokens)[i]));
+		}
+		i++;
+	}
+	return (redirects);
+}
+
+void	tree_creator(t_token **tokens, t_tree **tree, int id)
+{
+	int		id_left_creat;
+	int		id_right_creat;
+
+	if (!tokens || !*tokens)
+		return ;
+	if (id == -1)
+	{
+		if (create_head(tree, tokens) == -1)
+			return ;
+		id = (*tree)->id_tree;
+	}
+	id_left_creat = search_left(tokens, id);
+	id_right_creat = search_right(tokens, id);
+	if (id_left_creat != -1)
+	{
+		(*tree)->left = node_creator(tokens, id_left_creat, 0);
+		(*tree)->left->prev = *tree;
+		tree_creator(&(*tokens), &(*tree)->left, id_left_creat);
+	}
+	if (id_right_creat != -1)
+	{
+		(*tree)->right = node_creator(tokens, id_right_creat, 0);
+		(*tree)->right->prev = *tree;
+		tree_creator(&(*tokens), &(*tree)->right, id_right_creat);
+	}
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/15 22:18:08 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:30:18 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	is_builtin(char *command)
 int	exec_builtin(char ***matrix, t_env **envs, t_tree *tree)
 {
 	if (is_builtin((*matrix)[0]))
-		(*matrix) = expand_and_wildcard((*matrix), get_data()->env);
+		(*matrix) = expand_and_quotes((*matrix), get_data()->env);
 	if (!ft_strcmp((*matrix)[0], "exit"))
 		return (ft_exit((*matrix), tree, *envs));
 	else if (!ft_strcmp((*matrix)[0], "env"))

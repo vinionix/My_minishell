@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_priority.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 18:41:16 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:23:28 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,7 @@
 
 void	check_priority(t_token **tokens, int i, int *receiver, int *flag)
 {
-	if ((((*tokens)[i].type == TK_AND || (*tokens)[i].type == TK_OR)
-			&& *flag != 1))
-	{
-		*flag = 1;
-		*receiver = i;
-	}
-	else if ((*tokens)[i].type == TK_SUBSHELL && *flag != 1 && *flag != 2)
-	{
-		*flag = 2;
-		*receiver = i;
-	}
-	else if ((*tokens)[i].type == TK_PIPE && *flag != 1 && *flag != 2
+	if ((*tokens)[i].type == TK_PIPE && *flag != 1 && *flag != 2
 			&& *flag != 3)
 	{
 		*flag = 3;

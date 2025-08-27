@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 19:32:45 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:22:18 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	fill_command_array(char **command, t_token *tokens, int j)
 	i = 1;
 	j++;
 	while ((tokens)[j].value && (((tokens)[j].type != TK_COMMAND)
-		&& (!((tokens)[j].type >= TK_PIPE && (tokens)[j].type <= TK_OR))))
+		&& (!((tokens)[j].type == TK_PIPE))))
 	{
 		if ((tokens)[j].type == TK_CMD_ARG)
 		{
@@ -44,7 +44,7 @@ char	**creat_command(int id_command, t_token *tokens)
 	j = i;
 	i++;
 	while ((tokens)[i].value && (((tokens)[i].type != TK_COMMAND)
-		&& (!((tokens)[i].type >= TK_PIPE && (tokens)[i].type <= TK_OR))))
+		&& (!((tokens)[i].type == TK_PIPE))))
 	{
 		if ((tokens)[i].type == TK_CMD_ARG)
 			count_words++;

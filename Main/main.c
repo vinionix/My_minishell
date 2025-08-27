@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 21:06:12 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 19:13:28 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:27:27 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	tokenizer_and_exec(t_arg_main *args)
 	{
 		free_tokens(args->tokens);
 		free_split(args->matrix);
-		exorcise_manager(&args->tree, 0);
+		exorcise_manager(&args->tree);
 		args->tree = NULL;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_error2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 18:17:36 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 18:39:02 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:07:12 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	check_operators_final(t_token **tokens)
 	while ((*tokens)[++i].value != NULL)
 	{
 		if (((*tokens)[i + 1].value == NULL
-			&& (*tokens)[i].type >= TK_PIPE && (*tokens)[i].type <= TK_OR))
+			&& (*tokens)[i].type == TK_PIPE))
 		{
 			write(2, "Error\n", 7);
 			return (1);
@@ -41,10 +41,7 @@ int	sintaxe_error(t_token **tokens)
 	while ((*tokens)[i].value != NULL)
 	{
 		if (check_first_token(tokens, i) || check_last_token(tokens, i)
-			|| check_consecutive_operators(tokens, i)
-			|| check_init_paren(tokens, i, &count_init_paren)
-			|| check_final_paren(tokens, i, &count_final_paren,
-				count_init_paren))
+			|| check_consecutive_operators(tokens, i))
 			return (1);
 		i++;
 	}

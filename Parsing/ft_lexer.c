@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lexer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:49:33 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 19:22:39 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:08:56 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,13 @@ static void	ft_word_command_env(t_token **tokens)
 	{
 		if ((*tokens)[i].type == 0)
 		{
-			if ((*tokens)[i].id == 0 || ((*tokens)[i - 1].type >= TK_PIPE
-					&& (*tokens)[i - 1].type <= TK_OR) || ((*tokens)[i
-					- 1].type >= TK_FILE_IN && (*tokens)[i - 1].type <= TK_EOF)
-				|| (*tokens)[i - 1].type == TK_INIT_PAREN)
+			if ((*tokens)[i].id == 0 || (*tokens)[i - 1].type == TK_PIPE || ((*tokens)[i
+					- 1].type >= TK_FILE_IN && (*tokens)[i - 1].type <= TK_EOF))
 				(*tokens)[i].type = TK_COMMAND;
 		}
 		if ((*tokens)[i].type == TK_COMMAND)
 		{
-			while ((*tokens)[++i].value && (!((*tokens)[i].type >= TK_PIPE
-						&& (*tokens)[i].type <= TK_OR)))
+			while ((*tokens)[++i].value && (!((*tokens)[i].type == TK_PIPE)))
 			{
 				if ((*tokens)[i].type == 0)
 					(*tokens)[i].type = TK_CMD_ARG;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 03:06:39 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/05/22 22:44:47 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:07:47 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 
 int	chr_separator(char *input, int i)
 {
-	if (input[i] == '&' && input[i + 1] == '&')
-		return (1);
-	else if (input[i] == '|' && input[i + 1] == '|')
-		return (2);
-	else if (input[i] == '>' && input[i + 1] == '>')
+	if (input[i] == '>' && input[i + 1] == '>')
 		return (3);
 	else if (input[i] == '<' && input[i + 1] == '<')
 		return (4);
@@ -28,10 +24,6 @@ int	chr_separator(char *input, int i)
 		return (6);
 	else if (input[i] == '<')
 		return (7);
-	else if (input[i] == '(')
-		return (8);
-	else if (input[i] == ')')
-		return (9);
 	return (0);
 }
 
@@ -74,12 +66,9 @@ void	free_tokens(t_token *tokens)
 	int	i;
 
 	i = 0;
-	while (tokens[i].value || tokens[i].type == TK_SUBSHELL)
+	while (tokens[i].value)
 	{
-		if (tokens[i].type == TK_SUBSHELL)
-			free_tokens(tokens[i].subshell);
-		else
-			free(tokens[i].value);
+		free(tokens[i].value);
 		i++;
 	}
 	free(tokens);

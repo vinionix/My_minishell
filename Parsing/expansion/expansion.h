@@ -14,7 +14,6 @@
 # define EXPANSION_H
 
 # include "../../minishell.h"
-# include "../../Wildcard/wildcard.h"
 
 typedef struct envUtils
 {

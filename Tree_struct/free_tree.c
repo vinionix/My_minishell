@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 19:09:08 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:23:10 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ void	free_tree(t_tree *node)
 		free(node);
 		return ;
 	}
-	if (node->type == TK_SUBSHELL)
-		free_tree(node->subtree);
 	free(node);
 }
 

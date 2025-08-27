@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/26 19:41:38 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:27:18 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@
 # include <termios.h>
 # include <unistd.h>
 
+# define POSSIBLE_ENV_MARKER '\x1E'
+# define SINGLE_QUOTE_MARKER '\x1F'
+# define DOUBLE_QUOTE_MARKER '\x1C'
+# define DOLLAR_MARKER '\x01'
+
 void							logi(int x);
 void							logfl(float x);
 void							logd(double x);
@@ -47,17 +52,12 @@ typedef enum e_token_type
 	TK_APPEND,
 	TK_HEREDOC,
 	TK_PIPE,
-	TK_AND,
-	TK_OR,
-	TK_FINAL_PAREN,
-	TK_INIT_PAREN,
 	TK_FILE_IN,
 	TK_FILE_OUT,
 	TK_FILE_APP,
 	TK_EOF,
 	TK_CMD_ARG,
 	TK_COMMAND,
-	TK_SUBSHELL
 }								t_token_type;
 
 typedef struct s_env
@@ -103,7 +103,6 @@ typedef struct s_tree
 	struct s_tree				*left;
 	struct s_tree				*right;
 	struct s_tree				*prev;
-	struct s_tree				*subtree;
 }								t_tree;
 
 typedef struct s_token
@@ -112,7 +111,6 @@ typedef struct s_token
 	int							id;
 	int							passed;
 	char						*value;
-	struct s_token				*subshell;
 }								t_token;
 
 typedef struct s_data
@@ -156,7 +154,7 @@ char							**get_path(t_env *env);
 char							*get_pwd(void);
 char							*get_pwd(void);
 char							**wildcard(char **matrix);
-char							**expand_and_wildcard(char **matrix,
+char							**expand_and_quotes(char **matrix,
 									t_env *env_lst);
 char							**expand_and_wildcard(char **matrix,
 									t_env *env_lst);
@@ -173,8 +171,7 @@ void							change_cwd(t_env *env_list);
 void							free_tokens(t_token *tokens);
 void							envadd_back(t_env **lst, t_env *new);
 void							ft_pipe(t_tree **tree, int left_or_rigth);
-void							exorcise_manager(t_tree **tree,
-									int is_subshell);
+void							exorcise_manager(t_tree **tree);
 void							exorcise(t_tree *current_node, int std_out);
 void							wait_free_process(t_process **process);
 void							ft_clean_and_exit(t_env *env, t_tree *tree,
@@ -183,7 +180,6 @@ void							creat_solo_redirect(t_redir *redir);
 void							free_matrix(char **matrix);
 void							expand_variables(char **matrix, t_env *env_lst);
 void							creat_here_command(t_tree **tree);
-void							creat_subshell(t_token **tokens);
 int								here(char *eof, int is_command, int *pipefd);
 int								here_verify(t_redir *redir, int is_command);
 int								sintaxe_error(t_token **tokens);
@@ -217,7 +213,6 @@ t_process						*node_process_creator(t_tree *node);
 t_process						*search_process(t_process **process,
 									t_tree *current_node);
 t_tree							*last_left(t_tree *tree);
-bool							verify_ls_flag(char **matrix);
 void							ft_clean_and_exit(t_env *env, t_tree *tree,
 									unsigned int exit_code);
 unsigned long long				ft_atol(char *str, int *sign);
@@ -256,15 +251,9 @@ t_data							*get_data(void);
 t_token							*size_new_tokens(t_token *tokens);
 int								get_subshell_size(t_token *tokens, int i);
 void							free_old_tokens(t_token *tokens);
-bool							verify_paren(t_token *tokens);
-void							skip_paren(t_token *tokens, int *i,
-									int *final_size);
 int								if_redirect(t_redir *list);
 void							free_tree_and_env(void);
-void							tk_and(t_tree *current_node);
-void							tk_or(t_tree *current_node);
 void							exec_command_solo(t_tree *current_node);
-void							exec_subshell(t_tree *subtree);
 void							creat_solo_redirect(t_redir *redir);
 t_process						*node_process_creator(t_tree *node);
 void							process_add_back(t_process **main,
@@ -273,11 +262,6 @@ void							free_tree_and_env(void);
 t_tree							*last_left(t_tree *tree);
 char							**env_execv(t_env *env);
 void							print_error(char *error_message, char *token);
-int								check_final_paren(t_token **tokens, int i,
-									int *count_final_paren,
-									int count_init_paren);
-int								check_init_paren(t_token **tokens, int i,
-									int *count_init_paren);
 int								check_consecutive_operators(t_token **tokens,
 									int i);
 int								check_last_token(t_token **tokens, int i);
@@ -285,5 +269,10 @@ int								check_first_token(t_token **tokens, int i);
 void							assign_value(t_token **tokens, int i,
 									int receiver);
 int								create_head(t_tree **tree, t_token **tokens);
+int								count_quotes_right(char *str, char c);
+int								count_quotes_left(char *str, int i, char c);
+void							parse_quotes(char **matrix);
+void							reset_modified_chars(char **matrix, char c);
+void							remove_quotes(char **matrix);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:07:31 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/12 22:27:32 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:20:53 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,6 @@ void	create_envs(char *copy, char *str, int i, char **matrix)
 			continue ;
 		}
 		size = i + 1;
-		if (copy[size] == EXPANSION_MARKER)
-		{
-			i++;
-			continue ;
-		}
 		while (copy[size] == POSSIBLE_ENV_MARKER)
 			size++;
 		matrix[j++] = ft_substr(str, i, size - i);

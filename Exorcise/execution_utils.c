@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/15 22:18:08 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:26:49 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	free_tree_and_env(void)
 t_tree	*last_left(t_tree *tree)
 {
 	while (tree->left && tree->left->type != TK_COMMAND
-		&& tree->left->type != TK_SUBSHELL
 		&& !(tree->left->type >= TK_REDIR_IN && tree->left->type <= TK_HEREDOC))
 		tree = tree->left;
 	return (tree);

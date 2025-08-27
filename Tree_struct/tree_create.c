@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_create.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:19:27 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 19:32:32 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:22:59 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,10 @@ t_redir	*creat_list_redir(int id, t_token **tokens)
 	redirects = NULL;
 	while ((*tokens)[i].id != id)
 		i++;
-	while (i > 0 && (*tokens)[i].id > 0 && (!((*tokens)[i].type >= TK_PIPE
-		&& (*tokens)[i].type <= TK_OR)))
+	while (i > 0 && (*tokens)[i].id > 0 && (!((*tokens)[i].type == TK_PIPE)))
 		i--;
 	i++;
-	while ((*tokens)[i].value && (!((*tokens)[i].type >= TK_PIPE
-		&& (*tokens)[i].type <= TK_OR)))
+	while ((*tokens)[i].value && (!((*tokens)[i].type == TK_PIPE)))
 	{
 		if ((*tokens)[i].type >= TK_FILE_IN && (*tokens)[i].type <= TK_EOF)
 		{

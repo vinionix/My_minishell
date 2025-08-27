@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 18:14:40 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:09:26 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,13 @@ static t_token	*create_tokens(char **matrix)
 		tokens[i].value = ft_strdup(matrix[i]);
 		tokens[i].id = i;
 		tokens[i].passed = -1;
-		tokens[i].subshell = NULL;
 		i++;
 	}
 	tokens[i].value = NULL;
 	tokens[i].id = 0;
 	tokens[i].passed = 0;
 	tokens[i].type = -1;
-	tokens[i].subshell = NULL;
 	return (tokens);
-}
-
-void	print_subshells(t_token *tokens)
-{
-	if (!tokens || (tokens->value == NULL && tokens->type != TK_SUBSHELL))
-		return ;
-	if (tokens->type == TK_SUBSHELL && tokens->subshell)
-		print_subshells(tokens->subshell);
-	else if (tokens->value)
-		printf("%s ", tokens->value);
-	print_subshells(tokens + 1);
 }
 
 int	tokenizer(t_arg_main *args)
@@ -64,7 +51,6 @@ int	tokenizer(t_arg_main *args)
 		free_split(args->matrix);
 		return (1);
 	}
-	creat_subshell(&args->tokens);
 	tree_creator(&args->tokens, &args->tree, -1);
 	get_data()->head = args->tree;
 	return (0);
