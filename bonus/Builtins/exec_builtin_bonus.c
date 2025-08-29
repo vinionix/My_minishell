@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/27 15:45:15 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/28 17:34:15 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,28 +20,59 @@ bool	is_builtin(char *command)
 		|| !ft_strcmp(command, "pwd"));
 }
 
-int	exec_builtin(char ***matrix, t_env **envs, t_tree *tree)
+static void	redirect_std(int std_in, int std_out)
+{
+	dup2(std_in, STDIN_FILENO);
+	dup2(std_out, STDOUT_FILENO);
+	close(std_in);
+	close(std_out);
+}
+
+static void	aux_exec_builtin(char ***matrix,
+	int *receiver, t_env **env)
 {
 	if (is_builtin((*matrix)[0]))
-		(*matrix) = expand_and_wildcard((*matrix), get_data()->env);
-	if (!ft_strcmp((*matrix)[0], "exit"))
-		return (ft_exit((*matrix), tree, *envs));
-	else if (!ft_strcmp((*matrix)[0], "env"))
-		return (ft_env(*envs, (*matrix)));
+		(*matrix) = expand_and_wildcard((*matrix), *env);
+	if (!ft_strcmp((*matrix)[0], "env"))
+		*receiver = (ft_env(*env, (*matrix)));
 	else if (!ft_strcmp((*matrix)[0], "cd"))
-		return (ft_cd((*matrix), *envs));
+		*receiver = (ft_cd((*matrix), *env));
 	else if (!ft_strcmp((*matrix)[0], "export") && !(*matrix)[1])
-		return (export_no_args(*envs));
+		*receiver = (export_no_args(*env));
 	else if (!ft_strcmp((*matrix)[0], "export"))
-		return (ft_export((*matrix), envs));
+		*receiver = (ft_export((*matrix), env));
 	else if (!ft_strcmp((*matrix)[0], "echo") && (*matrix)[1]
 		&& !ft_strcmp((*matrix)[1], "-n"))
-		return (ft_echo_n((*matrix)));
+		*receiver = (ft_echo_n((*matrix)));
 	else if (!ft_strcmp((*matrix)[0], "echo"))
-		return (ft_echo((*matrix)));
+		*receiver = (ft_echo((*matrix)));
 	else if (!ft_strcmp((*matrix)[0], "unset"))
-		return (ft_unset((*matrix), envs));
+		*receiver = (ft_unset((*matrix), env));
 	else if (!ft_strcmp((*matrix)[0], "pwd"))
-		return (ft_pwd((*matrix)));
-	return (1337);
+		*receiver = (ft_pwd((*matrix)));
+}
+
+int	exec_builtin(char ***matrix, t_env **envs, t_tree *tree)
+{
+	int	std_in;
+	int	std_out;
+	int	receiver;
+
+	std_in = dup(STDIN_FILENO);
+	std_out = dup(STDOUT_FILENO);
+	receiver = 1337;
+	if (if_redirect(tree->u_define.command.list_redir) == -1)
+	{
+		redirect_std(std_in, std_out);
+		return (1);
+	}
+	aux_exec_builtin(matrix, &receiver, envs);
+	if (!ft_strcmp((*matrix)[0], "exit"))
+	{
+		close(std_in);
+		close(std_out);
+		receiver = (ft_exit((*matrix), get_data()->head, *envs));
+	}
+	redirect_std(std_in, std_out);
+	return (receiver);
 }

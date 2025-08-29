@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   search.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/27 15:24:16 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/29 14:14:21 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-static int	final_pos_tokens(t_token *tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens[i + 1].value != NULL)
-		i++;
-	return (i);
-}
 
 void	verify_tokens_right(t_token **tokens, int i, int *flag, int *receiver)
 {

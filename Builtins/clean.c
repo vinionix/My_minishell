@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/07/11 14:51:24 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/28 15:24:14 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ void	ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code)
 		free_env_list(env);
 	if (tree)
 		free_tree(tree);
+	write(1, "exit\n", 5);
 	exit(exit_code);
 }

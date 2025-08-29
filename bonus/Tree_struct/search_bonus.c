@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   search_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/27 15:50:06 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/29 14:15:44 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_bonus.h"
-
-static int	final_pos_tokens(t_token *tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens[i + 1].value != NULL || tokens[i + 1].type == TK_SUBSHELL)
-		i++;
-	return (i);
-}
 
 void	verify_tokens_right(t_token **tokens, int i, int *flag, int *receiver)
 {

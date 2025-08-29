@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:39:07 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/27 15:09:26 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/28 19:54:56 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	tokenizer(t_arg_main *args)
 		free_split(args->matrix);
 		return (1);
 	}
+	get_data()->tokens = args->tokens;
 	tree_creator(&args->tokens, &args->tree, -1);
 	get_data()->head = args->tree;
 	return (0);

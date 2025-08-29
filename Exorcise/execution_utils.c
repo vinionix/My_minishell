@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/27 15:26:49 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/28 20:04:06 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 void	free_tree_and_env(void)
 {
-	free_tree(get_data()->head);
-	free_list(get_data()->env);
+	if (get_data()->head)
+		free_tree(get_data()->head);
+	if (get_data()->env)
+		free_list(get_data()->env);
 }
 
 t_tree	*last_left(t_tree *tree)

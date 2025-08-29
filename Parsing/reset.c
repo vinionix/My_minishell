@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   reset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 15:18:41 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/27 15:30:04 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/28 15:03:06 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int count_chars(char *str)
+static int	count_chars(char *str)
 {
 	int	i;
 	int	size;

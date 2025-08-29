@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/27 15:45:39 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/29 13:00:05 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_bonus.h"
 
-static void	exec_bin(t_tree *current_node, int std_out)
+static void	exec_bin(t_tree *current_node)
 {
 	char	**path;
 	char	**env_exe;
@@ -25,7 +25,7 @@ static void	exec_bin(t_tree *current_node, int std_out)
 	valid_path(current_node->u_define.command.cmd, path);
 	execve(current_node->u_define.command.cmd[0],
 		current_node->u_define.command.cmd, env_exe);
-	dup2(std_out, STDOUT_FILENO);
+	dup2(1, STDOUT_FILENO);
 	printf("%s: command not found\n", current_node->u_define.command.cmd[0]);
 	free_matrix(path);
 	free_matrix(env_exe);
@@ -33,21 +33,23 @@ static void	exec_bin(t_tree *current_node, int std_out)
 	exit(127);
 }
 
-void	exorcise(t_tree *current_node, int std_out)
+void	exorcise(t_tree *current_node, t_process *process)
 {
 	int	exit_code;
 
 	exit_code = 0;
+	if (process)
+		free_process(&process);
 	if (if_redirect(current_node->u_define.command.list_redir) == -1)
 	{
 		free_tree_and_env();
 		exit (1);
 	}
 	exit_code = exec_builtin(&current_node->u_define.command.cmd,
-			&get_data()->env, get_data()->head);
+			&get_data()->env, current_node);
 	get_data()->exit_code = exit_code;
 	if (get_data()->exit_code == 1337)
-		exec_bin(current_node, std_out);
+		exec_bin(current_node);
 	free_tree_and_env();
 	exit(get_data()->exit_code);
 }
@@ -82,12 +84,12 @@ static void	exec_tree(t_tree *current_node, int is_subshell)
 	{
 		if (current_node->type == TK_PIPE)
 			ft_pipe(&current_node, 1);
-		else if (current_node->type == TK_AND && (get_data()->exit_code == 0
+		if (current_node->type == TK_AND && (get_data()->exit_code == 0
 				|| get_data()->exit_code == -1))
 			tk_and(current_node);
-		else if (current_node->type == TK_OR && get_data()->exit_code != 0)
+		if (current_node->type == TK_OR && get_data()->exit_code != 0)
 			tk_or(current_node);
-		else if (current_node->type == TK_SUBSHELL)
+		if (current_node->type == TK_SUBSHELL)
 			exec_subshell(current_node);
 		current_node = current_node->prev;
 	}

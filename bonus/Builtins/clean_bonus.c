@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/27 15:45:08 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/28 15:25:31 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ void	ft_clean_and_exit(t_env *env, t_tree *tree, unsigned int exit_code)
 		free_env_list(env);
 	if (tree)
 		free_tree(tree);
+	write(1, "exit\n", 5);
 	exit(exit_code);
 }

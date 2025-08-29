@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   change_env_variable.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 17:43:40 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/07/22 17:57:44 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/28 14:51:50 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
 
-void	change_env_var(t_env *envs, char *env_to_change, char *value)
+void	change_var(t_env *envs, char *env_to_change, char *value)
 {
 	t_env	*env;
 

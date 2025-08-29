@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 20:58:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 18:11:57 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/28 20:40:57 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,60 +56,39 @@ int	here_verify(t_redir *redir, int is_command)
 	return (0);
 }
 
-static void	verify_break(char **rline, int is_command, int *pipefd, char *eof)
+static int	verify_break(char **rline, int is_command, int *pipefd, char *eof)
 {
-	if (ft_strcmp(rline[0], eof) == 0)
+	if (ft_strcmp(rline[0], eof) == 0 || !rline[0])
 	{
-		free(rline[0]);
-		free_tree_and_env();
-		exit(0);
-	}
-	if (!rline[0])
-	{
+		if (rline[0])
+			free(rline[0]);
 		if (is_command == 1)
 			close(pipefd[1]);
-		free_tree_and_env();
-		exit(0);
+		return (-1);
 	}
 	if (is_command == 1)
 	{
 		write(pipefd[1], rline[0], ft_strlen(rline[0]));
 		write(pipefd[1], "\n", 1);
 	}
-}
-
-static void	wait_here(int pid, int is_command, int status, int *pipefd)
-{
-	waitpid(pid, &status, 0);
-	if (is_command == 1)
-		close(pipefd[1]);
+	return (0);
 }
 
 int	here(char *eof, int is_command, int *pipefd)
 {
-	pid_t	pid;
 	int		status;
 	char	*rline[2];
 
 	status = 0;
-	pid = fork();
 	rline[1] = NULL;
-	if (pid == 0)
+	signal(SIGINT, SIG_IGN);
+	while (1)
 	{
-		signal(SIGINT, handle_sigkill);
-		while (1)
-		{
-			rline[0] = readline("> ");
-			expand_variables(rline, get_data()->env);
-			verify_break(rline, is_command, pipefd, eof);
-			free(rline[0]);
-		}
+		rline[0] = readline("");
+		expand_variables(rline, get_data()->env);
+		if (verify_break(rline, is_command, pipefd, eof) == -1)
+			break ;
+		free(rline[0]);
 	}
-	else
-	{
-		wait_here(pid, is_command, status, pipefd);
-		if (handle_sigint_in_heredoc(status, pid))
-			return (0);
-		return (1);
-	}
+	return (1);
 }

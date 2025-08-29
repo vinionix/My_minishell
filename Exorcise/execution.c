@@ -6,13 +6,13 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/27 15:27:54 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/29 19:56:50 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	exec_bin(t_tree *current_node, int std_out)
+static void	exec_bin(t_tree *current_node)
 {
 	char	**path;
 	char	**env_exe;
@@ -25,7 +25,7 @@ static void	exec_bin(t_tree *current_node, int std_out)
 	valid_path(current_node->u_define.command.cmd, path);
 	execve(current_node->u_define.command.cmd[0],
 		current_node->u_define.command.cmd, env_exe);
-	dup2(std_out, STDOUT_FILENO);
+	dup2(1, STDOUT_FILENO);
 	printf("%s: command not found\n", current_node->u_define.command.cmd[0]);
 	free_matrix(path);
 	free_matrix(env_exe);
@@ -33,11 +33,13 @@ static void	exec_bin(t_tree *current_node, int std_out)
 	exit(127);
 }
 
-void	exorcise(t_tree *current_node, int std_out)
+void	exorcise(t_tree *current_node, t_process *process)
 {
 	int	exit_code;
 
 	exit_code = 0;
+	if (process)
+		free_process(&process);
 	if (if_redirect(current_node->u_define.command.list_redir) == -1)
 	{
 		free_tree_and_env();
@@ -47,7 +49,7 @@ void	exorcise(t_tree *current_node, int std_out)
 			&get_data()->env, get_data()->head);
 	get_data()->exit_code = exit_code;
 	if (get_data()->exit_code == 1337)
-		exec_bin(current_node, std_out);
+		exec_bin(current_node);
 	free_tree_and_env();
 	exit(get_data()->exit_code);
 }

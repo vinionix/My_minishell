@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   if_redirect_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/27 15:45:55 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/28 16:23:49 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static int	if_file_in(t_redir *temp, int current_fd)
 	}
 	else
 	{
+		printf("CARALJHOOOOOOOO");
 		dup2(current_fd, STDIN_FILENO);
 		close(current_fd);
 	}

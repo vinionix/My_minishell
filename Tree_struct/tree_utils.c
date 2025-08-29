@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/27 15:22:18 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/29 14:15:24 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,14 @@ int	create_head(t_tree **tree, t_token **tokens)
 		return (-1);
 	(*tree)->main = 1;
 	return (0);
+}
+
+int	final_pos_tokens(t_token *tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i + 1].value != NULL)
+		i++;
+	return (i);
 }

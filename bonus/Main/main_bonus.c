@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 21:06:12 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/27 15:46:15 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/29 20:29:20 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,19 @@ static void	tokenizer_and_exec(t_arg_main *args)
 	}
 }
 
+static int	ft_is_space(char *rdline)
+{
+	int i = 0;
+
+	if (rdline == NULL)
+		return (0);
+	while (rdline[i] && rdline[i] <= 32)
+		i++;
+	if (rdline[i] == '\0')
+		return (1);
+	return (0);
+}
+
 static void	aux_main(void)
 {
 	t_arg_main	args;
@@ -39,10 +52,16 @@ static void	aux_main(void)
 	get_data()->exit_code = 0;
 	while (42)
 	{
+		set_signal();
 		initialize_args_main(&args);
 		args.rdline = readline("minishell$ ");
 		handle_sigint_code();
-		if (!args.rdline)
+		if (ft_is_space(args.rdline))
+		{
+			free(args.rdline);
+			args.rdline = NULL;
+		}
+		else if (!args.rdline)
 		{
 			printf("exit\n");
 			if (get_data()->env)
@@ -51,6 +70,7 @@ static void	aux_main(void)
 		}
 		if (args.rdline)
 		{
+			signal(SIGINT, handle_sigint_no_redisplay);
 			if (args.rdline[0] != '\0')
 				tokenizer_and_exec(&args);
 			add_history(args.rdline);
@@ -69,9 +89,10 @@ int	main(int ac, char **av, const char **env)
 	envs = get_env_vars(env);
 	get_data()->env = envs;
 	create_default_env(&envs);
-	set_signal();
 	get_data()->exited_in_fork = false;
 	get_data()->is_subshell = 0;
+	get_data()->l_or_r = 0;
+	get_data()->tokens = NULL;
 	aux_main();
 	return (0);
 }

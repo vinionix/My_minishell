@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 03:51:03 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/27 15:44:03 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/29 14:09:57 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,9 @@ int	check_last_token(t_token **tokens, int i)
 
 int	check_consecutive_operators(t_token **tokens, int i)
 {
-	if (i > 0 && ((*tokens)[i].type == TK_PIPE
-		&& ((*tokens)[i - 1].type == TK_PIPE)))
+	if (i > 0 && ((*tokens)[i].type == TK_PIPE)
+		&& ((*tokens)[i - 1].type >= TK_REDIR_IN
+		&& (*tokens)[i - 1].type <= TK_PIPE))
 	{
 		print_error("minishell: syntax error near unexpected token",
 			(*tokens)[i].value);

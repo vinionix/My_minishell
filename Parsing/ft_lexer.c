@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lexer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:49:33 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/27 15:08:56 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/28 15:02:30 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ static void	ft_word_command_env(t_token **tokens)
 	{
 		if ((*tokens)[i].type == 0)
 		{
-			if ((*tokens)[i].id == 0 || (*tokens)[i - 1].type == TK_PIPE || ((*tokens)[i
-					- 1].type >= TK_FILE_IN && (*tokens)[i - 1].type <= TK_EOF))
+			if ((*tokens)[i].id == 0 || (*tokens)[i - 1].type == TK_PIPE
+			|| ((*tokens)[i - 1].type >= TK_FILE_IN
+				&& (*tokens)[i - 1].type <= TK_EOF))
 				(*tokens)[i].type = TK_COMMAND;
 		}
 		if ((*tokens)[i].type == TK_COMMAND)

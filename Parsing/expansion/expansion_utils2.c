@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 21:07:31 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/27 15:20:09 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/28 15:04:20 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	remove_key_len(char *copy, t_vars *var)
 
 bool	check_meta(char c)
 {
-	return (c  && c != DOLLAR_MARKER
+	return (c && c != DOLLAR_MARKER
 		&& c != SINGLE_QUOTE_MARKER && c != DOUBLE_QUOTE_MARKER
 		&& !(c >= ' ' && c <= '/') && !(c >= ':' && c <= '@')
 		&& !(c >= '[' && c <= '^') && !(c >= '{' && c <= '~'));

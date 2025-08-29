@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXPANSION_H
-# define EXPANSION_H
+#ifndef EXPANSION_BONUS_H
+# define EXPANSION_BONUS_H
 
 # include "../../minishell_bonus.h"
 # include "../../Wildcard/wildcard_bonus.h"

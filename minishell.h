@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/27 15:27:18 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/29 20:09:22 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 # define MINISHELL_H
 
 # include "libft/libft.h"
-# include <curses.h>
 # include <dirent.h>
-# include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
@@ -25,11 +23,7 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <string.h>
-# include <sys/stat.h>
-# include <sys/types.h>
 # include <sys/wait.h>
-# include <termios.h>
 # include <unistd.h>
 
 # define POSSIBLE_ENV_MARKER '\x1E'
@@ -37,13 +31,7 @@
 # define DOUBLE_QUOTE_MARKER '\x1C'
 # define DOLLAR_MARKER '\x01'
 
-void							logi(int x);
-void							logfl(float x);
-void							logd(double x);
-void							logc(char x);
-void							logs(const char *x);
-
-extern volatile sig_atomic_t	g_signal_v;
+extern int	g_signal_v;
 
 typedef enum e_token_type
 {
@@ -120,6 +108,8 @@ typedef struct s_data
 	t_tree						*head;
 	bool						exited_in_fork;
 	int							is_subshell;
+	int							l_or_r;
+	t_token						*tokens;
 }								t_data;
 
 typedef struct s_arg_main
@@ -143,16 +133,11 @@ typedef struct s_process
 
 unsigned char					ft_exit(char **matrix, t_tree *tree,
 									t_env *env);
-unsigned char					ft_exit(char **matrix, t_tree *tree,
-									t_env *env);
 char							**ft_split(char const *s, char c);
 char							*format_input(char *input);
 char							**creat_command(int id_command,
 									t_token *tokens);
-char							*built_pwd(void);
 char							**get_path(t_env *env);
-char							*get_pwd(void);
-char							*get_pwd(void);
 char							**wildcard(char **matrix);
 char							**expand_and_quotes(char **matrix,
 									t_env *env_lst);
@@ -172,7 +157,8 @@ void							free_tokens(t_token *tokens);
 void							envadd_back(t_env **lst, t_env *new);
 void							ft_pipe(t_tree **tree, int left_or_rigth);
 void							exorcise_manager(t_tree **tree);
-void							exorcise(t_tree *current_node, int std_out);
+void							exorcise(t_tree *current_node,
+									t_process *process);
 void							wait_free_process(t_process **process);
 void							ft_clean_and_exit(t_env *env, t_tree *tree,
 									unsigned int exit_code);
@@ -218,7 +204,7 @@ void							ft_clean_and_exit(t_env *env, t_tree *tree,
 unsigned long long				ft_atol(char *str, int *sign);
 int								jump_to_smt_else(const char *str, char c,
 									int i);
-void							change_env_var(t_env *envs, char *env_to_change,
+void							change_var(t_env *envs, char *env_to_change,
 									char *value);
 void							create_default_env(t_env **envs);
 int								exec_builtin(char ***matrix, t_env **envs,
@@ -237,11 +223,10 @@ t_redir							*creat_list_redir(int id, t_token **tokens);
 bool							is_builtin(char *command);
 void							free_list_redir(t_redir *list);
 void							handle_sigint(int sig);
+void							handle_sigint_no_redisplay(int sig);
 void							set_signal(void);
-int								handle_sigint_in_fork(int status, pid_t pid);
-void							handle_sigkill(int sig);
+int								handle_sigint_in_fork(int status);
 void							handle_sigint_code(void);
-int								handle_sigint_in_heredoc(int status, pid_t pid);
 void							copy_token(t_token *new, t_token *tokens);
 void							copy_children(t_token *tokens, t_token *new,
 									int i, int size);
@@ -274,5 +259,12 @@ int								count_quotes_left(char *str, int i, char c);
 void							parse_quotes(char **matrix);
 void							reset_modified_chars(char **matrix, char c);
 void							remove_quotes(char **matrix);
+t_process						*search_process(t_process **process,
+									t_tree *current_node);
+void							wait_free_process(t_process **process);
+void							solo_redirect(t_tree *tree, int *stdin_fd);
+void							verify_stdin(int *stdin_fd);
+void							free_process(t_process **process);
+int								final_pos_tokens(t_token *tokens);
 
 #endif

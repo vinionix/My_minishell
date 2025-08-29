@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_create.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:19:27 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/27 15:22:59 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/28 20:09:15 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@ void	free_list_redir(t_redir *list)
 {
 	t_redir	*temp;
 
+	if (!list)
+		return ;
 	temp = list;
 	while (temp)
 	{
 		temp = list->next;
+		if (list->fd_heredoc != -1)
+			close(list->fd_heredoc);
 		if (list->eof)
 			free(list->eof);
 		if (list->file)
@@ -38,6 +42,7 @@ t_redir	*creator_node_redir(t_token tokens)
 	redir->eof = NULL;
 	redir->next = NULL;
 	redir->file = NULL;
+	redir->fd_heredoc = -1;
 	if ((tokens).type == TK_EOF)
 		redir->eof = ft_strdup((tokens).value);
 	else if ((tokens).type >= TK_FILE_IN && (tokens).type <= TK_FILE_APP)

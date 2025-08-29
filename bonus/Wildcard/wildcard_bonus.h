@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_bonus.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/27 15:50:56 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/28 14:54:34 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WILDCARD_H
-# define WILDCARD_H
+#ifndef WILDCARD_BONUS_H
+# define WILDCARD_BONUS_H
 
 # include "../minishell_bonus.h"
 

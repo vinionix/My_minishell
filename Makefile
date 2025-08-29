@@ -3,8 +3,7 @@ FLAGS = -g -Wall -Wextra -Werror
 
 LIBFT = libft/libft.a
 
-FUNCTIONS = Main/debug.c \
-            Builtins/builtins.c \
+FUNCTIONS = Builtins/builtins.c \
 						Builtins/env_builtins.c \
 						Builtins/builtins_utils.c \
 						Builtins/builtins2.c \
@@ -41,9 +40,9 @@ FUNCTIONS = Main/debug.c \
      		Tree_struct/search.c \
      		Tree_struct/node_creator.c \
 			Signal/signal.c \
-			Signal/signal_in_heredoc.c \
 			Exorcise/execution.c \
 			Exorcise/pipe.c \
+			Exorcise/pipe_utils.c \
 			Exorcise/find_path.c \
 			Exorcise/heredoc.c \
 			Exorcise/if_redirect.c \
@@ -52,8 +51,7 @@ FUNCTIONS = Main/debug.c \
 			Exorcise/execution_utils.c \
 			Exorcise/exec.c
 
-FUNCTIONS_BONUS = bonus/Main/debug_bonus.c \
-            bonus/Builtins/builtins_bonus.c \
+FUNCTIONS_BONUS = bonus/Builtins/builtins_bonus.c \
 						bonus/Builtins/env_builtins_bonus.c \
 						bonus/Builtins/builtins_utils_bonus.c \
 						bonus/Builtins/builtins2_bonus.c \
@@ -102,9 +100,9 @@ FUNCTIONS_BONUS = bonus/Main/debug_bonus.c \
      		bonus/Tree_struct/search_bonus.c \
      		bonus/Tree_struct/node_creator_bonus.c \
 			bonus/Signal/signal_bonus.c \
-			bonus/Signal/signal_in_heredoc_bonus.c \
 			bonus/Exorcise/execution_bonus.c \
 			bonus/Exorcise/pipe_bonus.c \
+			bonus/Exorcise/pipe_utils_bonus.c \
 			bonus/Exorcise/find_path_bonus.c \
 			bonus/Exorcise/heredoc_bonus.c \
 			bonus/Exorcise/if_redirect_bonus.c \

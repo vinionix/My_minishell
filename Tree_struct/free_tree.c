@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:20:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/27 15:23:10 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/28 15:04:50 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,26 @@
 
 void	free_tree(t_tree *node)
 {
-	if (node == NULL)
+	if (!node)
 		return ;
-	free_tree(node->left);
-	free_tree(node->right);
-	if (node->type == TK_COMMAND || (node->type >= TK_REDIR_IN
-			&& node->type <= TK_HEREDOC))
+	if (node->left)
+		free_tree(node->left);
+	if (node->right)
+		free_tree(node->right);
+	if (node && node->type == TK_COMMAND)
 	{
-		if (node->u_define.command.list_redir)
-			free_list_redir(node->u_define.command.list_redir);
-		if (node->u_define.command.cmd)
+		if (node && node->u_define.command.cmd)
 			free_matrix(node->u_define.command.cmd);
-		free(node);
-		return ;
+		if (node && node->u_define.command.list_redir)
+			free_list_redir(node->u_define.command.list_redir);
 	}
-	free(node);
+	else if (node && node->type >= TK_REDIR_IN && node->type <= TK_HEREDOC)
+	{
+		if (node && node->u_define.command.list_redir)
+			free_list_redir(node->u_define.command.list_redir);
+	}
+	if (node)
+		free(node);
 }
 
 void	free_list(t_env *env)
