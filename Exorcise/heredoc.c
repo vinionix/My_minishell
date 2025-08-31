@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 20:58:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/28 20:40:57 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/30 14:18:02 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ void	creat_here_command(t_tree **tree)
 	temp = (*tree)->u_define.command.list_redir;
 	while (temp)
 	{
-		if (temp->type == TK_EOF)
+		printf("ola\n");
+		if (temp->type == TK_EOF && temp->fd_heredoc == -1)
 		{
 			pipe(pipefd);
-			if (here(temp->eof, 1, pipefd))
+			if (here(temp->eof, 1, pipefd, temp))
 				temp->fd_heredoc = pipefd[0];
 			else
 			{
@@ -52,7 +53,7 @@ int	here_verify(t_redir *redir, int is_command)
 	if (temp && temp->type == TK_EOF && is_command == 1)
 		return (1);
 	else if (temp && temp->type == TK_EOF && is_command == 0)
-		here(temp->eof, 0, 0);
+		here(temp->eof, 0, 0, redir);
 	return (0);
 }
 
@@ -74,12 +75,10 @@ static int	verify_break(char **rline, int is_command, int *pipefd, char *eof)
 	return (0);
 }
 
-int	here(char *eof, int is_command, int *pipefd)
+int	here(char *eof, int is_command, int *pipefd, t_redir *redir)
 {
-	int		status;
 	char	*rline[2];
 
-	status = 0;
 	rline[1] = NULL;
 	signal(SIGINT, SIG_IGN);
 	while (1)
@@ -90,5 +89,7 @@ int	here(char *eof, int is_command, int *pipefd)
 			break ;
 		free(rline[0]);
 	}
+	if (redir->next && is_command == 0 && )
+		here_verify(redir->next, 0);
 	return (1);
 }
