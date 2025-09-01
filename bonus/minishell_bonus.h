@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/29 20:18:30 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/09/01 01:02:29 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_BONUS_H
 
 # include "../libft/libft.h"
+# include <stdio.h>
 # include <dirent.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -21,7 +22,6 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -277,5 +277,10 @@ void							solo_redirect(t_tree *tree, int *stdin_fd);
 void							verify_stdin(int *stdin_fd);
 void							free_process(t_process **process);
 int								final_pos_tokens(t_token *tokens);
+bool							is_command_directory(char *command);
+void							subshell_handler(int sig);
+int								print_command_error(t_tree *current_node);
+void							init_data(void);
+void							exec_consha(t_arg_main *args);
 
 #endif

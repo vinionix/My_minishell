@@ -49,7 +49,8 @@ FUNCTIONS = Builtins/builtins.c \
 			Exorcise/solo_redirect.c \
 			Exorcise/process.c \
 			Exorcise/execution_utils.c \
-			Exorcise/exec.c
+			Exorcise/exec.c \
+			Main/utils.c
 
 FUNCTIONS_BONUS = bonus/Builtins/builtins_bonus.c \
 						bonus/Builtins/env_builtins_bonus.c \
@@ -100,6 +101,7 @@ FUNCTIONS_BONUS = bonus/Builtins/builtins_bonus.c \
      		bonus/Tree_struct/search_bonus.c \
      		bonus/Tree_struct/node_creator_bonus.c \
 			bonus/Signal/signal_bonus.c \
+			bonus/Signal/subshell_handler.c \
 			bonus/Exorcise/execution_bonus.c \
 			bonus/Exorcise/pipe_bonus.c \
 			bonus/Exorcise/pipe_utils_bonus.c \
@@ -110,7 +112,8 @@ FUNCTIONS_BONUS = bonus/Builtins/builtins_bonus.c \
 			bonus/Exorcise/solo_redirect_bonus.c \
 			bonus/Exorcise/process_bonus.c \
 			bonus/Exorcise/execution_utils_bonus.c \
-			bonus/Exorcise/exec_bonus.c
+			bonus/Exorcise/exec_bonus.c \
+			bonus/Main/utils_bonus.c
 
 OBJS = $(FUNCTIONS:.c=.o)
 
@@ -125,32 +128,36 @@ NAME = minishell
 NAME_BONUS = minishell_bonus
 
 .c.o:
-	$(CC) $(FLAGS) -c $< -o $@
+	@echo -n "|"
+	@$(CC) $(FLAGS) -c $< -o $@
 
 all: $(NAME_LIB) $(NAME)
 
 $(NAME_LIB): $(OBJS) $(LIBFT)
-	ar rcs $@ $(OBJS)
+	@ar rcs $@ $(OBJS)
 
 $(NAME_LIB_BONUS): $(OBJS_BONUS) $(LIBFT)
-	ar rcs $@ $(OBJS_BONUS)
+	@ar rcs $@ $(OBJS_BONUS)
 
 $(NAME): $(OBJS) $(LIBFT) $(NAME_LIB)
-	$(CC) $(FLAGS) Main/main.c $(OBJS) -Llibft -lft -lreadline -o $(NAME)
+	@$(CC) $(FLAGS) Main/main.c $(OBJS) -Llibft -lft -lreadline -o $(NAME)
+	@echo "\033[46mminiconsha compiled successfully!\033[0m"
 
 $(NAME_BONUS): $(OBJS_BONUS) $(LIBFT) $(NAME_LIB_BONUS)
-	$(CC) $(FLAGS) bonus/Main/main_bonus.c $(OBJS_BONUS) -Llibft -lft -lreadline -o $(NAME_BONUS)
+	@$(CC) $(FLAGS) bonus/Main/main_bonus.c $(OBJS_BONUS) -Llibft -lft -lreadline -o $(NAME_BONUS)
+	@echo "\033[46mminiconsha compiled successfully!\033[0m"
 
 $(LIBFT):
-	make -C libft
+	@echo
+	@make -C libft --no-print-directory
 
 clean:
-	rm -f $(OBJS) $(OBJS_BONUS)
-	make clean -C libft
+	@rm -f $(OBJS) $(OBJS_BONUS)
+	@make clean -C libft --no-print-directory
 
 fclean: clean
-	rm -f $(NAME) $(NAME_BONUS) $(NAME_LIB) $(NAME_LIB_BONUS)
-	make fclean -C libft
+	@rm -f $(NAME) $(NAME_BONUS) $(NAME_LIB) $(NAME_LIB_BONUS)
+	@make fclean -C libft --no-print-directory
 
 re: fclean all
 

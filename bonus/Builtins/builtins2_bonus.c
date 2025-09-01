@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:41 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/27 15:45:00 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/09/01 01:25:19 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,11 @@ static bool	long_check(char *str)
 	unsigned long long	max;
 	unsigned long long	res;
 	int					sign;
+	int					i;
 
+	i = jump_to_smt_else(str, '0', 0);
+	if ((int)ft_strlen(str + i) > 19)
+		return (false);
 	max = LLONG_MAX;
 	res = ft_atol(str, &sign);
 	if (sign == 1)
@@ -88,7 +92,7 @@ unsigned char	ft_exit(char **matrix, t_tree *tree, t_env *env)
 	else if (!only_numbers(matrix[1]) || !long_check(matrix[1]))
 	{
 		write(2, "exit\n", 5);
-		write(2, "minishell: exit: ", 18);
+		write(2, "miniconsha: exit: ", 19);
 		write(2, matrix[1], ft_strlen(matrix[1]));
 		write(2, ": numeric argument required\n", 28);
 		ft_clean_and_exit(env, tree, 2);
@@ -96,7 +100,7 @@ unsigned char	ft_exit(char **matrix, t_tree *tree, t_env *env)
 	else if (ft_len_matrix(matrix) > 2)
 	{
 		write(2, "exit\n", 5);
-		print_error("minishell: exit: too many arguments", NULL);
+		print_error("miniconsha: exit: too many arguments", NULL);
 		return_value = 1;
 	}
 	else

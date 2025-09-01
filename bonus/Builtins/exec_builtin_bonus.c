@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/28 17:34:15 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/31 22:54:14 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_bonus.h"
+
+static bool	is_only_char(char *str, char c, int i)
+{
+	if (!str)
+		return (false);
+	if (!str[i])
+		return (false);
+	while (str[i])
+	{
+		if (str[i++] != c)
+			return (false);
+	}
+	return (true);
+}
 
 bool	is_builtin(char *command)
 {
@@ -42,7 +56,8 @@ static void	aux_exec_builtin(char ***matrix,
 	else if (!ft_strcmp((*matrix)[0], "export"))
 		*receiver = (ft_export((*matrix), env));
 	else if (!ft_strcmp((*matrix)[0], "echo") && (*matrix)[1]
-		&& !ft_strcmp((*matrix)[1], "-n"))
+		&& (*matrix)[1][0] == '-'
+		&& is_only_char((*matrix)[1], 'n', 1))
 		*receiver = (ft_echo_n((*matrix)));
 	else if (!ft_strcmp((*matrix)[0], "echo"))
 		*receiver = (ft_echo((*matrix)));

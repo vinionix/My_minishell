@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   if_redirect.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/31 21:36:37 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/09/01 01:24:45 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	if_file_app(t_redir *temp, int current_fd)
 	current_fd = open(temp->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (current_fd == -1)
 	{
-		perror("minishell: fail to open file");
+		perror("miniconsha: fail to open file");
 		return (-1);
 	}
 	else
@@ -42,7 +42,7 @@ static int	if_file_out(t_redir *temp, int current_fd)
 	current_fd = open(temp->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (current_fd == -1)
 	{
-		perror("minishell: fail to open file");
+		perror("miniconsha: fail to open file");
 		return (-1);
 	}
 	else
@@ -58,7 +58,7 @@ static int	if_file_in(t_redir *temp, int current_fd)
 	current_fd = open(temp->file, O_RDONLY);
 	if (current_fd == -1)
 	{
-		perror("minishell: fail to open file");
+		perror("miniconsha: fail to open file");
 		return (-1);
 	}
 	else

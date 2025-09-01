@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 03:51:03 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/29 20:19:43 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/08/31 22:51:59 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,7 @@ int	handle_sigint_in_fork(int status)
 		{
 			get_data()->exited_in_fork = true;
 			if (get_data()->is_subshell)
-			{
-				free_tree(get_data()->head);
-				free_list(get_data()->env);
-				exit(130);
-			}
+				get_data()->exit_code = 130;
 			return (1);
 		}
 	}

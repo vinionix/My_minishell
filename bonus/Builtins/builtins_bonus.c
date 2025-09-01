@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:41 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/27 15:44:47 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/09/01 01:25:12 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_cd(char **matrix, t_env *env_list)
 	}
 	else if (ft_len_matrix(matrix) == 1 && !find_env("HOME=", env_list))
 	{
-		print_error("minishell: cd: HOME not set", NULL);
+		print_error("miniconsha: cd: HOME not set", NULL);
 		return (1);
 	}
 	if (parse_home(++matrix, env_list))
@@ -89,7 +89,7 @@ int	ft_pwd(char **matrix)
 	flag = check_flag(matrix);
 	if (flag)
 	{
-		write(2, "minishell: pwd: ", 17);
+		write(2, "miniconsha: pwd: ", 18);
 		write(2, &(*matrix)[0], 1);
 		write(2, &(*matrix)[1], 1);
 		write(2, ": invalid option\n", 18);

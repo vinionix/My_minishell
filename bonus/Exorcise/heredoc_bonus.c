@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 20:58:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/31 22:08:52 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/09/01 01:06:09 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	here_verify(t_redir *redir, int is_command)
 		{
 			if (is_command == 0)
 				here(temp->eof, 0, 0);
-			else 
+			else
 				return (1);
 		}
 		temp = temp->next;
@@ -82,7 +82,7 @@ int	here(char *eof, int is_command, int *pipefd)
 	signal(SIGINT, SIG_IGN);
 	while (1)
 	{
-		rline[0] = readline("");
+		rline[0] = readline("↪︎ ");
 		expand_variables(rline, get_data()->env);
 		if (verify_break(rline, is_command, pipefd, eof) == -1)
 			return (1);

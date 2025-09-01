@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/29 13:00:05 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/31 23:52:16 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ static void	exec_bin(t_tree *current_node)
 {
 	char	**path;
 	char	**env_exe;
+	int		exit_code;
 
+	exit_code = 127;
 	path = get_path(get_data()->env);
 	env_exe = env_execv(get_data()->env);
 	current_node->u_define.command.cmd
@@ -26,11 +28,11 @@ static void	exec_bin(t_tree *current_node)
 	execve(current_node->u_define.command.cmd[0],
 		current_node->u_define.command.cmd, env_exe);
 	dup2(1, STDOUT_FILENO);
-	printf("%s: command not found\n", current_node->u_define.command.cmd[0]);
+	exit_code = print_command_error(current_node);
 	free_matrix(path);
 	free_matrix(env_exe);
 	free_tree_and_env();
-	exit(127);
+	exit(exit_code);
 }
 
 void	exorcise(t_tree *current_node, t_process *process)

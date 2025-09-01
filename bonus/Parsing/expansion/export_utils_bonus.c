@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:01:44 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/27 15:47:26 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/09/01 01:25:57 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	check_first_char(char *variable)
 {
 	if (!ft_isalpha((int)variable[0]) && variable[0] != '_')
 	{
-		write(2, "minishell: export: `", 21);
+		write(2, "miniconsha: export: `", 22);
 		write(2, variable, ft_strlen(variable));
 		write(2, "': not a valid identifier\n", 27);
 		return (1);
@@ -28,7 +28,7 @@ int	check_following_chars(char *variable, char c)
 {
 	if (!ft_isalnum((int)c) && c != '_')
 	{
-		write(2, "minishell: export: `", 21);
+		write(2, "miniconsha: export: `", 22);
 		write(2, variable, ft_strlen(variable));
 		write(2, "': not a valid identifier\n", 27);
 		return (1);

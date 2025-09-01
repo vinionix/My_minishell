@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/27 15:46:07 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/09/01 01:24:45 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	creat_solo_redirect(t_redir *redir)
 		if (current_fd == -1)
 		{
 			get_data()->exit_code = 1;
-			perror("minishell: fail to open file");
+			perror("miniconsha: fail to open file");
 		}
 		else
 		{

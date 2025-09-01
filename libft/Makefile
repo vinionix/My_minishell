@@ -67,13 +67,15 @@ OBJS_PRINTF = $(FUNCTIONS_PRINTF:.c=.o)
 NAME = libft.a
 
 .c.o:
-	$(CC) $(FLAGS) -c $< -o $(<:.c=.o)
+	@echo -n "|"
+	@$(CC) $(FLAGS) -c $< -o $(<:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(OBJS_PRINTF)
-	ar -rc $(NAME) $(OBJS) $(OBJS_PRINTF)
+	@echo
+	@ar -rc $(NAME) $(OBJS) $(OBJS_PRINTF)
 clean:
-	rm -f $(OBJS) $(OBJS_PRINTF)
+	@rm -f $(OBJS) $(OBJS_PRINTF)
 fclean: clean
-	rm -f $(NAME) $(OBJS) $(OBJS_PRINTF)
+	@rm -f $(NAME) $(OBJS) $(OBJS_PRINTF)
 re: fclean all

@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:41 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/27 15:45:05 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/09/01 01:25:29 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	change_dir(char *str)
 {
 	if (chdir(str))
 	{
-		write(2, "minishell: cd: ", 16);
+		write(2, "miniconsha: cd: ", 17);
 		write(2, str, ft_strlen(str));
 		write(2, ": No such file or directory\n", 28);
 		return (1);
@@ -37,7 +37,7 @@ static int	home_set(t_env *env_list, int home)
 {
 	if (!find_env("HOME=", env_list) && (home == 1 || home == 2))
 	{
-		print_error("minishell: cd: HOME not set", NULL);
+		print_error("miniconsha: cd: HOME not set", NULL);
 		return (0);
 	}
 	return (1);
