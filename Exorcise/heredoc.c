@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 20:58:08 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/30 14:18:02 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/31 21:30:18 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,15 @@ void	creat_here_command(t_tree **tree)
 	temp = (*tree)->u_define.command.list_redir;
 	while (temp)
 	{
-		printf("ola\n");
 		if (temp->type == TK_EOF && temp->fd_heredoc == -1)
 		{
 			pipe(pipefd);
-			if (here(temp->eof, 1, pipefd, temp))
+			if (here(temp->eof, 1, pipefd))
 				temp->fd_heredoc = pipefd[0];
-			else
+			if (here_verify(temp->next, 1))
 			{
-				temp->fd_heredoc = -1;
 				close(pipefd[0]);
-				close(pipefd[1]);
+				temp->fd_heredoc = -1;
 			}
 		}
 		temp = temp->next;
@@ -47,13 +45,14 @@ int	here_verify(t_redir *redir, int is_command)
 	while (temp)
 	{
 		if (temp->type == TK_EOF)
-			break ;
+		{
+			if (is_command == 0)
+				here(temp->eof, 0, 0);
+			else 
+				return (1);
+		}
 		temp = temp->next;
 	}
-	if (temp && temp->type == TK_EOF && is_command == 1)
-		return (1);
-	else if (temp && temp->type == TK_EOF && is_command == 0)
-		here(temp->eof, 0, 0, redir);
 	return (0);
 }
 
@@ -75,7 +74,7 @@ static int	verify_break(char **rline, int is_command, int *pipefd, char *eof)
 	return (0);
 }
 
-int	here(char *eof, int is_command, int *pipefd, t_redir *redir)
+int	here(char *eof, int is_command, int *pipefd)
 {
 	char	*rline[2];
 
@@ -86,10 +85,9 @@ int	here(char *eof, int is_command, int *pipefd, t_redir *redir)
 		rline[0] = readline("");
 		expand_variables(rline, get_data()->env);
 		if (verify_break(rline, is_command, pipefd, eof) == -1)
-			break ;
+			return (1);
 		free(rline[0]);
 	}
-	if (redir->next && is_command == 0 && )
-		here_verify(redir->next, 0);
+	signal(SIGINT, handle_sigint_no_redisplay);
 	return (1);
 }

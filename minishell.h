@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 00:44:20 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/30 13:43:23 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/31 21:15:04 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,8 +166,7 @@ void							creat_solo_redirect(t_redir *redir);
 void							free_matrix(char **matrix);
 void							expand_variables(char **matrix, t_env *env_lst);
 void							creat_here_command(t_tree **tree);
-int								here(char *eof, int is_command, int *pipefd,
-									t_redir *redir);
+int								here(char *eof, int is_command, int *pipefd);
 int								here_verify(t_redir *redir, int is_command);
 int								sintaxe_error(t_token **tokens);
 int								ft_len_matrix(char **matrix);

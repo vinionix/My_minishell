@@ -6,7 +6,7 @@
 /*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/08/30 13:51:03 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/08/31 21:36:37 by vfidelis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,11 @@
 
 static void	if_eof(t_redir *temp)
 {
-	if (temp->fd_heredoc == -1)
+	if (temp->fd_heredoc != -1)
 	{
-		free_tree_and_env();
-		exit(130);
+		dup2(temp->fd_heredoc, STDIN_FILENO);
+		close(temp->fd_heredoc);
 	}
-	printf("HEREDOC\n");
-	dup2(temp->fd_heredoc, STDIN_FILENO);
-	close(temp->fd_heredoc);
 }
 
 static int	if_file_app(t_redir *temp, int current_fd)
