@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_builtins.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/15 22:18:08 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/09/01 03:51:21 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ int	ft_env(t_env *env, char **matrix)
 		return (1);
 	if (ft_len_matrix(matrix) > 1)
 	{
-		printf("env: ‘%s’: No such file or directory", matrix[1]);
+		write(2, "env: ‘", 9);
+		write(2, matrix[1], ft_strlen(matrix[1]));
+		ft_putendl_fd("’: No such file or directory", 2);
 		return (127);
 	}
 	while (temp)

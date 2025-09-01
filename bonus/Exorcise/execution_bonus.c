@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:57:58 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/31 23:52:16 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/09/01 04:14:28 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,17 @@ static void	exec_bin(t_tree *current_node)
 	char	**env_exe;
 	int		exit_code;
 
-	exit_code = 127;
 	path = get_path(get_data()->env);
 	env_exe = env_execv(get_data()->env);
 	current_node->u_define.command.cmd
 		= expand_and_wildcard(current_node->u_define.command.cmd,
 			get_data()->env);
-	valid_path(current_node->u_define.command.cmd, path);
-	execve(current_node->u_define.command.cmd[0],
-		current_node->u_define.command.cmd, env_exe);
+	if (path)
+	{
+		valid_path(current_node->u_define.command.cmd, path);
+		execve(current_node->u_define.command.cmd[0],
+			current_node->u_define.command.cmd, env_exe);
+	}
 	dup2(1, STDOUT_FILENO);
 	exit_code = print_command_error(current_node);
 	free_matrix(path);

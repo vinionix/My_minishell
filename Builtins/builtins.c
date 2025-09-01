@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:41 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/09/01 01:26:03 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/09/01 03:57:17 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ int	ft_echo_n(char **matrix)
 			i++;
 		}
 	}
-	else
-		printf("\n");
 	return (0);
 }
 
@@ -98,7 +96,6 @@ int	ft_pwd(char **matrix)
 	pwd = get_pwd();
 	if (!pwd)
 		return (1);
-	printf("SIM\n");
 	printf("%s\n", pwd);
 	free(pwd);
 	return (0);

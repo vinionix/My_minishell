@@ -145,7 +145,8 @@ $(NAME): $(OBJS) $(LIBFT) $(NAME_LIB)
 
 $(NAME_BONUS): $(OBJS_BONUS) $(LIBFT) $(NAME_LIB_BONUS)
 	@$(CC) $(FLAGS) bonus/Main/main_bonus.c $(OBJS_BONUS) -Llibft -lft -lreadline -o $(NAME_BONUS)
-	@echo "\033[46mminiconsha compiled successfully!\033[0m"
+	@echo
+	@echo "\033[46mminiconsha_bonus compiled successfully!\033[0m"
 
 $(LIBFT):
 	@echo

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:12:24 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/26 17:48:34 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/09/01 04:11:24 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ char	**get_path(t_env *env)
 	t_env	*temp;
 
 	temp = find_env("PATH=", env);
-	path = NULL;
+	if (temp == NULL)
+		return (NULL);
 	path = ft_split(temp->value, ':');
 	return (path);
 }

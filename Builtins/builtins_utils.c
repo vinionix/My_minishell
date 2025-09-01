@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfidelis <vfidelis@student.42.rio>         +#+  +:+       +#+        */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 01:43:41 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/15 22:17:31 by vfidelis         ###   ########.fr       */
+/*   Updated: 2025/09/01 04:10:33 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,12 @@ void	free_matrix(char **matrix)
 	int	i;
 
 	i = 0;
-	while (matrix[i])
-		free(matrix[i++]);
-	free(matrix);
+	if (matrix)
+	{
+		while (matrix[i])
+			free(matrix[i++]);
+		free(matrix);
+	}
 }
 
 char	*get_pwd(void)

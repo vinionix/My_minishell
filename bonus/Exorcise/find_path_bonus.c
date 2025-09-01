@@ -6,7 +6,7 @@
 /*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:12:24 by vfidelis          #+#    #+#             */
-/*   Updated: 2025/08/27 15:45:47 by gada-sil         ###   ########.fr       */
+/*   Updated: 2025/09/01 04:03:42 by gada-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ char	**get_path(t_env *env)
 	t_env	*temp;
 
 	temp = find_env("PATH=", env);
-	path = NULL;
+	if (temp == NULL)
+		return (NULL);
 	path = ft_split(temp->value, ':');
 	return (path);
 }
