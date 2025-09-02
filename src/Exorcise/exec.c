@@ -1,0 +1,83 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 01:43:49 by gada-sil          #+#    #+#             */
+/*   Updated: 2025/09/01 01:25:40 by gada-sil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../consha.h"
+
+int	print_command_error(t_tree *current_node)
+{
+	char	*command;
+
+	command = current_node->u_define.command.cmd[0];
+	if (is_command_directory(command))
+	{
+		ft_putstr_fd("consha: ", 2);
+		ft_putstr_fd(command, 2);
+		ft_putendl_fd(" Is a directory", 2);
+		return (126);
+	}
+	else
+	{
+		ft_putstr_fd(command, 2);
+		ft_putendl_fd(": command not found", 2);
+	}
+	return (127);
+}
+
+void	exec_command_solo(t_tree *current_node)
+{
+	int		status;
+	pid_t	pid;
+
+	status = 0;
+	if ((current_node->u_define.command.list_redir
+			&& !is_builtin(current_node->u_define.command.cmd[0]))
+		|| !is_builtin(current_node->u_define.command.cmd[0]))
+	{
+		pid = fork();
+		if (pid == 0)
+			exorcise(current_node, NULL);
+		else
+		{
+			waitpid(pid, &status, 0);
+			get_data()->exit_code = WEXITSTATUS(status);
+			change_var(get_data()->env, "?=", ft_itoa(get_data()->exit_code));
+		}
+	}
+	else
+	{
+		status = exec_builtin(&current_node->u_define.command.cmd,
+				&get_data()->env, current_node);
+		get_data()->exit_code = status;
+		change_var(get_data()->env, "?=", ft_itoa(get_data()->exit_code));
+	}
+}
+
+void	exec_subshell(t_tree *subtree)
+{
+	pid_t	pid;
+	int		status;
+
+	status = 0;
+	pid = fork();
+	if (pid == 0)
+	{
+		signal(SIGINT, subshell_handler);
+		get_data()->is_subshell = 1;
+		exorcise_manager(&subtree, 1);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		get_data()->exit_code = WEXITSTATUS(status);
+		change_var(get_data()->env, "?=", ft_itoa(get_data()->exit_code));
+	}
+}
