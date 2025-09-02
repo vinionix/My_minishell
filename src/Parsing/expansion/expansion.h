@@ -1,17 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expansion.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: gada-sil <gada-sil@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/01 21:07:31 by gada-sil          #+#    #+#             */
-/*   Updated: 2025/05/01 22:15:45 by gada-sil         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#ifndef expansion_H
-# define expansion_H
+#ifndef EXPANSION_H
+# define EXPANSION_H
 
 # include "../../consha.h"
 # include "../../Wildcard/wildcard.h"
