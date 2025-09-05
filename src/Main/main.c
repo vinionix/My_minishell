@@ -23,15 +23,28 @@ static int	ft_is_space(char *rdline)
 	return (0);
 }
 
+static	char *get_prompt(char *prompt, char *cwd)
+{
+	char	*modified_cwd = ft_strjoin("\33[29m", cwd);
+	modified_cwd = join(modified_cwd, "\33[0m");
+	char	*med = ft_strjoin(prompt, modified_cwd);
+	char	*res = ft_strjoin(med, "\n\33[1;33m❯\33[0m ");
+	free(cwd);
+	free(med);
+	free(modified_cwd);
+	return (res);
+}
+
 static void	aux_main(void)
 {
 	t_arg_main	args;
-
+	char	*prompt = "\033[1;33m෧consha ⇀\033[0m";
 	while (42)
 	{
 		set_signal();
 		initialize_args_main(&args);
-		args.rdline = readline("\033[1;44mconsha\033[0m ↪︎ ");
+		char *prompt_with_dir = get_prompt(prompt, get_pwd());
+		args.rdline = readline(prompt_with_dir);
 		handle_sigint_code();
 		if (ft_is_space(args.rdline))
 		{
@@ -49,6 +62,7 @@ static void	aux_main(void)
 			exec_consha(&args);
 		if (args.rdline)
 			free(args.rdline);
+		free(prompt_with_dir);
 	}
 }
 
@@ -62,7 +76,7 @@ int	main(int ac, char **av, const char **env)
 	get_data()->env = envs;
 	create_default_env(&envs);
 	init_data();
-	printf("Welcome to \033[1;44mconsha\033[0m!\n");
+	printf("Welcome to \033[1;33mconsha\033[0m!\n");
 	aux_main();
 	return (0);
 }
