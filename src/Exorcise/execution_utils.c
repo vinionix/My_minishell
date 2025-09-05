@@ -3,30 +3,12 @@
 bool	is_command_directory(char *command)
 {
 	DIR				*dir;
-	struct dirent	*entry;
 
-	if ((command && command[0] && command[1]
-			&& command[0] != '.' && command[1] != '/')
-		|| !command[1])
-		return (false);
-	dir = opendir(".");
+	dir = opendir(command);
 	if (dir == NULL)
-	{
-		perror("opendir");
-		return (1);
-	}
-	entry = readdir(dir);
-	while (entry != NULL)
-	{
-		if (ft_strcmp(entry->d_name, command + 2) == 0)
-		{
-			closedir(dir);
-			return (true);
-		}
-		entry = readdir(dir);
-	}
+		return (false);
 	closedir(dir);
-	return (false);
+	return (true);
 }
 
 void	free_tree_and_env(void)
