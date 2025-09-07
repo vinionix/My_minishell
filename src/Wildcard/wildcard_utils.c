@@ -24,7 +24,7 @@ int	str_revcmp(const char *s1, const char *s2)
 		l1--;
 		l2--;
 	}
-	if (l1 != l2)
+	if (l1 != l2 && l2 >= 0)
 		return (s1[l1] - s2[l2]);
 	return (0);
 }
