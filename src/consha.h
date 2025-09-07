@@ -270,5 +270,6 @@ void							subshell_handler(int sig);
 int								print_command_error(t_tree *current_node);
 void							init_data(void);
 void							exec_consha(t_arg_main *args);
+char							**attach_ls_flags(char **command);
 
 #endif

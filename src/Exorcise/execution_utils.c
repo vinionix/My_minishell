@@ -1,5 +1,20 @@
 #include "../consha.h"
 
+char	**attach_ls_flags(char **command)
+{
+	int	pos = 1;
+	int		len = ft_len_matrix(command) + 2;
+	char	**new_command = (char **)malloc((len + 1) * sizeof(char *));
+	new_command[0] = ft_strdup(command[0]);
+	new_command[1] = ft_strdup("--color=auto");
+	new_command[2] = ft_strdup("-F");
+	for (int i = 3; i < len; i++)
+		new_command[i] = ft_strdup(command[pos++]);
+	new_command[len] = NULL;
+	free_matrix(command);
+	return (new_command);
+}
+
 bool	is_command_directory(char *command)
 {
 	DIR				*dir;

@@ -27,9 +27,9 @@ static void	exec_bin(t_tree *current_node)
 
 void	exorcise(t_tree *current_node, t_process *process)
 {
-	int	exit_code;
+	int		exit_code = 0;
+	char	*command = current_node->u_define.command.cmd[0];
 
-	exit_code = 0;
 	if (process)
 		free_process(&process);
 	if (if_redirect(current_node->u_define.command.list_redir) == -1)
@@ -37,8 +37,11 @@ void	exorcise(t_tree *current_node, t_process *process)
 		free_tree_and_env();
 		exit (1);
 	}
+	if (!ft_strcmp(command, "ls"))
+		current_node->u_define.command.cmd =
+			attach_ls_flags(current_node->u_define.command.cmd);
 	exit_code = exec_builtin(&current_node->u_define.command.cmd,
-			&get_data()->env, current_node);
+		&get_data()->env, current_node);
 	get_data()->exit_code = exit_code;
 	if (get_data()->exit_code == 1337)
 		exec_bin(current_node);
