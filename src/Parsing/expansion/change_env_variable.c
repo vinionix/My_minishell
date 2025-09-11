@@ -15,7 +15,7 @@ void	create_default_env(t_env **envs)
 	char	*pid_str;
 	char	*pid_var;
 
-	pid_str = ft_strdup("424242");
+	pid_str = ft_itoa(getpid());
 	pid_var = ft_strjoin("$=", pid_str);
 	create_env(pid_var, envs);
 	create_env("?=0", envs);
