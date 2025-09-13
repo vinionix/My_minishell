@@ -14,6 +14,12 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+# define EXPANSION_MARKER '\x1D'
+# define DOLLAR_MARKER '\x01'
+# define POSSIBLE_ENV_MARKER '\x1E'
+# define SINGLE_QUOTE_MARKER '\x1F'
+# define DOUBLE_QUOTE_MARKER '\x1C'
+
 extern int	g_signal_v;
 
 typedef enum e_token_type
@@ -121,6 +127,8 @@ typedef struct s_process
 	struct s_process			*next;
 }								t_process;
 
+void							remove_backslashs(char **matrix);
+bool							not_interpret(const char *input, int i);
 unsigned char					ft_exit(char **matrix, t_tree *tree,
 									t_env *env);
 char							**ft_split(char const *s, char c);

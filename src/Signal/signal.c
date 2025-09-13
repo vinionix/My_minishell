@@ -5,7 +5,6 @@ int	g_signal_v = 0;
 void	set_signal(void)
 {
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGTSTP, SIG_IGN);
 	signal(SIGINT, handle_sigint);
 }
 
@@ -20,9 +19,12 @@ void	handle_sigint_no_redisplay(int sig)
 
 void	handle_sigint(int sig)
 {
+	char	*new_prompt = "\33[1;31m❯\33[0m ";
 	(void)sig;
 	write(1, "\n", 1);
 	g_signal_v++;
+	rl_set_prompt(new_prompt);
+    rl_display_prompt = rl_prompt;
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();

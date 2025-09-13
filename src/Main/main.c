@@ -28,7 +28,11 @@ static	char *get_prompt(char *prompt, char *cwd)
 	char	*modified_cwd = ft_strjoin("\33[29m", cwd);
 	modified_cwd = join(modified_cwd, "\33[0m");
 	char	*med = ft_strjoin(prompt, modified_cwd);
-	char	*res = ft_strjoin(med, "\n\33[1;33m❯\33[0m ");
+	char	*res;
+	if (get_data()->exit_code == 0)
+		res = ft_strjoin(med, "\n\33[1;32m❯\33[0m ");
+	else
+		res = ft_strjoin(med, "\n\33[1;31m❯\33[0m ");
 	free(cwd);
 	free(med);
 	free(modified_cwd);
@@ -54,6 +58,7 @@ static void	aux_main(void)
 		else if (!args.rdline)
 		{
 			printf("exit\n");
+			free(prompt_with_dir);
 			if (get_data()->env)
 				free_list(get_data()->env);
 			break ;

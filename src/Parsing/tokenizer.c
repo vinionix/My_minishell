@@ -8,7 +8,7 @@ static t_token	*create_tokens(char **matrix)
 	i = 0;
 	if (matrix == NULL)
 		return (NULL);
-	tokens = malloc(sizeof(t_token) * (ft_len_matrix(matrix) + 1));
+	tokens = (t_token *)malloc(sizeof(t_token) * (ft_len_matrix(matrix) + 1));
 	while (matrix[i])
 	{
 		tokens[i].value = ft_strdup(matrix[i]);
@@ -25,15 +25,17 @@ static t_token	*create_tokens(char **matrix)
 	return (tokens);
 }
 
-void	print_subshells(t_token *tokens)
+void	ignore_backslash_quotes(char *input)
 {
-	if (!tokens || (tokens->value == NULL && tokens->type != TK_SUBSHELL))
-		return ;
-	if (tokens->type == TK_SUBSHELL && tokens->subshell)
-		print_subshells(tokens->subshell);
-	else if (tokens->value)
-		printf("%s ", tokens->value);
-	print_subshells(tokens + 1);
+	int i = 0;
+	while (input[i])
+	{
+		if (input[i] == '\'' && not_interpret(input, i))
+			input[i] = SINGLE_QUOTE_MARKER;
+		else if (input[i] == '\"' && not_interpret(input, i))
+			input[i] = DOUBLE_QUOTE_MARKER;
+		i++;
+	}
 }
 
 int	tokenizer(t_arg_main *args)
@@ -41,6 +43,7 @@ int	tokenizer(t_arg_main *args)
 	args->temp = format_input(args->rdline);
 	if (args->temp == NULL)
 		return (1);
+	ignore_backslash_quotes(args->temp);
 	args->matrix = ft_split(args->temp, ' ');
 	args->tokens = create_tokens(args->matrix);
 	if (args->temp != NULL)

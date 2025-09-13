@@ -69,6 +69,8 @@ static void	exec_main_node(t_tree *current_node, int is_subshell)
 	if (is_subshell)
 	{
 		free_list(get_data()->env);
+		if (get_data()->exited_in_fork)
+			get_data()->exit_code = 130;
 		exit(get_data()->exit_code);
 	}
 }
@@ -92,6 +94,8 @@ static void	exec_tree(t_tree *current_node, int is_subshell)
 	if (is_subshell)
 	{
 		free_list(get_data()->env);
+		if (get_data()->exited_in_fork)
+			get_data()->exit_code = 130;
 		exit(get_data()->exit_code);
 	}
 }

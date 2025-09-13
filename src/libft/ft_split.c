@@ -48,7 +48,7 @@ static size_t	find_size(char const *str, char c, int *index)
 	flag = 0;
 	while (str[*index])
 	{
-		if (str[*index] != c && str[*index])
+		if (str[*index] != c)
 		{
 			jump_index(index, &size, str);
 			size++;
@@ -78,9 +78,12 @@ static void	transform(char **array, char const *s, char c)
 			chr_jump = jump_char(s[pos]);
 			if (chr_jump == 2 || chr_jump == 3)
 			{
-				(*array)[k++] = s[pos++];
-				while (s[pos] && chr_jump != jump_char(s[pos]))
+				if (!not_interpret(s, pos))
+				{
 					(*array)[k++] = s[pos++];
+					while (s[pos] && chr_jump != jump_char(s[pos]))
+						(*array)[k++] = s[pos++];
+				}
 			}
 			(*array)[k++] = s[pos++];
 		}

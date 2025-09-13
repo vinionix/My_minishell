@@ -20,6 +20,8 @@ void	jump_index(int *index, size_t *size, const char *str)
 	chr_jump = jump_char(str[*index]);
 	if (chr_jump == 2 || chr_jump == 3)
 	{
+		if (not_interpret(str, *index))
+			return ;
 		(*index)++;
 		(*size)++;
 		while (str[*index] && chr_jump != jump_char(str[*index]))

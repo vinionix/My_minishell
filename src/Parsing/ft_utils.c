@@ -1,7 +1,19 @@
 #include "../consha.h"
 
+bool	not_interpret(const char *input, int i)
+{
+	if (i > 0)
+	{
+		if (input[i - 1] == '\\')
+			return (true);
+	}
+	return (false);
+}
+
 int	chr_separator(char *input, int i)
 {
+	if (not_interpret(input, i))
+		return (0);
 	if (input[i] == '&' && input[i + 1] == '&')
 		return (1);
 	else if (input[i] == '|' && input[i + 1] == '|')

@@ -7,6 +7,8 @@ static int	handle_quotes(char *input, char *temp, int *i, int j)
 	chr_jump = jump_char(input[*i]);
 	if (chr_jump == 2 || chr_jump == 3)
 	{
+		if (not_interpret(input, *i))
+			return (j);
 		temp[j++] = input[(*i)++];
 		while (input[*i] && chr_jump != jump_char(input[*i]))
 			temp[j++] = input[(*i)++];
@@ -22,8 +24,8 @@ static int	handle_quotes(char *input, char *temp, int *i, int j)
 
 static int	handle_sep_type1(char *input, char *temp, int *i, int j)
 {
-	if ((*i > 0) && jump_char(input[*i - 1]) != 1 && chr_separator(input, *i
-			- 1) == 0)
+	if ((*i > 0) && jump_char(input[*i - 1]) != 1
+		&& chr_separator(input, *i - 1) == 0)
 		temp[j++] = ' ';
 	if (input[*i + 1])
 	{
@@ -37,8 +39,8 @@ static int	handle_sep_type1(char *input, char *temp, int *i, int j)
 
 static int	handle_sep_type2(char *input, char *temp, int *i, int j)
 {
-	if ((*i > 0) && jump_char(input[*i - 1]) != 1 && chr_separator(input, *i
-			- 1) == 0)
+	if ((*i > 0) && jump_char(input[*i - 1]) != 1
+		&& chr_separator(input, *i - 1) == 0)
 		temp[j++] = ' ';
 	temp[j++] = input[(*i)++];
 	if (jump_char(input[*i]) != 1)
