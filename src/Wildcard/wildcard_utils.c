@@ -106,14 +106,16 @@ void	reset_modified_chars(char **matrix, char c)
 	{
 		while (matrix[i][++j])
 		{
-			if (matrix[i][j] == DOLLAR_MARKER && c == '$')
+			if (matrix[i][j] == LITERAL_DOLLAR && c == '$')
 				matrix[i][j] = c;
-			else if (matrix[i][j] == EXPANSION_MARKER && c == '*')
+			else if (matrix[i][j] == LITERAL_ASTERISK && c == '*')
 				matrix[i][j] = c;
-			else if (matrix[i][j] == SINGLE_QUOTE_MARKER && c == '\'')
+			else if (matrix[i][j] == LITERAL_SINGLE_QUOTE && c == '\'')
 				matrix[i][j] = '\'';
-			else if (matrix[i][j] == DOUBLE_QUOTE_MARKER && c == '\"')
+			else if (matrix[i][j] == LITERAL_DOUBLE_QUOTE && c == '\"')
 				matrix[i][j] = '\"';
+			else if (matrix[i][j] == LITERAL_BACKSLASH && c == '\\')
+				matrix[i][j] = '\\';
 		}
 		j = -1;
 	}

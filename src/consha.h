@@ -14,11 +14,12 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-# define EXPANSION_MARKER '\x1D'
-# define DOLLAR_MARKER '\x01'
+# define LITERAL_ASTERISK '\x1D'
+# define LITERAL_DOLLAR '\x01'
+# define LITERAL_SINGLE_QUOTE '\x1F'
+# define LITERAL_DOUBLE_QUOTE '\x1C'
+# define LITERAL_BACKSLASH '\x04'
 # define POSSIBLE_ENV_MARKER '\x1E'
-# define SINGLE_QUOTE_MARKER '\x1F'
-# define DOUBLE_QUOTE_MARKER '\x1C'
 
 extern int	g_signal_v;
 

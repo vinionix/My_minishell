@@ -10,7 +10,7 @@ static void	replace_asterisk(t_wildcard *list)
 		while (list->file_dir[++i])
 		{
 			if (list->file_dir[i] == '*')
-				list->file_dir[i] = EXPANSION_MARKER;
+				list->file_dir[i] = LITERAL_ASTERISK;
 		}
 		i = -1;
 		list = list->next;

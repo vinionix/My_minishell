@@ -80,8 +80,8 @@ void	remove_key_len(char *copy, t_vars *var)
 
 bool	check_meta(char c)
 {
-	return (c && c != EXPANSION_MARKER && c != DOLLAR_MARKER
-		&& c != SINGLE_QUOTE_MARKER && c != DOUBLE_QUOTE_MARKER
+	return (c && c != LITERAL_ASTERISK && c != LITERAL_DOLLAR
+		&& c != LITERAL_SINGLE_QUOTE && c != LITERAL_DOUBLE_QUOTE
 		&& !(c >= ' ' && c <= '/') && !(c >= ':' && c <= '@')
 		&& !(c >= '[' && c <= '^') && !(c >= '{' && c <= '~'));
 }
@@ -137,10 +137,10 @@ void	parse_edge_case(char **matrix)
 				continue ;
 			}
 			if (matrix[i][j] == '$' && (matrix[i][j + 1] == ' '
-				|| matrix[i][j + 1] == SINGLE_QUOTE_MARKER
+				|| matrix[i][j + 1] == LITERAL_SINGLE_QUOTE
 				|| matrix[i][j + 1] == '\0' || matrix[i][j + 1] == '\"'
 				|| matrix[i][j + 1] == '+' || matrix[i][j + 1] == '%'))
-				matrix[i][j] = DOLLAR_MARKER;
+				matrix[i][j] = LITERAL_DOLLAR;
 			if (matrix[i][j] == '$' && matrix[i][j + 1] == '*')
 				matrix[i][j + 1] = '1';
 		}
@@ -165,7 +165,7 @@ void	create_envs(char *copy, char *str, int i, char **matrix)
 			continue ;
 		}
 		size = i + 1;
-		if (copy[size] == EXPANSION_MARKER)
+		if (copy[size] == LITERAL_ASTERISK)
 		{
 			i++;
 			continue ;

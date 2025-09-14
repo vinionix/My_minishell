@@ -35,9 +35,9 @@ static void	turn_into_meta(char *str, char quote_type, int *i)
 	while (str[*i] && str[*i] != quote_type)
 	{
 		if (str[*i] == '\'')
-			str[*i] = SINGLE_QUOTE_MARKER;
+			str[*i] = LITERAL_SINGLE_QUOTE;
 		else if (str[*i] == '\"')
-			str[*i] = DOUBLE_QUOTE_MARKER;
+			str[*i] = LITERAL_DOUBLE_QUOTE;
 		(*i)++;
 	}
 	if (str[*i])
@@ -60,7 +60,7 @@ static void	do_not_expand(char **matrix)
 				if ((count_quotes_right(matrix[i] + j, '\'') % 2 != 0
 					&& count_quotes_left(matrix[i], j, '\'') % 2 != 0)
 					|| not_interpret(matrix[i], j))
-				matrix[i][j] = DOLLAR_MARKER;
+				matrix[i][j] = LITERAL_DOLLAR;
 			}
 			else if (matrix[i][j] == '*')
 			{
@@ -69,7 +69,7 @@ static void	do_not_expand(char **matrix)
 						|| (count_quotes_right(matrix[i] + j, '\"') % 2 != 0
 							&& count_quotes_left(matrix[i], j, '\"') % 2 != 0))
 					|| not_interpret(matrix[i], j))
-				matrix[i][j] = EXPANSION_MARKER;
+				matrix[i][j] = LITERAL_ASTERISK;
 			}
 			j++;
 		}
