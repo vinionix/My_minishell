@@ -31,7 +31,10 @@ Projeto desenvolvido como parte do currículo da 42 Rio, com foco em compreender
    git clone https://github.com/seuuser/My_minishell.git
    cd minishell
    Compile o projeto:
-   make
+   mkdir build
+   cd build
+   cmake ..
+   cmake --build .
    Execute a shell:
    ./minishell
 
