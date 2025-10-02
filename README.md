@@ -28,7 +28,7 @@ Projeto desenvolvido como parte do currículo da 42 Rio, com foco em compreender
 ## 🚀 Como executar
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seuuser/minishell.git
+   git clone https://github.com/seuuser/My_minishell.git
    cd minishell
 Compile o projeto:
 
