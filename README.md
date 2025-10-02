@@ -36,7 +36,7 @@ Projeto desenvolvido como parte do currículo da 42 Rio, com foco em compreender
    cmake ..
    cmake --build .
    Execute a shell:
-   ./minishell
+   ./consha
 
 ## 📚 Aprendizados principais
 Manipulação de processos e comunicação entre eles.
