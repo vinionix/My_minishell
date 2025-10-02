@@ -38,10 +38,10 @@ Projeto desenvolvido como parte do currículo da 42 Rio, com foco em compreender
 ## 📚 Aprendizados principais
 Manipulação de processos e comunicação entre eles.
 
-Implementação de pipes e redirecionamentos com file descriptors.
+- **Implementação** de pipes e redirecionamentos com file descriptors.
 
-Tratamento de sinais e controle de execução.
+- **Tratamento** de sinais e controle de execução.
 
-Parsing da entrada do usuário e gerenciamento de memória.
+- **Parsing** da entrada do usuário e gerenciamento de memória.
 
-Funcionamento interno de uma shell Unix.
+- **Funcionamento** interno de uma shell Unix.
