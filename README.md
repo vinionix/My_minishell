@@ -29,7 +29,7 @@ Projeto desenvolvido como parte do currículo da 42 Rio, com foco em compreender
 1. Clone o repositório:
    ```bash
    git clone https://github.com/vinionix/My_minishell.git
-   cd minishell
+   cd My_minishell
    Compile o projeto:
    mkdir build
    cd build
