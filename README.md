@@ -30,14 +30,12 @@ Projeto desenvolvido como parte do currículo da 42 Rio, com foco em compreender
    ```bash
    git clone https://github.com/seuuser/My_minishell.git
    cd minishell
-Compile o projeto:
+   Compile o projeto:
+   make
+   Execute a shell:
+   ./minishell
 
-make
-
-Execute a shell:
-./minishell
-
-📚 Aprendizados principais
+## 📚 Aprendizados principais
 Manipulação de processos e comunicação entre eles.
 
 Implementação de pipes e redirecionamentos com file descriptors.
